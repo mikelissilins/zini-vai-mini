@@ -1,17 +1,18 @@
 <header class="site-header">
-  <a class="brand" href="/" aria-label="Zini vai mini sākums">
+  <a class="brand" routerLink="/" aria-label="Zini vai mini sākums">
     <span class="brand-mark">?</span>
     <span>Zini vai mini</span>
   </a>
   <nav class="header-actions" aria-label="Lietotāja darbības">
+    <button class="language-toggle" type="button" (click)="i18n.toggle()">{{ i18n.alternateLocale().toUpperCase() }}</button>
     @if (auth.ready() && !auth.signedIn()) {
-      <button class="button is-light" type="button" (click)="auth.openSignIn()">Ieiet</button>
-      <button class="button is-primary" type="button" (click)="auth.openSignUp()">Izveidot kontu</button>
+      <button class="button is-light" type="button" (click)="auth.openSignIn()">{{ i18n.t('signIn') }}</button>
+      <button class="button is-primary" type="button" (click)="auth.openSignUp()">{{ i18n.t('signUp') }}</button>
     }
     @if (auth.signedIn()) {
-      <a class="button is-primary" href="/dashboard">Spēļu panelis</a>
+      <a class="button is-primary" routerLink="/dashboard">{{ i18n.t('dashboard') }}</a>
       <span class="user-name">{{ auth.user()?.firstName || auth.user()?.primaryEmailAddress?.emailAddress }}</span>
-      <button class="button is-light" type="button" (click)="auth.signOut()">Iziet</button>
+      <button class="button is-light" type="button" (click)="auth.signOut()">{{ i18n.t('signOut') }}</button>
     }
   </nav>
 </header>
@@ -21,14 +22,14 @@
   @if (location.pathname === '/') {
     <section class="hero-shell">
       <div class="hero-copy">
-        <p class="eyebrow">Nometnes spēle komandām</p>
-        <h1>Jautājumi, punkti un īsts fināla sprādziens.</h1>
-        <p class="hero-lead">Izveido tēmas, saliec jautājumus, vadi komandas un parādi rezultātus uz atsevišķa projektora ekrāna.</p>
+        <p class="eyebrow">{{ i18n.t('heroEyebrow') }}</p>
+        <h1>{{ i18n.t('heroTitle') }}</h1>
+        <p class="hero-lead">{{ i18n.t('heroLead') }}</p>
         <div class="buttons">
           @if (auth.signedIn()) {
-            <a class="button is-primary is-medium" href="/dashboard">Atvērt spēļu paneli</a>
+            <a class="button is-primary is-medium" routerLink="/dashboard">{{ i18n.t('openDashboard') }}</a>
           } @else {
-            <button class="button is-primary is-medium" type="button" (click)="auth.openSignIn()">Sākt veidot spēli</button>
+            <button class="button is-primary is-medium" type="button" (click)="auth.openSignIn()">{{ i18n.t('startBuilding') }}</button>
           }
           <span class="mini-proof">6 tēmas · 10–50 punkti · TOP 4</span>
         </div>

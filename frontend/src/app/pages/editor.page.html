@@ -1,0 +1,135 @@
+<section class="editor-shell">
+  <div class="editor-topbar">
+    <div>
+      <a class="back-link" routerLink="/dashboard">← {{ i18n.t('dashboard') }}</a>
+      <p class="eyebrow">{{ i18n.t('editor') }}</p>
+    </div>
+    <div class="save-area">
+      <span class="readiness" [class.is-ready]="playable()">
+        {{ i18n.t(playable() ? 'ready' : 'draft') }}
+      </span>
+      @if (saved()) { <span class="saved-note">✓ {{ i18n.t('saved') }}</span> }
+      <button class="button is-primary is-medium" type="button" [disabled]="saving() || loading()" (click)="save()">
+        {{ i18n.t(saving() ? 'saving' : 'save') }}
+      </button>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="notification is-danger is-light">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <progress class="progress is-primary" max="100">60%</progress>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <section class="game-settings">
+        <label class="field title-field">
+          <span class="label">{{ i18n.t('gameTitle') }}</span>
+          <input class="input is-large" formControlName="title" (input)="markChanged()">
+        </label>
+        <label class="field description-field">
+          <span class="label">{{ i18n.t('description') }}</span>
+          <textarea class="textarea" formControlName="description" rows="2" (input)="markChanged()"></textarea>
+        </label>
+        <label class="field locale-field">
+          <span class="label">{{ i18n.t('language') }}</span>
+          <span class="select is-fullwidth">
+            <select formControlName="locale" (change)="markChanged()">
+              <option value="lv">Latviešu</option>
+              <option value="en">English</option>
+            </select>
+          </span>
+        </label>
+      </section>
+
+      <div class="readiness-banner" [class.is-ready]="playable()">
+        <strong>{{ playable() ? '✓' : '!' }}</strong>
+        <span>{{ i18n.t(playable() ? 'playableHint' : 'draftHint') }}</span>
+      </div>
+
+      <div formArrayName="categories" class="categories-list">
+        @for (category of categories.controls; track category; let categoryIndex = $index) {
+          <section class="category-editor" [formGroupName]="categoryIndex">
+            <header class="category-header" [style.border-color]="category.controls['color'].value">
+              <span class="category-number">{{ (categoryIndex + 1).toString().padStart(2, '0') }}</span>
+              <label class="field category-title">
+                <span class="label">{{ i18n.t('categoryName') }}</span>
+                <input class="input is-medium" formControlName="name" (input)="markChanged()">
+              </label>
+              <label class="color-field" aria-label="Sadaļas krāsa">
+                <input type="color" formControlName="color" (input)="markChanged()">
+              </label>
+              <button class="button is-ghost has-text-danger" type="button" (click)="removeCategory(categoryIndex)">
+                {{ i18n.t('removeCategory') }}
+              </button>
+            </header>
+
+            <div formArrayName="questions" class="question-grid">
+              @for (question of questions(category).controls; track question; let questionIndex = $index) {
+                <article class="question-card" [formGroupName]="questionIndex">
+                  <div class="question-card-header" [style.background]="category.controls['color'].value">
+                    <strong>{{ question.controls['points'].value }}</strong>
+                    <div class="type-toggle">
+                      <button type="button" [class.is-active]="question.controls['type'].value === 'FREE_TEXT'" (click)="setQuestionType(question, 'FREE_TEXT')">
+                        {{ i18n.t('freeText') }}
+                      </button>
+                      <button type="button" [class.is-active]="question.controls['type'].value === 'MULTIPLE_CHOICE'" (click)="setQuestionType(question, 'MULTIPLE_CHOICE')">
+                        A/B/C
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="question-fields">
+                    <label class="field">
+                      <span class="label">{{ i18n.t('question') }}</span>
+                      <textarea class="textarea" formControlName="prompt" rows="3" (input)="markChanged()"></textarea>
+                    </label>
+
+                    @if (question.controls['type'].value === 'MULTIPLE_CHOICE') {
+                      <div formArrayName="options" class="options-list">
+                        @for (option of options(question).controls; track option; let optionIndex = $index) {
+                          <div class="option-row" [formGroupName]="optionIndex">
+                            <button class="correct-radio" [class.is-correct]="option.controls['correct'].value" type="button" (click)="setCorrect(question, optionIndex)" [attr.aria-label]="i18n.t('correct')">✓</button>
+                            <input class="input" formControlName="text" [placeholder]="'Opcija ' + (optionIndex + 1)" (input)="markChanged()">
+                            <button class="remove-option" type="button" (click)="removeOption(question, optionIndex)" aria-label="Dzēst variantu">×</button>
+                          </div>
+                        }
+                        <button class="button is-small is-light" type="button" [disabled]="options(question).length >= 4" (click)="addOption(question)">+ {{ i18n.t('addOption') }}</button>
+                      </div>
+                    }
+
+                    <label class="field">
+                      <span class="label">{{ i18n.t('answer') }}</span>
+                      <textarea class="textarea answer-field" formControlName="answer" rows="2" (input)="markChanged()"></textarea>
+                    </label>
+
+                    <label class="field">
+                      <span class="label">{{ i18n.t('explanation') }}</span>
+                      <textarea class="textarea" formControlName="explanation" rows="2" (input)="markChanged()"></textarea>
+                    </label>
+
+                    <div class="media-field">
+                      @if (question.controls['mediaUrl'].value) {
+                        <img [src]="question.controls['mediaUrl'].value" alt="Jautājuma attēls">
+                      }
+                      <label class="button is-small is-light">
+                        {{ uploadQuestion() === question ? '...' : i18n.t('uploadImage') }}
+                        <input type="file" accept="image/png,image/jpeg,image/webp" (change)="uploadImage(question, $event)" hidden>
+                      </label>
+                    </div>
+                  </div>
+                </article>
+              }
+            </div>
+          </section>
+        }
+      </div>
+
+      <button class="add-category" type="button" (click)="addCategory()">
+        <span>+</span>
+        <strong>{{ i18n.t('addCategory') }}</strong>
+      </button>
+    </form>
+  }
+</section>

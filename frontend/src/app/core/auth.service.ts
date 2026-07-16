@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Clerk } from '@clerk/clerk-js';
+import { ClerkUI } from '@clerk/ui/entry';
 import { firstValueFrom } from 'rxjs';
 
 interface RuntimeConfig {
@@ -21,7 +22,7 @@ export class AuthService {
     if (this.ready()) return;
     const config = await firstValueFrom(this.http.get<RuntimeConfig>('/api/public/config'));
     this.clerk = new Clerk(config.clerkPublishableKey);
-    await this.clerk.load();
+    await this.clerk.load({ ui: { ClerkUI } });
     this.user.set(this.clerk.user);
     this.clerk.addListener(({ user }) => this.user.set(user));
     this.ready.set(true);

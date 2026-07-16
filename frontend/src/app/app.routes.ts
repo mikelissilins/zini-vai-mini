@@ -8,4 +8,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard.page').then((module) => module.DashboardPage),
   },
+  {
+    path: 'games/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/editor.page').then((module) => module.EditorPage),
+  },
 ];

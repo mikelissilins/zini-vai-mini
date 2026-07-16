@@ -1,0 +1,94 @@
+<section class="dashboard-shell">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">{{ i18n.t('controlRoom') }}</p>
+      <h1>{{ i18n.t('yourGames') }}</h1>
+    </div>
+    <span class="game-count">{{ games().length }} spēles</span>
+  </div>
+
+  @if (error()) {
+    <div class="notification is-danger is-light">{{ error() }}</div>
+  }
+
+  <section class="create-panel" aria-labelledby="create-title">
+    <div class="create-copy">
+      <span class="step-number">01</span>
+      <div>
+        <p class="eyebrow">{{ i18n.t('chooseTemplate') }}</p>
+        <h2 id="create-title">No idejas līdz spēles laukumam</h2>
+      </div>
+    </div>
+
+    <div class="template-grid">
+      @for (template of templates(); track template.id) {
+        <button
+          class="template-card"
+          [class.is-selected]="selectedTemplateId === template.id"
+          type="button"
+          (click)="selectTemplate(template)">
+          <span class="template-mark">{{ template.templateKey === 'blank' ? '+' : '?' }}</span>
+          <strong>{{ template.title }}</strong>
+          <small>{{ template.description }}</small>
+          <span>{{ template.categoryCount }} {{ i18n.t('categories') }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="create-form">
+      <label class="field">
+        <span class="label">{{ i18n.t('newGameName') }}</span>
+        <input class="input" [(ngModel)]="newGameTitle" maxlength="160" placeholder="Zini vai mini 2026">
+      </label>
+      <label class="field language-field">
+        <span class="label">{{ i18n.t('language') }}</span>
+        <span class="select is-fullwidth">
+          <select [(ngModel)]="newGameLocale">
+            <option value="lv">Latviešu</option>
+            <option value="en">English</option>
+          </select>
+        </span>
+      </label>
+      <button class="button is-primary is-medium" type="button" [disabled]="creating() || !newGameTitle.trim()" (click)="createGame()">
+        {{ creating() ? '...' : i18n.t('createGame') }}
+      </button>
+    </div>
+  </section>
+
+  <section class="games-section">
+    <div class="section-label">
+      <span class="step-number">02</span>
+      <h2>{{ i18n.t('yourGames') }}</h2>
+    </div>
+
+    @if (loading()) {
+      <progress class="progress is-small is-primary" max="100">60%</progress>
+    } @else if (!games().length) {
+      <div class="empty-state">
+        <strong>{{ i18n.t('noGames') }}</strong>
+        <span>Izvēlies template augstāk un uztaisi pirmo spēli.</span>
+      </div>
+    } @else {
+      <div class="games-grid">
+        @for (game of games(); track game.id) {
+          <article class="game-card">
+            <div class="game-card-top">
+              <span class="status" [class.is-ready]="game.playable">{{ i18n.t(game.playable ? 'ready' : 'draft') }}</span>
+              <span class="locale">{{ game.locale.toUpperCase() }}</span>
+            </div>
+            <h3>{{ game.title }}</h3>
+            <p>{{ game.description || 'Bez apraksta' }}</p>
+            <div class="game-meta">
+              <strong>{{ game.categoryCount }}</strong>
+              <span>{{ i18n.t('categories') }}</span>
+            </div>
+            <div class="card-actions">
+              <a class="button is-primary" [routerLink]="['/games', game.id, 'edit']">{{ i18n.t('edit') }}</a>
+              <button class="button is-ghost has-text-danger" type="button" (click)="deleteGame(game)">{{ i18n.t('delete') }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</section>
