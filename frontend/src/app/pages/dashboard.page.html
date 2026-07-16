@@ -84,8 +84,39 @@
             </div>
             <div class="card-actions">
               <a class="button is-primary" [routerLink]="['/games', game.id, 'edit']">{{ i18n.t('edit') }}</a>
+              @if (game.playable) {
+                <a class="button is-warning" [routerLink]="['/games', game.id, 'start']">{{ i18n.t('startGame') }}</a>
+              }
               <button class="button is-ghost has-text-danger" type="button" (click)="deleteGame(game)">{{ i18n.t('delete') }}</button>
             </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="sessions-section">
+    <div class="section-label">
+      <span class="step-number">03</span>
+      <h2>{{ i18n.t('activeSessions') }}</h2>
+    </div>
+    @if (!sessions().length) {
+      <div class="empty-state"><strong>{{ i18n.t('noSessions') }}</strong></div>
+    } @else {
+      <div class="session-list">
+        @for (session of sessions(); track session.id) {
+          <article class="session-row">
+            <div>
+              <span class="status" [class.is-ready]="session.status === 'ACTIVE'">
+                {{ i18n.t(session.status === 'ACTIVE' ? 'resume' : 'finished') }}
+              </span>
+              <h3>{{ session.title }}</h3>
+            </div>
+            <div class="session-progress">
+              <strong>{{ session.usedCount }}/{{ session.totalQuestions }}</strong>
+              <span>{{ session.teamCount }} {{ i18n.t('teams').toLowerCase() }}</span>
+            </div>
+            <a class="button is-primary" [routerLink]="['/sessions', session.id, 'host']">{{ i18n.t('resume') }}</a>
           </article>
         }
       </div>

@@ -143,18 +143,7 @@ public class GameService {
     }
 
     private boolean isPlayable(Game game) {
-        return validator.isPlayable(toInput(game));
-    }
-
-    private GameInput toInput(Game game) {
-        return new GameInput(game.getTitle(), game.getDescription(), game.getLocale(), game.getVersion(),
-                game.getCategories().stream().map(category -> new CategoryInput(
-                        category.getName(), category.getColor(), category.getQuestions().stream().map(question ->
-                                new QuestionInput(question.getPoints(), question.getQuestionType(), question.getPrompt(),
-                                        question.getAnswer(), question.getExplanation(),
-                                        question.getMediaAsset() == null ? null : question.getMediaAsset().getId(),
-                                        question.getOptions().stream().map(option ->
-                                                new lv.zinivaimini.game.web.dto.GameDtos.OptionInput(option.getText(), option.isCorrect())).toList())).toList())).toList());
+        return validator.isPlayable(game);
     }
 
     private GameSummary toSummary(Game game) {

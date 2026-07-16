@@ -116,6 +116,7 @@ h3 { font-size: 1.45rem; }
 .create-form .language-field { flex: 0 0 11rem; }
 
 .games-section { margin-top: 4rem; }
+.sessions-section { margin-top: 4rem; }
 .section-label { margin-bottom: 1.5rem; }
 
 .games-grid {
@@ -157,6 +158,22 @@ h3 { font-size: 1.45rem; }
   padding: 3rem;
 }
 
+.session-list { display: grid; gap: 0.75rem; }
+
+.session-row {
+  align-items: center;
+  background: white;
+  border-left: 0.5rem solid var(--coral);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr auto auto;
+  padding: 1rem 1.25rem;
+}
+
+.session-row h3 { margin: 0.25rem 0 0; }
+.session-progress { display: grid; text-align: right; }
+.session-progress span { color: var(--muted); font-size: 0.8rem; }
+
 @media (max-width: 900px) {
   .games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -167,4 +184,6 @@ h3 { font-size: 1.45rem; }
   .create-form { align-items: stretch; flex-direction: column; }
   .create-form .field,
   .create-form .language-field { width: 100%; }
+  .session-row { align-items: stretch; grid-template-columns: 1fr; }
+  .session-progress { text-align: left; }
 }

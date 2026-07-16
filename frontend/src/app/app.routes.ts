@@ -13,4 +13,14 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/editor.page').then((module) => module.EditorPage),
   },
+  {
+    path: 'games/:id/start',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/session-setup.page').then((module) => module.SessionSetupPage),
+  },
+  {
+    path: 'sessions/:id/host',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/host.page').then((module) => module.HostPage),
+  },
 ];

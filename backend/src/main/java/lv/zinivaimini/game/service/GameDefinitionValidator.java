@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import lv.zinivaimini.game.domain.Game;
+import lv.zinivaimini.game.domain.Question;
+import lv.zinivaimini.game.domain.QuestionType;
 import lv.zinivaimini.game.web.dto.GameDtos.CategoryInput;
 import lv.zinivaimini.game.web.dto.GameDtos.GameInput;
 import lv.zinivaimini.game.web.dto.GameDtos.QuestionInput;
@@ -32,6 +35,21 @@ public class GameDefinitionValidator {
             List<QuestionInput> questions = category.questions() == null ? List.of() : category.questions();
             if (!questions.stream().map(QuestionInput::points).collect(Collectors.toSet()).equals(REQUIRED_POINTS)) return false;
             return questions.stream().allMatch(this::isComplete);
+        });
+    }
+
+    public boolean isPlayable(Game game) {
+        if (game.getCategories().isEmpty()) return false;
+        return game.getCategories().stream().allMatch(category -> {
+            if (!category.getQuestions().stream().map(Question::getPoints).collect(Collectors.toSet()).equals(REQUIRED_POINTS)) {
+                return false;
+            }
+            return category.getQuestions().stream().allMatch(question -> {
+                if (question.getPrompt().isBlank() || question.getAnswer().isBlank()) return false;
+                if (question.getQuestionType() != QuestionType.MULTIPLE_CHOICE) return true;
+                int size = question.getOptions().size();
+                return size >= 2 && size <= 4 && question.getOptions().stream().filter(option -> option.isCorrect()).count() == 1;
+            });
         });
     }
 

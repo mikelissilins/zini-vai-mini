@@ -12,6 +12,9 @@
       <button class="button is-primary is-medium" type="button" [disabled]="saving() || loading()" (click)="save()">
         {{ i18n.t(saving() ? 'saving' : 'save') }}
       </button>
+      @if (playable() && !form.dirty) {
+        <a class="button is-warning is-medium" [routerLink]="['/games', gameId, 'start']">{{ i18n.t('startGame') }}</a>
+      }
     </div>
   </div>
 

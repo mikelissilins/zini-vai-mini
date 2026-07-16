@@ -22,7 +22,7 @@ export class EditorPage implements OnInit {
   private readonly fb = inject(FormBuilder);
   protected readonly i18n = inject(I18nService);
 
-  private readonly gameId = this.route.snapshot.paramMap.get('id')!;
+  protected readonly gameId = this.route.snapshot.paramMap.get('id')!;
   protected readonly loading = signal(true);
   protected readonly saving = signal(false);
   protected readonly saved = signal(false);
@@ -132,6 +132,7 @@ export class EditorPage implements OnInit {
       next: (game) => {
         this.form.controls.version.setValue(game.version);
         this.playable.set(game.playable);
+        this.form.markAsPristine();
         this.saving.set(false);
         this.saved.set(true);
         setTimeout(() => this.saved.set(false), 1800);

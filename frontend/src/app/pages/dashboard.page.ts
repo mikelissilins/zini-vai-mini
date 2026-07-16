@@ -5,7 +5,7 @@ import { forkJoin } from 'rxjs';
 
 import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
-import { GameSummary, Locale } from '../core/models';
+import { GameSummary, Locale, SessionSummary } from '../core/models';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -21,6 +21,7 @@ export class DashboardPage implements OnInit {
 
   protected readonly templates = signal<GameSummary[]>([]);
   protected readonly games = signal<GameSummary[]>([]);
+  protected readonly sessions = signal<SessionSummary[]>([]);
   protected readonly loading = signal(true);
   protected readonly creating = signal(false);
   protected readonly error = signal('');
@@ -62,10 +63,11 @@ export class DashboardPage implements OnInit {
 
   private reload(): void {
     this.loading.set(true);
-    forkJoin({ templates: this.api.listTemplates(), games: this.api.listGames() }).subscribe({
-      next: ({ templates, games }) => {
+    forkJoin({ templates: this.api.listTemplates(), games: this.api.listGames(), sessions: this.api.listSessions() }).subscribe({
+      next: ({ templates, games, sessions }) => {
         this.templates.set(templates);
         this.games.set(games);
+        this.sessions.set(sessions);
         if (templates.length) this.selectTemplate(templates.find((item) => item.templateKey === 'camp') || templates[0]);
         this.loading.set(false);
       },

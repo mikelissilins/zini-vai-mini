@@ -18,6 +18,9 @@ const translations: Record<Locale, Record<string, string>> = {
     addOption: 'Pievienot variantu', correct: 'Pareizā', image: 'Jautājuma attēls', uploadImage: 'Augšupielādēt attēlu',
     playableHint: 'Visas punktu vietas ir aizpildītas. Spēli var sākt.',
     draftHint: 'Lai sāktu spēli, katrā sadaļā aizpildi 10, 20, 30, 40 un 50 punktu jautājumu un atbildi.',
+    startGame: 'Sākt spēli', teamSetup: 'Komandu iestatījumi', teams: 'Komandas', addTeam: 'Pievienot komandu',
+    teamName: 'Komandas nosaukums', launchGame: 'Atvērt vadītāja paneli', activeSessions: 'Iesāktās spēles',
+    resume: 'Turpināt', finished: 'Pabeigta', progress: 'Progress', noSessions: 'Vēl nav sāktu spēļu.',
   },
   en: {
     signIn: 'Sign in', signUp: 'Create account', signOut: 'Sign out', dashboard: 'Game dashboard',
@@ -34,6 +37,9 @@ const translations: Record<Locale, Record<string, string>> = {
     addOption: 'Add option', correct: 'Correct', image: 'Question image', uploadImage: 'Upload image',
     playableHint: 'Every point slot is complete. This game can be started.',
     draftHint: 'To start, fill the 10, 20, 30, 40 and 50 point question and answer in every category.',
+    startGame: 'Start game', teamSetup: 'Team setup', teams: 'Teams', addTeam: 'Add team',
+    teamName: 'Team name', launchGame: 'Open host panel', activeSessions: 'Started games',
+    resume: 'Resume', finished: 'Finished', progress: 'Progress', noSessions: 'No started games yet.',
   },
 };
 

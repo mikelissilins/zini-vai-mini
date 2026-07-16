@@ -1,0 +1,38 @@
+<section class="setup-shell">
+  <a class="back-link" [routerLink]="game() ? ['/games', game()!.id, 'edit'] : ['/dashboard']">← {{ i18n.t('editor') }}</a>
+  <div class="setup-heading">
+    <div>
+      <p class="eyebrow">{{ i18n.t('teamSetup') }}</p>
+      <h1>{{ game()?.title || '...' }}</h1>
+      <p>Izvēlies 2–12 komandas. Kārtība nosaka pirmo gājienu un tālāko rotāciju.</p>
+    </div>
+    <span class="team-tally">{{ teams().length }} / 12</span>
+  </div>
+
+  @if (error()) { <div class="notification is-danger is-light">{{ error() }}</div> }
+
+  <div class="team-list">
+    @for (team of teams(); track $index; let index = $index) {
+      <article class="team-row" [style.--team-color]="team.color">
+        <span class="team-position">{{ (index + 1).toString().padStart(2, '0') }}</span>
+        <input type="color" [value]="team.color" (input)="updateTeam(index, 'color', $any($event.target).value)" [attr.aria-label]="i18n.t('teamName') + ' krāsa'">
+        <label>
+          <span>{{ i18n.t('teamName') }}</span>
+          <input class="input is-medium" [ngModel]="team.name" (ngModelChange)="updateTeam(index, 'name', $event)" maxlength="80">
+        </label>
+        <div class="order-buttons">
+          <button type="button" (click)="moveTeam(index, -1)" [disabled]="index === 0" aria-label="Pārvietot augšup">↑</button>
+          <button type="button" (click)="moveTeam(index, 1)" [disabled]="index === teams().length - 1" aria-label="Pārvietot lejup">↓</button>
+        </div>
+        <button class="remove-team" type="button" (click)="removeTeam(index)" [disabled]="teams().length <= 2">×</button>
+      </article>
+    }
+  </div>
+
+  <div class="setup-actions">
+    <button class="add-team" type="button" (click)="addTeam()" [disabled]="teams().length >= 12">+ {{ i18n.t('addTeam') }}</button>
+    <button class="button is-primary is-large" type="button" (click)="launch()" [disabled]="creating() || !game()">
+      {{ creating() ? '...' : i18n.t('launchGame') }}
+    </button>
+  </div>
+</section>

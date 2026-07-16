@@ -1,0 +1,86 @@
+<section class="host-shell">
+  @if (error()) { <div class="notification is-danger is-light">{{ error() }}</div> }
+  @if (session(); as game) {
+    <header class="host-header">
+      <div>
+        <a routerLink="/dashboard">← Spēļu panelis</a>
+        <p class="eyebrow">Vadītāja skats</p>
+        <h1>{{ game.title }}</h1>
+      </div>
+      <div class="host-meta">
+        <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
+        <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo</button>
+        @if (game.status === 'ACTIVE') {
+          <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
+        }
+      </div>
+    </header>
+
+    <div class="score-strip">
+      @for (team of game.teams; track team.id) {
+        <article [class.is-active]="team.id === game.activeTeamId" [style.--team-color]="team.color">
+          <span>{{ team.name }}</span>
+          <strong>{{ team.score }}</strong>
+        </article>
+      }
+    </div>
+
+    @if (game.status === 'FINISHED') {
+      <section class="finished-panel">
+        <p class="eyebrow">Spēle pabeigta</p>
+        <h2>Rezultāti ir gatavi</h2>
+        @for (team of game.teams; track team.id) {
+          <div><strong>{{ team.rank }}.</strong><span>{{ team.name }}</span><b>{{ team.score }}</b></div>
+        }
+      </section>
+    } @else {
+      <div class="turn-banner" [style.--team-color]="activeTeam()?.color">
+        <span>Tagad izvēlas</span>
+        <strong>{{ activeTeam()?.name }}</strong>
+      </div>
+
+      @if (game.selectedQuestion; as question) {
+        <section class="question-stage" [style.--category-color]="question.categoryColor">
+          <div class="question-label"><span>{{ question.categoryName }}</span><strong>{{ question.points }}</strong></div>
+          <h2>{{ question.prompt }}</h2>
+          @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt="Jautājuma attēls"> }
+          @if (question.options.length) {
+            <div class="answer-options">
+              @for (option of question.options; track option.id; let index = $index) {
+                <div [class.is-correct]="game.answerRevealed && option.correct"><b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span></div>
+              }
+            </div>
+          }
+          @if (game.answerRevealed) {
+            <div class="answer-reveal">
+              <span>Pareizā atbilde</span>
+              <strong>{{ question.answer }}</strong>
+              @if (question.explanation) { <p>{{ question.explanation }}</p> }
+            </div>
+            <div class="score-actions">
+              <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
+              <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points }}</button>
+            </div>
+          } @else {
+            <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">Atklāt atbildi</button>
+          }
+        </section>
+      } @else {
+        <section class="game-board">
+          @for (category of game.categories; track category.position) {
+            <div class="board-column" [style.--category-color]="category.color">
+              <h2>{{ category.name }}</h2>
+              @for (question of category.questions; track question.id) {
+                <button type="button" [class.is-used]="question.used" [disabled]="busy() || question.used" (click)="select(question.id)">
+                  {{ question.used ? '✓' : question.points }}
+                </button>
+              }
+            </div>
+          }
+        </section>
+      }
+    }
+  } @else {
+    <progress class="progress is-primary" max="100">60%</progress>
+  }
+</section>
