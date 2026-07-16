@@ -34,3 +34,9 @@ jobs:
       - run: ./mvnw verify
         working-directory: backend
 
+  docker:
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t zini-vai-mini:${{ github.sha }} .

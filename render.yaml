@@ -1,0 +1,42 @@
+databases:
+  - name: zini-vai-mini-db
+    plan: free
+    region: frankfurt
+    databaseName: zini_vai_mini
+    user: zini_vai_mini
+    postgresMajorVersion: "17"
+
+services:
+  - type: web
+    name: zini-vai-mini
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health/readiness
+    maxShutdownDelaySeconds: 30
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zini-vai-mini-db
+          property: connectionString
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: zini-vai-mini-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: zini-vai-mini-db
+          property: password
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: APP_OWNER_CLERK_USER_ID
+        sync: false
+      - key: APP_ALLOWED_ORIGINS
+        value: https://zini-vai-mini.onrender.com
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=75.0

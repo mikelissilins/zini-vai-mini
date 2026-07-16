@@ -1,0 +1,10 @@
+.git
+.github
+.idea
+.env*
+backend/target
+frontend/.angular
+frontend/dist
+frontend/node_modules
+playwright-report
+test-results
