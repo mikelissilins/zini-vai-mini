@@ -51,7 +51,7 @@ class SessionServiceTests {
         when(events.existsBySessionAndUndoneFalse(session)).thenReturn(true);
 
         SessionService service = new SessionService(mock(GameRepository.class), sessions, teams, questions, events,
-                mock(GameDefinitionValidator.class));
+                mock(GameDefinitionValidator.class), mock(SessionEventHub.class));
         var restored = service.get(session.getId());
 
         assertThat(restored.usedCount()).isEqualTo(1);

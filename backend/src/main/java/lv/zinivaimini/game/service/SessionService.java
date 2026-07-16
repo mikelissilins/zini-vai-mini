@@ -38,15 +38,18 @@ public class SessionService {
     private final SessionQuestionRepository questions;
     private final ScoreEventRepository events;
     private final GameDefinitionValidator validator;
+    private final SessionEventHub eventHub;
 
     public SessionService(GameRepository games, GameSessionRepository sessions, SessionTeamRepository teams,
-            SessionQuestionRepository questions, ScoreEventRepository events, GameDefinitionValidator validator) {
+            SessionQuestionRepository questions, ScoreEventRepository events, GameDefinitionValidator validator,
+            SessionEventHub eventHub) {
         this.games = games;
         this.sessions = sessions;
         this.teams = teams;
         this.questions = questions;
         this.events = events;
         this.validator = validator;
+        this.eventHub = eventHub;
     }
 
     @Transactional(readOnly = true)
@@ -95,8 +98,7 @@ public class SessionService {
         session.requireVersion(version);
         SessionQuestion question = requireQuestion(session, questionId);
         session.selectQuestion(question);
-        sessions.saveAndFlush(session);
-        return toView(session, false);
+        return saveAndPublish(session);
     }
 
     @Transactional
@@ -104,8 +106,7 @@ public class SessionService {
         GameSession session = requireSession(id);
         session.requireVersion(version);
         session.revealAnswer();
-        sessions.saveAndFlush(session);
-        return toView(session, false);
+        return saveAndPublish(session);
     }
 
     @Transactional
@@ -120,8 +121,7 @@ public class SessionService {
         events.save(event);
         List<SessionQuestion> sessionQuestions = questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(id);
         if (sessionQuestions.stream().allMatch(SessionQuestion::isUsed)) session.finish();
-        sessions.saveAndFlush(session);
-        return toView(session, false);
+        return saveAndPublish(session);
     }
 
     @Transactional
@@ -134,8 +134,7 @@ public class SessionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Komanda nav atrasta."));
         SessionQuestion question = requireQuestion(session, event.getQuestionId());
         session.undo(event, team, question);
-        sessions.saveAndFlush(session);
-        return toView(session, false);
+        return saveAndPublish(session);
     }
 
     @Transactional
@@ -143,12 +142,18 @@ public class SessionService {
         GameSession session = requireSession(id);
         session.requireVersion(version);
         session.finish();
-        sessions.saveAndFlush(session);
-        return toView(session, false);
+        return saveAndPublish(session);
     }
 
     private GameSession requireSession(UUID id) {
         return sessions.findById(id).orElseThrow(() -> new ResourceNotFoundException("Spēles sesija nav atrasta."));
+    }
+
+    private SessionView saveAndPublish(GameSession session) {
+        sessions.saveAndFlush(session);
+        SessionView hostView = toView(session, false);
+        eventHub.publish(session.getPublicToken(), toView(session, true));
+        return hostView;
     }
 
     private SessionQuestion requireQuestion(GameSession session, UUID questionId) {

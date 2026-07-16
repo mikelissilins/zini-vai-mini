@@ -15,8 +15,9 @@ export class App implements OnInit {
   protected readonly auth = inject(AuthService);
   protected readonly i18n = inject(I18nService);
   protected readonly location = window.location;
+  protected readonly projectorMode = window.location.pathname.startsWith('/live/');
 
   ngOnInit(): void {
-    void this.auth.initialize();
+    if (!this.projectorMode) void this.auth.initialize();
   }
 }

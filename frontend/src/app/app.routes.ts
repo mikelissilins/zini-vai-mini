@@ -4,6 +4,10 @@ import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
   {
+    path: 'live/:token',
+    loadComponent: () => import('./pages/projector.page').then((module) => module.ProjectorPage),
+  },
+  {
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard.page').then((module) => module.DashboardPage),

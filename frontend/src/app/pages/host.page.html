@@ -9,6 +9,7 @@
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
+        <a class="button is-warning" target="_blank" [href]="'/live/' + game.publicToken">Projektors ↗</a>
         <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo</button>
         @if (game.status === 'ACTIVE') {
           <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
