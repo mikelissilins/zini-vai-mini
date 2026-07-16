@@ -77,6 +77,8 @@
   max-width: 12ch;
 }
 
+.hero-copy { animation: tide-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
 .hero-lead {
   color: var(--muted);
   font-size: clamp(1.05rem, 2vw, 1.35rem);
@@ -96,6 +98,7 @@
 }
 
 .score-board {
+  animation: tide-in 600ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
   background: var(--deep-sea);
   box-shadow: 1.25rem 1.25rem 0 var(--sun);
   display: grid;

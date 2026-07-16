@@ -26,13 +26,13 @@ public final class GameDtos {
             @Size(max = 1200) String answer,
             @Size(max = 1600) String explanation,
             UUID mediaAssetId,
-            @Valid List<OptionInput> options) {
+            List<@Valid OptionInput> options) {
     }
 
     public record CategoryInput(
             @NotBlank @Size(max = 80) String name,
             @Pattern(regexp = "^#[0-9A-Fa-f]{6}$") String color,
-            @Valid List<QuestionInput> questions) {
+            List<@Valid QuestionInput> questions) {
     }
 
     public record GameInput(
@@ -40,7 +40,7 @@ public final class GameDtos {
             @Size(max = 600) String description,
             @Pattern(regexp = "^(lv|en)$") String locale,
             Long version,
-            @Valid List<CategoryInput> categories) {
+            List<@Valid CategoryInput> categories) {
     }
 
     public record CreateFromTemplateInput(

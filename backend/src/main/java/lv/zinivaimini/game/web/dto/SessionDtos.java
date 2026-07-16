@@ -24,7 +24,7 @@ public final class SessionDtos {
 
     public record CreateSessionInput(
             @NotNull UUID gameId,
-            @Valid @Size(min = 2, max = 12) List<TeamInput> teams) {
+            @Size(min = 2, max = 12) List<@Valid TeamInput> teams) {
     }
 
     public record VersionInput(@PositiveOrZero long version) {

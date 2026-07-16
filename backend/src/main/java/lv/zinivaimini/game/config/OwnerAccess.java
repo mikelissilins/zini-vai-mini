@@ -21,6 +21,6 @@ public class OwnerAccess {
             return false;
         }
         String ownerId = properties.ownerClerkUserId();
-        return ownerId == null || ownerId.isBlank() || ownerId.equals(jwt.getSubject());
+        return ownerId != null && !ownerId.isBlank() && ownerId.equals(jwt.getSubject());
     }
 }
