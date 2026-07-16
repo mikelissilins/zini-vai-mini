@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+backend/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+playwright-report/
+test-results/
+
