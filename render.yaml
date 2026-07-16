@@ -39,3 +39,7 @@ services:
         value: https://zini-vai-mini.onrender.com
       - key: JAVA_TOOL_OPTIONS
         value: -XX:MaxRAMPercentage=75.0
+      - key: SPRING_LAZY_INITIALIZATION
+        value: "true"
+      - key: SPRING_DATA_JPA_REPOSITORIES_BOOTSTRAP_MODE
+        value: lazy

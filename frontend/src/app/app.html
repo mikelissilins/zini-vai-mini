@@ -6,6 +6,9 @@
   </a>
   <nav class="header-actions" aria-label="Lietotāja darbības">
     <button class="language-toggle" type="button" (click)="i18n.toggle()">{{ i18n.alternateLocale().toUpperCase() }}</button>
+    @if (!auth.ready()) {
+      <span class="backend-status" role="status">{{ i18n.t('wakingUp') }}</span>
+    }
     @if (auth.ready() && !auth.signedIn()) {
       <button class="button is-light" type="button" (click)="auth.openSignIn()">{{ i18n.t('signIn') }}</button>
       <button class="button is-primary" type="button" (click)="auth.openSignUp()">{{ i18n.t('signUp') }}</button>
@@ -31,7 +34,9 @@
           @if (auth.signedIn()) {
             <a class="button is-primary is-medium" routerLink="/dashboard">{{ i18n.t('openDashboard') }}</a>
           } @else {
-            <button class="button is-primary is-medium" type="button" (click)="auth.openSignIn()">{{ i18n.t('startBuilding') }}</button>
+            <button class="button is-primary is-medium" type="button" [disabled]="!auth.ready()" (click)="auth.openSignIn()">
+              {{ auth.ready() ? i18n.t('startBuilding') : i18n.t('wakingUp') }}
+            </button>
           }
           <span class="mini-proof">6 tēmas · 10–50 punkti · TOP 4</span>
         </div>

@@ -13,19 +13,16 @@ interface RuntimeConfig {
 export class AuthService {
   private readonly http = inject(HttpClient);
   private clerk?: Clerk;
+  private initialization?: Promise<void>;
 
   readonly ready = signal(false);
   readonly user = signal<Clerk['user']>(null);
   readonly signedIn = computed(() => this.user() !== null);
 
-  async initialize(): Promise<void> {
-    if (this.ready()) return;
-    const config = await firstValueFrom(this.http.get<RuntimeConfig>('/api/public/config'));
-    this.clerk = new Clerk(config.clerkPublishableKey);
-    await this.clerk.load({ ui: { ClerkUI } });
-    this.user.set(this.clerk.user);
-    this.clerk.addListener(({ user }) => this.user.set(user));
-    this.ready.set(true);
+  initialize(): Promise<void> {
+    if (this.ready()) return Promise.resolve();
+    this.initialization ??= this.initializeWhenBackendIsReady();
+    return this.initialization;
   }
 
   openSignIn(): void {
@@ -42,5 +39,20 @@ export class AuthService {
 
   async getToken(): Promise<string | null> {
     return (await this.clerk?.session?.getToken()) ?? null;
+  }
+
+  private async initializeWhenBackendIsReady(): Promise<void> {
+    while (!this.ready()) {
+      try {
+        const config = await firstValueFrom(this.http.get<RuntimeConfig>('/api/public/config'));
+        this.clerk = new Clerk(config.clerkPublishableKey);
+        await this.clerk.load({ ui: { ClerkUI } });
+        this.user.set(this.clerk.user);
+        this.clerk.addListener(({ user }) => this.user.set(user));
+        this.ready.set(true);
+      } catch {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      }
+    }
   }
 }
