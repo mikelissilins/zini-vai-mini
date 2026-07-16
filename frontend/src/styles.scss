@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Paytone+One&display=swap');
+
+:root {
+  --sand: #f7e8c7;
+  --foam: #fffaf0;
+  --sky: #e5f7fb;
+  --sea: #55b8cc;
+  --deep-sea: #0e758c;
+  --ink: #16323f;
+  --muted: #5a7480;
+  --coral: #f77f5b;
+  --sun: #ffc857;
+  --font-display: 'Paytone One', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  color-scheme: light;
+}
+
+html {
+  background: var(--foam);
+}
+
+body {
+  background:
+    radial-gradient(circle at 82% 12%, rgb(255 200 87 / 24%) 0 8rem, transparent 8.1rem),
+    linear-gradient(135deg, var(--foam), var(--sky));
+  color: var(--ink);
+  font-family: var(--font-body);
+  margin: 0;
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.button {
+  border-radius: 0;
+  font-weight: 800;
+}
+
+.button.is-primary {
+  background: var(--deep-sea);
+}
+
+.button.is-primary:hover {
+  background: #095f73;
+}
+
+.eyebrow {
+  color: var(--coral);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
