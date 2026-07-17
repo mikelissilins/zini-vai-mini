@@ -36,6 +36,24 @@ textarea {
   font: inherit;
 }
 
+.label {
+  color: var(--ink);
+}
+
+.input,
+.textarea,
+.select select {
+  background: #fffdf7;
+  border-color: #b9cfd3;
+  color: var(--ink);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #617983;
+  opacity: 1;
+}
+
 :focus-visible {
   outline: 3px solid var(--sun);
   outline-offset: 3px;

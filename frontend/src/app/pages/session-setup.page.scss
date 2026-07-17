@@ -31,6 +31,8 @@ h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, 5rem); lett
 .team-position { color: var(--muted); font-family: var(--font-display); }
 .team-row input[type='color'] { border: 0; height: 3rem; padding: 0; width: 3rem; }
 .team-row label span { color: var(--muted); display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+.team-row label,
+.team-row input { min-width: 0; }
 .order-buttons { display: flex; }
 .order-buttons button, .remove-team, .add-team { background: transparent; border: 1px solid #cbdcde; cursor: pointer; font-weight: 900; min-height: 2.5rem; min-width: 2.5rem; }
 .remove-team { color: var(--coral); font-size: 1.25rem; }

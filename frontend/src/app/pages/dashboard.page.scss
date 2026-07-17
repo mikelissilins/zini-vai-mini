@@ -83,6 +83,15 @@ h3 { font-size: 1.45rem; }
   text-align: left;
 }
 
+.template-card strong,
+.template-card small,
+.game-card h3,
+.game-card p,
+.session-row h3 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .template-card:hover,
 .template-card.is-selected {
   background: white;

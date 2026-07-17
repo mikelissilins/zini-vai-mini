@@ -8,30 +8,34 @@ h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.04em; line-height: 1;
 .host-meta > span { color: var(--coral); font-family: var(--font-display); font-size: 1.5rem; }
 .score-strip { gap: 0.6rem; overflow-x: auto; padding-bottom: 0.5rem; }
 .score-strip article { background: white; border-top: 0.45rem solid var(--team-color); display: grid; flex: 1 0 9rem; padding: 0.8rem 1rem; }
-.score-strip article.is-active { background: var(--team-color); color: white; transform: translateY(-0.25rem); }
+.score-strip article.is-active { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); color: white; transform: translateY(-0.25rem); }
+.score-strip article span { min-width: 0; overflow-wrap: anywhere; }
 .score-strip strong { font-family: var(--font-display); font-size: 1.8rem; }
-.turn-banner { background: var(--team-color); color: white; gap: 0.75rem; margin: 1.5rem 0; padding: 0.8rem 1.25rem; }
+.turn-banner { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); color: white; gap: 0.75rem; margin: 1.5rem 0; padding: 0.8rem 1.25rem; }
 .turn-banner span { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 .turn-banner strong { font-family: var(--font-display); font-size: 1.25rem; }
 .game-board { display: grid; gap: 0.65rem; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
 .board-column { display: grid; gap: 0.55rem; }
-.board-column h2 { align-items: center; background: var(--category-color); color: white; display: flex; font-size: 1rem; justify-content: center; min-height: 4.5rem; padding: 0.5rem; text-align: center; }
+.board-column h2 { align-items: center; background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--category-color); color: white; display: flex; font-size: 1rem; justify-content: center; min-height: 4.5rem; overflow-wrap: anywhere; padding: 0.5rem; text-align: center; }
 .board-column button { background: var(--deep-sea); border: 0; color: var(--sun); cursor: pointer; font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.25rem); min-height: 5.2rem; }
 .board-column button:hover:not(:disabled) { background: var(--coral); color: white; transform: translateY(-0.15rem); }
 .board-column button.is-used { background: #dbe7e9; color: #88a0a8; }
 .question-stage { animation: tide-in 350ms cubic-bezier(0.22, 1, 0.36, 1) both; background: white; border-top: 0.7rem solid var(--category-color); margin: 1.5rem auto; max-width: 1050px; padding: clamp(1.25rem, 4vw, 3rem); }
-.question-label { color: var(--category-color); justify-content: space-between; }
+.question-label { color: var(--ink); justify-content: space-between; }
 .question-label span { font-weight: 900; text-transform: uppercase; }
 .question-label strong { font-family: var(--font-display); font-size: 2rem; }
-.question-stage h2 { font-size: clamp(1.8rem, 4vw, 3.6rem); line-height: 1.15; margin: 1.5rem 0; }
+.question-stage h2 { font-size: clamp(1.8rem, 4vw, 3.6rem); line-height: 1.15; margin: 1.5rem 0; overflow-wrap: anywhere; }
 .question-stage > img { max-height: 22rem; object-fit: contain; width: 100%; }
 .answer-options { display: grid; gap: 0.65rem; grid-template-columns: repeat(2, 1fr); margin: 1.5rem 0; }
-.answer-options div { align-items: center; background: var(--sky); display: flex; gap: 0.8rem; padding: 0.9rem; }
+.answer-options div { align-items: center; background: var(--sky); display: flex; gap: 0.8rem; min-width: 0; overflow-wrap: anywhere; padding: 0.9rem; }
 .answer-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; height: 2rem; justify-content: center; width: 2rem; }
 .answer-options div.is-correct { background: #dff4e6; outline: 2px solid #28805c; }
 .answer-reveal { background: var(--sand); margin: 1.5rem 0; padding: 1.25rem; }
 .answer-reveal span { color: var(--muted); display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 .answer-reveal strong { font-family: var(--font-display); font-size: 1.6rem; }
+.question-hint { background: var(--sky); border-left: 0.35rem solid var(--sea); margin: 1rem 0; padding: 0.85rem 1rem; }
+.question-hint summary { color: var(--deep-sea); cursor: pointer; font-weight: 900; }
+.question-hint p { color: var(--ink); margin: 0.75rem 0 0; }
 .reveal-button { background: var(--sun); border: 0; color: var(--ink); width: 100%; }
 .score-actions { gap: 1rem; }
 .score-actions button { flex: 1; }

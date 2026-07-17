@@ -71,7 +71,7 @@
             <div formArrayName="questions" class="question-grid">
               @for (question of questions(category).controls; track question; let questionIndex = $index) {
                 <article class="question-card" [formGroupName]="questionIndex">
-                  <div class="question-card-header" [style.background]="category.controls['color'].value">
+                  <div class="question-card-header" [style.--category-color]="category.controls['color'].value">
                     <strong>{{ question.controls['points'].value }}</strong>
                     <div class="type-toggle">
                       <button type="button" [class.is-active]="question.controls['type'].value === 'FREE_TEXT'" (click)="setQuestionType(question, 'FREE_TEXT')">

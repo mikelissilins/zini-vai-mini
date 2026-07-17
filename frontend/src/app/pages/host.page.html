@@ -52,6 +52,12 @@
               }
             </div>
           }
+          @if (!game.answerRevealed && question.explanation) {
+            <details class="question-hint">
+              <summary>Pavediens vadītājam</summary>
+              <p>{{ question.explanation }}</p>
+            </details>
+          }
           @if (game.answerRevealed) {
             <div class="answer-reveal">
               <span>Pareizā atbilde</span>

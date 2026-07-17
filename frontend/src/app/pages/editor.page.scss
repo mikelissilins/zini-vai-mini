@@ -125,6 +125,7 @@
 }
 
 .question-card-header {
+  background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--category-color);
   color: white;
   justify-content: space-between;
   min-height: 4rem;
@@ -158,6 +159,9 @@
 }
 
 .question-fields { padding: 0.9rem; }
+.question-fields,
+.question-fields textarea,
+.question-fields input { min-width: 0; }
 .question-fields .label { font-size: 0.72rem; }
 .question-fields .textarea { font-size: 0.86rem; resize: vertical; }
 .answer-field { border-left: 0.3rem solid var(--sun); }

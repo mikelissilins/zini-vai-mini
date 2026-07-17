@@ -44,6 +44,27 @@ class GameSessionApiIntegrationTests {
     @Autowired ObjectMapper json;
 
     @Test
+    void campTemplateIsReadyWithQuestionsAnswersAndHints() throws Exception {
+        JsonNode templates = json.readTree(mvc.perform(get("/api/templates").with(owner()))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+        JsonNode camp = templates.valueStream()
+                .filter(template -> "camp".equals(template.path("templateKey").asText()))
+                .findFirst().orElseThrow();
+        JsonNode game = json.readTree(mvc.perform(get("/api/games/{id}", camp.path("id").asText()).with(owner()))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+
+        assertThat(game.path("playable").asBoolean()).isTrue();
+        assertThat(game.path("categories")).hasSize(6);
+        assertThat(game.path("categories").valueStream().flatMap(category -> category.path("questions").valueStream()))
+                .hasSize(30)
+                .allSatisfy(question -> {
+                    assertThat(question.path("prompt").asText()).isNotBlank();
+                    assertThat(question.path("answer").asText()).isNotBlank();
+                    assertThat(question.path("explanation").asText()).isNotBlank();
+                });
+    }
+
+    @Test
     void scoresPersistsRotatesAndUndoRestoresSession() throws Exception {
         JsonNode game = request(post("/api/games"), completeGame()).path("id");
         JsonNode session = request(post("/api/sessions"), Map.of(
