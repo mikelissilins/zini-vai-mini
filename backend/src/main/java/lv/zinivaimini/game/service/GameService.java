@@ -83,6 +83,8 @@ public class GameService {
             throw new OptimisticLockingFailureException("Spēli jau ir izmainījusi cita pārlūka sesija.");
         }
         game.update(input.title(), input.description(), input.locale());
+        game.clearCategories();
+        games.flush();
         game.replaceCategories(toCategories(input.categories()));
         return toView(games.saveAndFlush(game));
     }

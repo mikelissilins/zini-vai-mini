@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +64,20 @@ class GameSessionApiIntegrationTests {
                     assertThat(question.path("answer").asText()).isNotBlank();
                     assertThat(question.path("explanation").asText()).isNotBlank();
                 });
+    }
+
+    @Test
+    void existingGameCanBeSavedWithoutCategoryPositionConflicts() throws Exception {
+        JsonNode created = request(post("/api/games"), completeGame());
+        Map<String, Object> update = new HashMap<>(completeGame());
+        update.put("title", "Rediģēta integrācijas spēle");
+        update.put("version", created.path("version").asLong());
+
+        JsonNode updated = request(put("/api/games/{id}", created.path("id").asText()), update);
+
+        assertThat(updated.path("title").asText()).isEqualTo("Rediģēta integrācijas spēle");
+        assertThat(updated.path("categories")).hasSize(1);
+        assertThat(updated.path("categories").get(0).path("questions")).hasSize(5);
     }
 
     @Test

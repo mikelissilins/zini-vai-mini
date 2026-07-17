@@ -67,6 +67,10 @@ public class Game {
         replacements.forEach(this::addCategory);
     }
 
+    public void clearCategories() {
+        categories.clear();
+    }
+
     public void addCategory(Category category) {
         category.attachTo(this);
         categories.add(category);
