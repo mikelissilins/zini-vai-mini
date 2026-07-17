@@ -26,5 +26,5 @@ RUN chmod +x /app/start.sh
 USER app
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
-  CMD wget -qO- http://localhost:${PORT:-8080}/actuator/health/readiness || exit 1
+  CMD wget -qO- http://127.0.0.1:${PORT:-8080}/actuator/health/readiness || exit 1
 ENTRYPOINT ["/app/start.sh"]
