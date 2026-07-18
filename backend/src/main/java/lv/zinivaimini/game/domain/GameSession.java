@@ -84,6 +84,15 @@ public class GameSession {
         selectedOptionId = optionId;
     }
 
+    public void hideAnswer() {
+        requireActive();
+        if (selectedQuestionId == null || !answerRevealed) {
+            throw new InvalidGameException("Nav atklātas atbildes, ko paslēpt.");
+        }
+        selectedOptionId = null;
+        answerRevealed = false;
+    }
+
     public void useHint(SessionQuestion question) {
         requireActive();
         if (!question.getId().equals(selectedQuestionId)) {

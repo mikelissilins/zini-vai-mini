@@ -55,6 +55,11 @@ public class SessionController {
         return service.reveal(id, input.optionId(), input.version());
     }
 
+    @PostMapping("/sessions/{id}/hide-answer")
+    SessionView hideAnswer(@PathVariable UUID id, @RequestBody VersionInput input) {
+        return service.hideAnswer(id, input.version());
+    }
+
     @PostMapping("/sessions/{id}/hint")
     SessionView hint(@PathVariable UUID id, @RequestBody VersionInput input) {
         return service.useHint(id, input.version());

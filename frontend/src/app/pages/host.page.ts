@@ -43,6 +43,12 @@ export class HostPage implements OnInit {
     this.run(this.api.useHint(session.id, session.version));
   }
 
+  protected hideAnswer(): void {
+    const session = this.session();
+    if (!session) return;
+    this.run(this.api.hideAnswer(session.id, session.version));
+  }
+
   protected score(correct: boolean): void {
     const session = this.session();
     if (!session) return;

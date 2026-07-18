@@ -114,6 +114,14 @@ public class SessionService {
     }
 
     @Transactional
+    public SessionView hideAnswer(UUID id, long version) {
+        GameSession session = requireSession(id);
+        session.requireVersion(version);
+        session.hideAnswer();
+        return saveAndPublish(session);
+    }
+
+    @Transactional
     public SessionView useHint(UUID id, long version) {
         GameSession session = requireSession(id);
         session.requireVersion(version);

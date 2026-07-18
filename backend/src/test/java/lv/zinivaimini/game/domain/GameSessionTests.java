@@ -2,6 +2,8 @@ package lv.zinivaimini.game.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 
 class GameSessionTests {
@@ -41,6 +43,21 @@ class GameSessionTests {
         assertThat(fixture.firstTeam.getScore()).isZero();
         assertThat(fixture.question.isUsed()).isTrue();
         assertThat(fixture.session.getActiveTeamIndex()).isEqualTo(1);
+    }
+
+    @Test
+    void hideAnswerKeepsTheSameQuestionAndTurnReadyToRevealAgain() {
+        Fixture fixture = fixture();
+        fixture.session.selectQuestion(fixture.question);
+        fixture.session.revealAnswer(UUID.randomUUID());
+
+        fixture.session.hideAnswer();
+
+        assertThat(fixture.session.getSelectedQuestionId()).isEqualTo(fixture.question.getId());
+        assertThat(fixture.session.getSelectedOptionId()).isNull();
+        assertThat(fixture.session.isAnswerRevealed()).isFalse();
+        assertThat(fixture.question.isUsed()).isFalse();
+        assertThat(fixture.session.getActiveTeamIndex()).isZero();
     }
 
     @Test

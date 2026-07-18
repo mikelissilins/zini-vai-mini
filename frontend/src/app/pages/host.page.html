@@ -8,7 +8,7 @@
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
-        <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo</button>
+        <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo rezultātu</button>
         @if (game.status === 'ACTIVE') {
           <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
         }
@@ -49,12 +49,15 @@
           @if (question.options.length) {
             <div class="answer-options">
               @for (option of question.options; track option.id; let index = $index) {
-                <button type="button" [class.is-correct]="game.answerRevealed && game.selectedOptionId === option.id && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct" [disabled]="busy() || game.answerRevealed" (click)="reveal(option.id)"><b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span></button>
+                <button type="button" [class.is-correct]="game.answerRevealed && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct" [disabled]="busy() || game.answerRevealed" (click)="reveal(option.id)"><b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span></button>
               }
             </div>
           }
           @if (!game.answerRevealed && question.explanation) {
-            <button class="hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()" [attr.aria-label]="question.hintUsed ? 'Noņemt pavedienu' : 'Rādīt pavedienu par mīnus pieciem punktiem'">−5</button>
+            <div class="hint-control">
+              <button class="button hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()">{{ question.hintUsed ? 'Paslēpt pavedienu' : 'Rādīt pavedienu' }}</button>
+              <span class="hint-cost">−5</span>
+            </div>
             @if (question.hintUsed) {
               <div class="question-hint"><strong>Pavediens</strong><p>{{ question.explanation }}</p></div>
             }
@@ -70,6 +73,7 @@
           }
           @if (game.answerRevealed) {
             <div class="score-actions">
+              <button class="button is-light is-large" type="button" [disabled]="busy()" (click)="hideAnswer()">← Atpakaļ pie jautājuma</button>
               <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
               <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points - (question.hintUsed ? 5 : 0) }}</button>
             </div>

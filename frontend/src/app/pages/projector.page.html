@@ -49,7 +49,7 @@
         @if (question.options.length) {
           <div class="projector-options">
             @for (option of question.options; track option.id; let index = $index) {
-              <div [class.is-correct]="game.answerRevealed && game.selectedOptionId === option.id && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct">
+              <div [class.is-correct]="game.answerRevealed && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct">
                 <b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span>
               </div>
             }
