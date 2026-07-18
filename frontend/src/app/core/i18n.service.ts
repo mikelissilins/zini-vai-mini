@@ -45,7 +45,7 @@ const translations: Record<Locale, Record<string, string>> = {
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
-  readonly locale = signal<Locale>('en');
+  readonly locale = signal<Locale>('lv');
 
   t(key: string): string {
     return translations[this.locale()][key] || translations.lv[key] || key;

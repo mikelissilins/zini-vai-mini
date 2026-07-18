@@ -210,7 +210,7 @@ export class EditorPage implements OnInit {
     return {
       title: value.title!,
       description: value.description || null,
-      locale: 'en',
+      locale: 'lv',
       version: value.version,
       categories: (value.categories || []).map((category) => ({
         name: category['name'],
