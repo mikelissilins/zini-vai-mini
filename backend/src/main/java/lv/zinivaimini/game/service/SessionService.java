@@ -16,6 +16,7 @@ import lv.zinivaimini.game.domain.ScoreEvent;
 import lv.zinivaimini.game.domain.SessionQuestion;
 import lv.zinivaimini.game.domain.SessionStatus;
 import lv.zinivaimini.game.domain.SessionTeam;
+import lv.zinivaimini.game.domain.QuestionType;
 import lv.zinivaimini.game.repository.GameRepository;
 import lv.zinivaimini.game.repository.GameSessionRepository;
 import lv.zinivaimini.game.repository.ScoreEventRepository;
@@ -152,7 +153,16 @@ public class SessionService {
         if (sessionTeams.isEmpty()) throw new InvalidGameException("Sesijai nav komandu.");
         SessionQuestion question = requireQuestion(session, session.getSelectedQuestionId());
         SessionTeam team = sessionTeams.get(session.getActiveTeamIndex());
-        ScoreEvent event = session.score(team, question, correct, sessionTeams.size());
+        boolean awardedCorrect = correct;
+        if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE) {
+            UUID selectedOptionId = session.getSelectedOptionId();
+            awardedCorrect = question.getOptions().stream()
+                    .filter(option -> option.getId().equals(selectedOptionId))
+                    .findFirst()
+                    .orElseThrow(() -> new InvalidGameException("Vispirms izvēlies atbildes variantu."))
+                    .isCorrect();
+        }
+        ScoreEvent event = session.score(team, question, awardedCorrect, sessionTeams.size());
         events.save(event);
         List<SessionQuestion> sessionQuestions = questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(id);
         if (sessionQuestions.stream().allMatch(SessionQuestion::isUsed)) session.finish();

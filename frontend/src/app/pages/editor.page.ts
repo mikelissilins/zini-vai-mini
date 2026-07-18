@@ -6,7 +6,7 @@ import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
 import { GameInput, GameView, QuestionInput, QuestionType } from '../core/models';
 
-const POINTS = [10, 20, 30, 40, 50];
+const POINTS = [10, 20, 30, 40, 50, 60, 70];
 const CATEGORY_COLORS = ['#0E758C', '#F77F5B', '#55B8CC', '#5CA67A', '#7A6FF0', '#F2A65A'];
 
 @Component({
@@ -79,9 +79,10 @@ export class EditorPage implements OnInit {
   protected setQuestionType(question: FormGroup, type: QuestionType): void {
     question.controls['type'].setValue(type);
     const options = this.options(question);
-    if (type === 'MULTIPLE_CHOICE' && options.length < 2) {
-      options.push(this.createOptionGroup('', true));
-      options.push(this.createOptionGroup('', false));
+    if (type === 'MULTIPLE_CHOICE' && options.length < 4) {
+      while (options.length < 4) {
+        options.push(this.createOptionGroup('', options.length === 0));
+      }
     }
     this.markChanged();
   }

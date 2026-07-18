@@ -98,8 +98,8 @@
       </footer>
     }
     @if (scoreFeedback(); as feedback) {
-      <div class="score-feedback" [class.is-correct]="feedback === 'correct'" [class.is-wrong]="feedback === 'wrong'" role="status">
-        {{ feedback === 'correct' ? copy('Pareizi!', 'Correct!') : copy('Nepareizi', 'Not quite') }}
+      <div class="score-feedback" [class.is-correct]="feedback.awarded > 0" [class.is-wrong]="feedback.awarded === 0" role="status">
+        {{ feedback.awarded > 0 ? '+' + feedback.awarded : '0' }} {{ copy('punkti', 'points') }}
       </div>
     }
   } @else {

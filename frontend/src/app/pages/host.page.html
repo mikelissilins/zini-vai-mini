@@ -71,8 +71,14 @@
           }
           @if (game.answerRevealed) {
             <div class="score-actions">
-              <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
-              <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points - (question.hintUsed ? 5 : 0) }}</button>
+              @if (question.type === 'MULTIPLE_CHOICE') {
+                <button class="button is-large choice-continue" [class.is-success]="selectedChoiceIsCorrect()" [class.is-danger]="!selectedChoiceIsCorrect()" type="button" [disabled]="busy()" (click)="score(selectedChoiceIsCorrect())">
+                  @if (selectedChoiceIsCorrect()) { Turpināt → +{{ awardedPoints() }} punkti } @else { Turpināt → 0 punkti }
+                </button>
+              } @else {
+                <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
+                <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ awardedPoints() }}</button>
+              }
             </div>
           } @else if (question.type === 'FREE_TEXT') {
             <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">Atklāt atbildi</button>

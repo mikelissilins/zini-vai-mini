@@ -15,7 +15,7 @@ import lv.zinivaimini.game.web.dto.GameDtos.QuestionInput;
 
 @Component
 public class GameDefinitionValidator {
-    private static final Set<Integer> REQUIRED_POINTS = Set.of(10, 20, 30, 40, 50);
+    private static final Set<Integer> REQUIRED_POINTS = Set.of(10, 20, 30, 40, 50, 60, 70);
 
     public void validateDraft(GameInput input) {
         if (input.categories() == null) return;
@@ -23,7 +23,7 @@ public class GameDefinitionValidator {
             List<QuestionInput> questions = category.questions() == null ? List.of() : category.questions();
             Set<Integer> points = questions.stream().map(QuestionInput::points).collect(Collectors.toSet());
             if (points.size() != questions.size() || !REQUIRED_POINTS.containsAll(points)) {
-                throw new InvalidGameException("Katrā sadaļā drīkst būt tikai viens jautājums katram punktu līmenim 10–50.");
+                throw new InvalidGameException("Katrā sadaļā drīkst būt tikai viens jautājums katram punktu līmenim 10–70.");
             }
             questions.forEach(this::validateQuestionShape);
         }

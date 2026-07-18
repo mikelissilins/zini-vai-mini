@@ -58,12 +58,15 @@ class GameSessionApiIntegrationTests {
         assertThat(game.path("playable").asBoolean()).isTrue();
         assertThat(game.path("categories")).hasSize(6);
         assertThat(game.path("categories").valueStream().flatMap(category -> category.path("questions").valueStream()))
-                .hasSize(30)
+                .hasSize(42)
                 .allSatisfy(question -> {
                     assertThat(question.path("prompt").asText()).isNotBlank();
                     assertThat(question.path("answer").asText()).isNotBlank();
                     assertThat(question.path("explanation").asText()).isNotBlank();
                 });
+        assertThat(game.path("categories").valueStream().flatMap(category -> category.path("questions").valueStream())
+                .filter(question -> "MULTIPLE_CHOICE".equals(question.path("type").asText())))
+                .allSatisfy(question -> assertThat(question.path("options")).hasSize(4));
     }
 
     @Test
@@ -77,7 +80,7 @@ class GameSessionApiIntegrationTests {
 
         assertThat(updated.path("title").asText()).isEqualTo("Rediģēta integrācijas spēle");
         assertThat(updated.path("categories")).hasSize(1);
-        assertThat(updated.path("categories").get(0).path("questions")).hasSize(5);
+        assertThat(updated.path("categories").get(0).path("questions")).hasSize(7);
     }
 
     @Test
@@ -92,9 +95,13 @@ class GameSessionApiIntegrationTests {
         String questionId = session.path("categories").get(0).path("questions").get(0).path("id").asText();
 
         session = request(post("/api/sessions/{id}/select", sessionId), Map.of("questionId", questionId, "version", 0));
-        session = request(post("/api/sessions/{id}/reveal", sessionId), Map.of("version", session.path("version").asLong()));
+        String correctOptionId = session.path("selectedQuestion").path("options").valueStream()
+                .filter(option -> option.path("correct").asBoolean())
+                .findFirst().orElseThrow().path("id").asText();
+        session = request(post("/api/sessions/{id}/reveal", sessionId), Map.of(
+                "optionId", correctOptionId, "version", session.path("version").asLong()));
         session = request(post("/api/sessions/{id}/score", sessionId), Map.of(
-                "correct", true, "version", session.path("version").asLong()));
+                "correct", false, "version", session.path("version").asLong()));
 
         assertThat(session.path("teams").get(0).path("score").asInt()).isEqualTo(10);
         assertThat(session.path("activeTeamIndex").asInt()).isEqualTo(1);
@@ -137,11 +144,28 @@ class GameSessionApiIntegrationTests {
                 "categories", List.of(Map.of(
                         "name", "Bībele",
                         "color", "#0E758C",
-                        "questions", List.of(10, 20, 30, 40, 50).stream().map(points -> Map.of(
-                                "points", points,
-                                "type", "FREE_TEXT",
-                                "prompt", "Jautājums par " + points,
-                                "answer", "Atbilde " + points,
-                                "options", List.of())).toList())));
+                        "questions", List.of(10, 20, 30, 40, 50, 60, 70).stream()
+                                .map(this::question).toList())));
+    }
+
+    private Map<String, Object> question(int points) {
+        if (points == 10) {
+            return Map.of(
+                    "points", points,
+                    "type", "MULTIPLE_CHOICE",
+                    "prompt", "Jautājums par " + points,
+                    "answer", "Atbilde " + points,
+                    "options", List.of(
+                            Map.of("text", "Atbilde " + points, "correct", true),
+                            Map.of("text", "Cita atbilde", "correct", false),
+                            Map.of("text", "Jautrs minējums", "correct", false),
+                            Map.of("text", "Vēl viens minējums", "correct", false)));
+        }
+        return Map.of(
+                "points", points,
+                "type", "FREE_TEXT",
+                "prompt", "Jautājums par " + points,
+                "answer", "Atbilde " + points,
+                "options", List.of());
     }
 }

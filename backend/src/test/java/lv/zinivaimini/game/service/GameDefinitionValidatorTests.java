@@ -17,8 +17,8 @@ class GameDefinitionValidatorTests {
     private final GameDefinitionValidator validator = new GameDefinitionValidator();
 
     @Test
-    void completeFiveQuestionCategoryIsPlayable() {
-        GameInput game = gameWith(List.of(10, 20, 30, 40, 50).stream()
+    void completeSevenQuestionCategoryIsPlayable() {
+        GameInput game = gameWith(List.of(10, 20, 30, 40, 50, 60, 70).stream()
                 .map(points -> question(points, "Jautājums", "Atbilde"))
                 .toList());
 
@@ -29,7 +29,7 @@ class GameDefinitionValidatorTests {
     void missingAnswerKeepsDraftUnplayable() {
         GameInput game = gameWith(List.of(
                 question(10, "Jautājums", ""), question(20, "J", "A"), question(30, "J", "A"),
-                question(40, "J", "A"), question(50, "J", "A")));
+                question(40, "J", "A"), question(50, "J", "A"), question(60, "J", "A"), question(70, "J", "A")));
 
         assertThat(validator.isPlayable(game)).isFalse();
     }

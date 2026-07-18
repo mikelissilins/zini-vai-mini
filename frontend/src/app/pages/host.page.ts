@@ -26,6 +26,15 @@ export class HostPage implements OnInit {
     const session = this.session();
     return !!session && (session.selectedQuestion !== null || session.canUndo);
   });
+  protected readonly selectedChoiceIsCorrect = computed(() => {
+    const session = this.session();
+    const selectedQuestion = session?.selectedQuestion;
+    return !!selectedQuestion?.options.find((option) => option.id === session?.selectedOptionId)?.correct;
+  });
+  protected readonly awardedPoints = computed(() => {
+    const question = this.session()?.selectedQuestion;
+    return question ? question.points - (question.hintUsed ? 5 : 0) : 0;
+  });
 
   ngOnInit(): void { this.reload(); }
 
