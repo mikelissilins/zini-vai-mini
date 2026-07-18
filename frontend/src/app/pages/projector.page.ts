@@ -27,6 +27,11 @@ export class ProjectorPage implements OnInit, OnDestroy {
     .sort((left, right) => left.rank - right.rank || right.score - left.score || left.position - right.position));
   protected readonly podiumTeams = computed(() => this.rankedTeams().filter((team) => team.rank <= 3));
   protected readonly fourthTeams = computed(() => this.rankedTeams().filter((team) => team.rank === 4));
+  protected readonly scene = computed(() => {
+    const session = this.session();
+    if (session?.status === 'FINISHED') return 'final';
+    return session?.selectedQuestion ? 'question' : 'board';
+  });
 
   ngOnInit(): void {
     this.refresh();

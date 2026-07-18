@@ -1,73 +1,85 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
-.projector-shell { background: radial-gradient(circle at 90% 5%, rgb(255 200 87 / 20%), transparent 22rem), var(--deep-sea); color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem); }
+.projector-shell { background: radial-gradient(circle at 8% 4%, rgb(255 200 87 / 20%), transparent 18rem), radial-gradient(circle at 94% 62%, rgb(85 184 204 / 24%), transparent 28rem), var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
+.projector-shell::before { background-image: radial-gradient(rgb(255 250 240 / 14%) 1px, transparent 1px); background-size: 1.4rem 1.4rem; content: ''; inset: 0; opacity: 0.32; pointer-events: none; position: fixed; }
 .projector-header, .question-topline, .question-points, .projector-teams, .current-turn, .projector-score { align-items: center; display: flex; }
-.projector-header { justify-content: space-between; margin-bottom: clamp(1rem, 2vw, 2rem); }
-.projector-header h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 4rem); letter-spacing: -0.04em; line-height: 1; margin: 0; }
-.projector-progress { display: grid; text-align: right; }
-.projector-progress strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.6rem); }
-.projector-progress span { font-size: 0.75rem; text-transform: uppercase; }
-.projector-board { display: grid; gap: clamp(0.35rem, 1vw, 0.8rem); grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
-.projector-column { display: grid; gap: clamp(0.35rem, 0.8vw, 0.65rem); }
-.projector-column h2 { align-items: center; background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--category-color); color: white; display: flex; font-family: var(--font-display); font-size: clamp(0.9rem, 1.5vw, 1.4rem); justify-content: center; min-height: clamp(3rem, 7vh, 5.5rem); overflow-wrap: anywhere; padding: 0.4rem; text-align: center; }
-.projector-column div { align-items: center; background: var(--foam); color: var(--deep-sea); display: flex; font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3.8rem); justify-content: center; min-height: clamp(4rem, 10vh, 7.5rem); }
-.projector-column div.is-used { background: color-mix(in srgb, var(--foam) 82%, var(--sea)); color: var(--deep-sea); }
-.projector-question { animation: tide-in 350ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border-top: 0.8rem solid var(--category-color); color: var(--ink); margin: 0 auto; max-width: 1300px; padding: clamp(1.5rem, 4vw, 4rem); }
+.projector-header { justify-content: space-between; margin: 0 auto clamp(1.2rem, 3vh, 2.5rem); max-width: 1640px; position: relative; }
+.projector-title > span, .projector-progress span { color: var(--sun); font-size: clamp(0.6rem, 1.1vw, 0.8rem); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
+.projector-header h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 4.5rem); letter-spacing: -0.05em; line-height: 0.95; margin: 0.3rem 0 0; overflow-wrap: anywhere; }
+.projector-progress { border-left: 1px solid rgb(255 250 240 / 32%); display: grid; padding-left: clamp(0.8rem, 2vw, 1.8rem); text-align: right; }
+.projector-progress strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 3rem); line-height: 1; }
+.projector-board { display: grid; gap: clamp(0.45rem, 1vw, 1rem); grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); margin: 0 auto; max-width: 1640px; position: relative; }
+.projector-column { display: grid; gap: clamp(0.45rem, 0.8vw, 0.8rem); }
+.projector-column h2 { align-items: end; background: linear-gradient(135deg, rgb(22 50 63 / 30%), rgb(22 50 63 / 68%)), var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: clamp(4rem, 10vh, 7rem); overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
+.projector-column h2::before { border-left: 0.45rem solid var(--sun); content: ''; height: 58%; left: 0.65rem; position: absolute; top: 0.65rem; }
+.projector-column h2 span { position: relative; }
+.projector-column > div { align-items: center; background: var(--foam); color: var(--deep-sea); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
+.projector-column > div::after { border-bottom: 0.24rem solid color-mix(in srgb, var(--category-color) 70%, white); bottom: 0; content: ''; left: 0; position: absolute; right: 0; }
+.projector-column > div.is-used { background: color-mix(in srgb, var(--foam) 80%, var(--sea)); color: var(--deep-sea); }
+.projector-column > div.is-used span { font-size: 0.72em; opacity: 0.72; }
+.projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); margin: 0 auto; max-width: 1640px; min-height: min(69vh, 900px); position: relative; }
+.question-stage-inner { display: grid; min-height: inherit; padding: clamp(1.5rem, 4vw, 5rem); position: relative; }
+.question-stage-inner::after { background: repeating-linear-gradient(135deg, transparent 0 1.1rem, rgb(14 117 140 / 5%) 1.1rem 1.2rem); content: ''; inset: 0; pointer-events: none; position: absolute; }
+.question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint { position: relative; z-index: 1; }
 .question-topline { color: var(--ink); justify-content: space-between; }
-.question-topline span { font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
-.question-topline strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); }
-.question-points { gap: 0.6rem; }
-.question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.3rem, 2vw, 2rem); font-style: normal; }
-.projector-question h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 5rem); line-height: 1.08; margin: 1rem 0 2rem; overflow-wrap: anywhere; }
-.projector-question > img { max-height: 35vh; object-fit: contain; width: 100%; }
-.projector-options { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
-.projector-options div { align-items: center; background: var(--sky); display: flex; font-size: clamp(1rem, 2vw, 1.6rem); gap: 1rem; min-width: 0; overflow-wrap: anywhere; padding: 1rem; }
-.projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 2.8rem; height: 2.8rem; justify-content: center; }
-.projector-options div.is-correct { background: #dff4e6; outline: 0.25rem solid #28805c; }
-.projector-options div.is-wrong { background: #fff0eb; outline: 0.25rem solid #c84630; }
-.projector-answer { background: linear-gradient(135deg, #fff7e3, var(--sand)); border-left: 0.5rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; padding: 1.25rem; }
-.projector-answer span { color: var(--deep-sea); display: block; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
-.projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 3rem); line-height: 1.2; overflow-wrap: anywhere; }
-.projector-answer p { color: var(--ink); font-size: clamp(1rem, 1.6vw, 1.4rem); line-height: 1.45; margin: 0.7rem 0 0; overflow-wrap: anywhere; }
-.projector-teams { bottom: 0; gap: 0.5rem; left: 0; padding: 0.75rem clamp(1rem, 2.5vw, 2.5rem); position: fixed; right: 0; }
-.current-turn, .projector-score { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); color: white; min-height: 3.8rem; padding: 0.65rem 1rem; }
-.current-turn { display: grid; min-width: 12rem; }
-.current-turn span { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; }
+.question-topline > span { color: var(--category-color); font-size: clamp(0.75rem, 1.3vw, 1rem); font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+.question-topline strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.8; }
+.question-points { gap: 0.5rem; }
+.question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.2rem); font-style: normal; }
+.projector-question h2 { align-self: center; font-family: var(--font-display); font-size: clamp(2.4rem, 5.2vw, 6.2rem); line-height: 1.04; margin: clamp(1.2rem, 3vw, 3rem) 0; max-width: 20ch; overflow-wrap: anywhere; }
+.projector-question img { justify-self: center; max-height: 31vh; max-width: min(100%, 58rem); object-fit: contain; width: 100%; }
+.projector-options { align-self: center; display: grid; gap: clamp(0.7rem, 1.2vw, 1.2rem); grid-template-columns: repeat(2, 1fr); }
+.projector-options div { align-items: center; background: var(--sky); border: 0.22rem solid transparent; box-sizing: border-box; display: flex; font-size: clamp(1.2rem, 2.1vw, 2.1rem); gap: 1rem; min-width: 0; overflow-wrap: anywhere; padding: clamp(0.8rem, 1.6vw, 1.4rem); }
+.projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 clamp(2.6rem, 4vw, 3.5rem); font-family: var(--font-display); height: clamp(2.6rem, 4vw, 3.5rem); justify-content: center; }
+.projector-options div.is-correct { background: #dff4e6; border-color: #28805c; color: #135138; }
+.projector-options div.is-wrong { background: #fff0eb; border-color: #c84630; color: #7d2d20; }
+.projector-answer, .projector-hint { align-self: end; background: linear-gradient(120deg, #fff7e3, var(--sand)); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
+.projector-hint { background: var(--sky); border-color: var(--sea); }
+.projector-answer span, .projector-hint span { color: var(--deep-sea); display: block; font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+.projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3.5rem); line-height: 1.12; margin-top: 0.3rem; overflow-wrap: anywhere; }
+.projector-answer p, .projector-hint p { color: var(--ink); font-size: clamp(1rem, 1.55vw, 1.55rem); line-height: 1.45; margin: 0.65rem 0 0; overflow-wrap: anywhere; }
+.projector-teams { backdrop-filter: blur(0.6rem); background: rgb(14 117 140 / 90%); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; gap: 0.55rem; left: 0; padding: 0.75rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
+.current-turn, .projector-score { box-sizing: border-box; min-height: 4.25rem; padding: 0.7rem 1rem; }
+.current-turn { background: linear-gradient(rgb(22 50 63 / 34%), rgb(22 50 63 / 34%)), var(--team-color); display: grid; min-width: clamp(11rem, 18vw, 18rem); }
+.current-turn span { color: var(--sun); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
 .current-turn strong { color: white; font-family: var(--font-display); overflow-wrap: anywhere; }
-.projector-score { background: color-mix(in srgb, var(--team-color) 20%, var(--foam)); border-top: 0.3rem solid var(--team-color); color: var(--ink); flex: 1; justify-content: space-between; }
-.projector-score.is-active { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); }
+.projector-score { background: color-mix(in srgb, var(--team-color) 14%, var(--foam)); border-bottom: 0.28rem solid var(--team-color); color: var(--ink); flex: 1; justify-content: space-between; }
+.projector-score.is-active { background: linear-gradient(rgb(22 50 63 / 45%), rgb(22 50 63 / 45%)), var(--team-color); color: white; transform: translateY(-0.2rem); }
 .projector-score span { min-width: 0; overflow-wrap: anywhere; }
-.projector-score strong { color: var(--deep-sea); font-family: var(--font-display); font-size: 1.8rem; }
+.projector-score strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 2.4rem); }
 .projector-score.is-active strong { color: var(--sun); }
-.final-stage { animation: tide-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both; margin: 0 auto; max-width: 1300px; text-align: center; }
-.final-kicker { color: var(--sun); font-size: 0.8rem; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
-.final-stage > h2 { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 7rem); line-height: 1; }
-.podium { align-items: end; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); margin: 2rem auto; max-width: 1000px; }
-.podium article { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); border-top: 0.45rem solid var(--sun); display: grid; min-height: 9rem; overflow-wrap: anywhere; padding: 1.5rem; }
-.podium article.place-1 { min-height: 12rem; }
-.podium article.place-2 { min-height: 10rem; }
-.podium article span, .podium article b { color: var(--sun); font-family: var(--font-display); font-size: 2rem; }
-.podium article strong { color: white; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2rem); }
-.fourth-place { background: rgb(255 255 255 / 10%); display: flex; gap: 2rem; justify-content: center; margin: 1rem auto; padding: 1rem; }
+.final-stage { animation: stage-arrive 650ms cubic-bezier(0.22, 1, 0.36, 1) both; margin: clamp(2rem, 7vh, 7rem) auto 0; max-width: 1400px; position: relative; text-align: center; }
+.final-kicker { color: var(--sun); font-size: clamp(0.72rem, 1.2vw, 0.9rem); font-weight: 900; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
+.final-stage > h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); letter-spacing: -0.06em; line-height: 0.86; margin: 0.7rem 0; }
+.final-caption { color: #d9f5f9; font-size: clamp(1rem, 1.8vw, 1.5rem); margin: 0; }
+.podium { align-items: end; display: grid; gap: clamp(0.6rem, 1.5vw, 1.5rem); grid-template-columns: repeat(3, minmax(0, 1fr)); margin: clamp(2rem, 7vh, 6rem) auto 2rem; max-width: 1100px; }
+.podium article { background: linear-gradient(rgb(22 50 63 / 45%), rgb(22 50 63 / 45%)), var(--team-color); border-top: 0.5rem solid var(--sun); display: grid; min-height: 11rem; overflow-wrap: anywhere; padding: clamp(1rem, 2vw, 2rem); text-align: left; }
+.podium article.place-1 { min-height: 18rem; order: 2; }
+.podium article.place-2 { min-height: 14rem; order: 1; }
+.podium article.place-3 { min-height: 12rem; order: 3; }
+.podium article span, .podium article b { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3rem); }
+.podium article strong { color: white; font-family: var(--font-display); font-size: clamp(1.3rem, 2.4vw, 2.5rem); }
+.fourth-place { background: rgb(255 255 255 / 10%); display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin: 1rem auto; max-width: 1100px; padding: 1rem; }
 .fourth-place strong { color: var(--sun); margin-left: 1rem; }
-.full-results { margin: 1.5rem auto 0; max-width: 700px; }
-.full-results div { border-top: 1px solid rgb(255 255 255 / 20%); display: grid; gap: 1rem; grid-template-columns: 3rem 1fr auto auto; padding: 0.55rem; text-align: left; }
+.full-results { margin: 2rem auto 0; max-width: 760px; }
+.full-results div { border-top: 1px solid rgb(255 255 255 / 20%); display: grid; gap: 1rem; grid-template-columns: 3rem 1fr auto auto; padding: 0.65rem; text-align: left; }
 .full-results em { color: #d9f5f9; font-size: 0.82rem; font-style: normal; }
 .full-results strong { color: var(--sun); }
-.score-feedback { animation: score-flash 900ms cubic-bezier(0.22, 1, 0.36, 1) both; color: white; font-family: var(--font-display); font-size: clamp(3rem, 9vw, 8rem); inset: 0; pointer-events: none; position: fixed; text-align: center; text-shadow: 0 0.25rem 0 rgb(22 50 63 / 36%); top: 38%; z-index: 4; }
+.score-feedback { animation: score-flash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both; color: white; font-family: var(--font-display); font-size: clamp(4rem, 12vw, 12rem); inset: 0; pointer-events: none; position: fixed; text-align: center; text-shadow: 0 0.28rem 0 rgb(22 50 63 / 36%); top: 31%; z-index: 5; }
 .score-feedback.is-correct { color: #b8f0c9; }
 .score-feedback.is-wrong { color: #ffd1c2; }
-@keyframes score-flash { 0% { opacity: 0; transform: scale(0.72); } 22% { opacity: 1; transform: scale(1); } 80% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
-.broadcast-error, .broadcast-loading { align-items: center; display: flex; font-family: var(--font-display); font-size: 2rem; justify-content: center; min-height: 90vh; }
+@keyframes score-flash { 0% { opacity: 0; transform: scale(0.72); } 20% { opacity: 1; transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+@keyframes stage-arrive { from { opacity: 0; transform: translateY(1.8rem) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.broadcast-error, .broadcast-loading { align-items: center; display: flex; font-family: var(--font-display); font-size: 2rem; justify-content: center; min-height: 90vh; position: relative; }
 .broadcast-error strong { color: var(--coral); font-size: 5rem; margin-right: 1rem; }
 
 @media (max-width: 700px) {
-  .projector-shell { padding-bottom: 8rem; }
-  .projector-options { grid-template-columns: 1fr; }
+  .projector-shell { padding-bottom: 1.5rem; }
+  .projector-options, .podium { grid-template-columns: 1fr; }
   .projector-teams { flex-wrap: wrap; position: static; }
   .current-turn { width: 100%; }
   .projector-score { flex: 1 0 8rem; }
+  .projector-question { min-height: auto; }
   .full-results div { grid-template-columns: 2rem 1fr auto; }
   .full-results em { grid-column: 2; }
-  .podium { align-items: stretch; grid-template-columns: 1fr; }
-  .podium article { min-height: 0 !important; width: 100%; }
+  .podium article { min-height: 0 !important; order: initial !important; width: auto; }
 }

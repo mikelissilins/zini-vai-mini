@@ -1,9 +1,10 @@
-<main class="projector-shell" aria-live="polite">
+<main [class]="'projector-shell scene-' + scene()" aria-live="polite">
   @if (error()) {
     <section class="broadcast-error"><strong>!</strong><p>{{ error() }}</p></section>
   } @else if (session(); as game) {
     <header class="projector-header">
-      <div>
+      <div class="projector-title">
+        <span>Zini vai mini</span>
         <h1>{{ game.title }}</h1>
       </div>
       <div class="projector-progress">
@@ -16,6 +17,7 @@
       <section class="final-stage">
         <p class="final-kicker">{{ copy('Spēle noslēgusies', 'Game complete') }}</p>
         <h2>{{ copy('Uzvarētāji', 'Winners') }}</h2>
+        <p class="final-caption">{{ game.title }}</p>
         <div class="podium">
           @for (team of podiumTeams(); track team.id) {
             <article [class]="'place-' + team.rank" [style.--team-color]="team.color">
@@ -40,38 +42,43 @@
       </section>
     } @else if (game.selectedQuestion; as question) {
       <section class="projector-question" [style.--category-color]="question.categoryColor">
-        <div class="question-topline">
-          <span>{{ question.categoryName }}</span>
-          <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
+        <div class="question-stage-inner" [class.is-revealed]="game.answerRevealed">
+          <div class="question-topline">
+            <span>{{ question.categoryName }}</span>
+            <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
+          </div>
+          <h2>{{ question.prompt }}</h2>
+          @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt=""> }
+          @if (question.options.length) {
+            <div class="projector-options">
+              @for (option of question.options; track option.id; let index = $index) {
+                <div [class.is-correct]="game.answerRevealed && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct">
+                  <b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span>
+                </div>
+              }
+            </div>
+          }
+          @if (!game.answerRevealed && question.hintUsed) {
+            <div class="projector-hint"><span>{{ copy('Pavediens', 'Hint') }}</span><p>{{ question.explanation }}</p></div>
+          }
+          @if (game.answerRevealed && question.type === 'FREE_TEXT') {
+            <div class="projector-answer">
+              <span>{{ copy('Pareizā atbilde', 'Correct answer') }}</span>
+              <strong>{{ question.answer }}</strong>
+              @if (question.explanation) { <p>{{ question.explanation }}</p> }
+            </div>
+          } @else if (game.answerRevealed && question.explanation) {
+            <div class="projector-answer projector-note"><span>{{ copy('Papildu piezīme', 'Extra note') }}</span><p>{{ question.explanation }}</p></div>
+          }
         </div>
-        <h2>{{ question.prompt }}</h2>
-        @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt=""> }
-        @if (question.options.length) {
-          <div class="projector-options">
-            @for (option of question.options; track option.id; let index = $index) {
-              <div [class.is-correct]="game.answerRevealed && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct">
-                <b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span>
-              </div>
-            }
-          </div>
-        }
-        @if (game.answerRevealed && question.type === 'FREE_TEXT') {
-          <div class="projector-answer">
-            <span>{{ copy('Pareizā atbilde', 'Correct answer') }}</span>
-            <strong>{{ question.answer }}</strong>
-            @if (question.explanation) { <p>{{ question.explanation }}</p> }
-          </div>
-        } @else if (game.answerRevealed && question.explanation) {
-          <div class="projector-answer projector-note"><span>{{ copy('Papildu piezīme', 'Extra note') }}</span><p>{{ question.explanation }}</p></div>
-        }
       </section>
     } @else {
       <section class="projector-board">
         @for (category of game.categories; track category.position) {
           <div class="projector-column" [style.--category-color]="category.color">
-            <h2>{{ category.name }}</h2>
+            <h2><span>{{ category.name }}</span></h2>
             @for (question of category.questions; track question.id) {
-              <div [class.is-used]="question.used">{{ question.used ? '✓' : question.points }}</div>
+              <div [class.is-used]="question.used"><span>{{ question.used ? '✓' : question.points }}</span></div>
             }
           </div>
         }
@@ -81,7 +88,7 @@
     @if (game.status === 'ACTIVE') {
       <footer class="projector-teams">
         <div class="current-turn" [style.--team-color]="activeTeam()?.color">
-          <span>{{ copy('Gājiens', 'Turn') }}</span><strong>{{ activeTeam()?.name }}</strong>
+          <span>{{ copy('Tagad izvēlas', 'Now choosing') }}</span><strong>{{ activeTeam()?.name }}</strong>
         </div>
         @for (team of game.teams; track team.id) {
           <div class="projector-score" [class.is-active]="team.id === game.activeTeamId" [style.--team-color]="team.color">

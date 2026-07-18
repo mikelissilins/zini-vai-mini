@@ -8,6 +8,7 @@
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
+        <a class="button presentation-link" [href]="'/live/' + game.publicToken" target="_blank" rel="noopener">Prezentācijas režīms ↗</a>
         <button class="button is-light" type="button" [disabled]="busy() || !canStepBack()" (click)="stepBack()">↶ Atcelt pēdējo klikšķi</button>
         @if (game.status === 'ACTIVE') {
           <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
