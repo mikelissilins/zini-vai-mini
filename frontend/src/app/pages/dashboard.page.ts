@@ -89,7 +89,7 @@ export class DashboardPage implements OnInit {
         this.templates.set(templates);
         this.games.set(games);
         this.sessions.set(sessions);
-        if (templates.length) this.selectTemplate(templates.find((item) => item.templateKey === 'camp') || templates[0]);
+        if (templates.length) this.selectTemplate(templates.find((item) => item.templateKey === 'camp-challenge') || templates.find((item) => item.templateKey === 'camp') || templates[0]);
         this.loading.set(false);
       },
       error: (error) => {
