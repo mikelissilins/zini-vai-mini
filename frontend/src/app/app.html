@@ -5,7 +5,13 @@
     <span>Zini vai mini</span>
   </a>
   <nav class="header-actions" aria-label="Lietotāja darbības">
-    <span class="language-label">Latviešu</span>
+    <label class="language-label">
+      <span class="is-sr-only">Valoda</span>
+      <select [value]="i18n.locale()" (change)="setLocale($event)">
+        <option value="lv">Latviešu</option>
+        <option value="en">English</option>
+      </select>
+    </label>
     @if (!auth.ready()) {
       <span class="backend-status" role="status">{{ i18n.t('wakingUp') }}</span>
     }
@@ -38,11 +44,11 @@
               {{ auth.ready() ? i18n.t('startBuilding') : i18n.t('wakingUp') }}
             </button>
           }
-          <span class="mini-proof">6 categories · 10–70 points · TOP 4</span>
+          <span class="mini-proof">6 · 10–70 · TOP 4</span>
         </div>
       </div>
       <div class="score-board" aria-label="Spēles laukuma piemērs">
-        @for (category of ['Bible', 'Jesus', 'Camp']; track category) {
+        @for (category of [i18n.t('starterBible'), i18n.t('starterJesus'), i18n.t('starterCamp')]; track category) {
           <div class="score-column">
             <strong>{{ category }}</strong>
             @for (points of [10, 20, 30, 40, 50, 60, 70]; track points) {

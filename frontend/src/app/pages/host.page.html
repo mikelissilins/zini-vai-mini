@@ -3,15 +3,15 @@
   @if (session(); as game) {
     <header class="host-header">
       <div>
-        <a routerLink="/dashboard">← Spēļu panelis</a>
+        <a routerLink="/dashboard">← {{ copy('Spēļu panelis', 'Game dashboard') }}</a>
         <h1>{{ game.title }}</h1>
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
-        <a class="button presentation-link" [href]="'/live/' + game.publicToken" target="_blank" rel="noopener">Prezentācijas režīms ↗</a>
-        <button class="button is-light" type="button" [disabled]="busy() || !canStepBack()" (click)="stepBack()">↶ Atcelt pēdējo klikšķi</button>
+        <a class="button presentation-link" [href]="'/live/' + game.publicToken" target="_blank" rel="noopener">{{ copy('Prezentācija', 'Presentation') }} ↗</a>
+        <button class="button is-light" type="button" [disabled]="busy() || !canStepBack()" (click)="stepBack()">↶ {{ copy('Atcelt pēdējo klikšķi', 'Undo last click') }}</button>
         @if (game.status === 'ACTIVE') {
-          <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
+          <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">{{ copy('Pabeigt', 'Finish') }}</button>
         }
       </div>
     </header>
@@ -27,15 +27,15 @@
 
     @if (game.status === 'FINISHED') {
       <section class="finished-panel">
-        <p class="eyebrow">Spēle pabeigta</p>
-        <h2>Rezultāti ir gatavi</h2>
+        <p class="eyebrow">{{ copy('Spēle pabeigta', 'Game complete') }}</p>
+        <h2>{{ copy('Rezultāti ir gatavi', 'Results are ready') }}</h2>
         @for (team of game.teams; track team.id) {
           <div><strong>{{ team.rank }}.</strong><span>{{ team.name }}</span><em>{{ team.correctAnswers }} ✓ · {{ team.wrongAnswers }} ×</em><b>{{ team.score }}</b></div>
         }
       </section>
     } @else {
       <div class="turn-banner" [style.--team-color]="activeTeam()?.color">
-        <span>Tagad izvēlas</span>
+        <span>{{ copy('Tagad izvēlas', 'Now choosing') }}</span>
         <strong>{{ activeTeam()?.name }}</strong>
       </div>
 
@@ -55,33 +55,33 @@
             </div>
           }
           @if (!game.answerRevealed && question.explanation) {
-            <button class="button hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()">{{ question.hintUsed ? 'Paslēpt pavedienu' : 'Rādīt pavedienu' }} −5</button>
+            <button class="button hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()">{{ question.hintUsed ? copy('Paslēpt pavedienu', 'Hide hint') : copy('Rādīt pavedienu', 'Show hint') }} −5</button>
             @if (question.hintUsed) {
-              <div class="question-hint"><strong>Pavediens</strong><p>{{ question.explanation }}</p></div>
+              <div class="question-hint"><strong>{{ copy('Pavediens', 'Hint') }}</strong><p>{{ question.explanation }}</p></div>
             }
           }
           @if (game.answerRevealed && question.type === 'FREE_TEXT') {
             <div class="answer-reveal">
-              <span>Pareizā atbilde</span>
+              <span>{{ copy('Pareizā atbilde', 'Correct answer') }}</span>
               <strong>{{ question.answer }}</strong>
               @if (question.explanation) { <p>{{ question.explanation }}</p> }
             </div>
           } @else if (game.answerRevealed && question.explanation) {
-            <div class="answer-reveal answer-note"><span>Papildu piezīme</span><p>{{ question.explanation }}</p></div>
+            <div class="answer-reveal answer-note"><span>{{ copy('Papildu piezīme', 'Extra note') }}</span><p>{{ question.explanation }}</p></div>
           }
           @if (game.answerRevealed) {
             <div class="score-actions">
               @if (question.type === 'MULTIPLE_CHOICE') {
                 <button class="button is-large choice-continue" [class.is-success]="selectedChoiceIsCorrect()" [class.is-danger]="!selectedChoiceIsCorrect()" type="button" [disabled]="busy()" (click)="score(selectedChoiceIsCorrect())">
-                  @if (selectedChoiceIsCorrect()) { Turpināt → +{{ awardedPoints() }} punkti } @else { Turpināt → 0 punkti }
+                  @if (selectedChoiceIsCorrect()) { {{ copy('Turpināt', 'Continue') }} → +{{ awardedPoints() }} {{ copy('punkti', 'points') }} } @else { {{ copy('Turpināt', 'Continue') }} → 0 {{ copy('punkti', 'points') }} }
                 </button>
               } @else {
-                <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
-                <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ awardedPoints() }}</button>
+                <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">{{ copy('Nepareizi', 'Wrong') }} · 0</button>
+                <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">{{ copy('Pareizi', 'Correct') }} · +{{ awardedPoints() }}</button>
               }
             </div>
           } @else if (question.type === 'FREE_TEXT') {
-            <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">Atklāt atbildi</button>
+            <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">{{ copy('Atklāt atbildi', 'Reveal answer') }}</button>
           }
         </section>
       } @else {

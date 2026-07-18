@@ -6,7 +6,8 @@ import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
 import { GameInput, GameView, QuestionInput, QuestionType } from '../core/models';
 
-const POINTS = [10, 20, 30, 40, 50, 60, 70];
+const STANDARD_POINTS = [10, 20, 30, 40, 50];
+const EXTENDED_POINTS = [60, 70];
 const CATEGORY_COLORS = ['#0E758C', '#F77F5B', '#55B8CC', '#5CA67A', '#7A6FF0', '#F2A65A'];
 
 @Component({
@@ -33,6 +34,7 @@ export class EditorPage implements OnInit {
   protected readonly form = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(160)]],
     description: ['', Validators.maxLength(600)],
+    locale: ['lv'],
     version: [0, Validators.required],
     categories: this.fb.array<FormGroup>([]),
   });
@@ -66,13 +68,35 @@ export class EditorPage implements OnInit {
     this.categories.push(this.createCategoryGroup({
       name: `Sadaļa ${this.categories.length + 1}`,
       color: CATEGORY_COLORS[this.categories.length % CATEGORY_COLORS.length],
-      questions: POINTS.map((points) => this.emptyQuestion(points)),
+      questions: STANDARD_POINTS.map((points) => this.emptyQuestion(points)),
     }));
     this.markChanged();
   }
 
   protected removeCategory(index: number): void {
     this.categories.removeAt(index);
+    this.markChanged();
+  }
+
+  protected hasExtendedPoints(category: FormGroup): boolean {
+    return this.questions(category).controls.some((question) => EXTENDED_POINTS.includes(question.controls['points'].value));
+  }
+
+  protected addExtendedPoints(category: FormGroup): void {
+    const questions = this.questions(category);
+    EXTENDED_POINTS.forEach((points) => {
+      if (!questions.controls.some((question) => question.controls['points'].value === points)) {
+        questions.push(this.createQuestionGroup(this.emptyQuestion(points)));
+      }
+    });
+    this.markChanged();
+  }
+
+  protected removeExtendedPoints(category: FormGroup): void {
+    const questions = this.questions(category);
+    for (let index = questions.length - 1; index >= 0; index--) {
+      if (EXTENDED_POINTS.includes(questions.at(index).controls['points'].value)) questions.removeAt(index);
+    }
     this.markChanged();
   }
 
@@ -155,6 +179,7 @@ export class EditorPage implements OnInit {
     this.form.patchValue({
       title: game.title,
       description: game.description || '',
+      locale: game.locale,
       version: game.version,
     });
     this.categories.clear();
@@ -210,7 +235,7 @@ export class EditorPage implements OnInit {
     return {
       title: value.title!,
       description: value.description || null,
-      locale: 'lv',
+      locale: value.locale,
       version: value.version,
       categories: (value.categories || []).map((category) => ({
         name: category['name'],

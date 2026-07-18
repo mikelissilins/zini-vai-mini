@@ -26,6 +26,15 @@ class GameDefinitionValidatorTests {
     }
 
     @Test
+    void completeFiveQuestionCategoryIsPlayable() {
+        GameInput game = gameWith(List.of(10, 20, 30, 40, 50).stream()
+                .map(points -> question(points, "Jautājums", "Atbilde"))
+                .toList());
+
+        assertThat(validator.isPlayable(game)).isTrue();
+    }
+
+    @Test
     void missingAnswerKeepsDraftUnplayable() {
         GameInput game = gameWith(List.of(
                 question(10, "Jautājums", ""), question(20, "J", "A"), question(30, "J", "A"),

@@ -38,6 +38,10 @@ export class HostPage implements OnInit {
 
   ngOnInit(): void { this.reload(); }
 
+  protected copy(lv: string, en: string): string {
+    return this.session()?.locale === 'en' ? en : lv;
+  }
+
   protected select(questionId: string): void {
     const session = this.session();
     if (!session) return;
@@ -70,14 +74,14 @@ export class HostPage implements OnInit {
 
   protected finish(): void {
     const session = this.session();
-    if (!session || !window.confirm('Pabeigt spēli un rādīt rezultātus?')) return;
+    if (!session || !window.confirm(this.copy('Pabeigt spēli un rādīt rezultātus?', 'Finish the game and show results?'))) return;
     this.run(this.api.finishSession(session.id, session.version));
   }
 
   private reload(): void {
     this.api.getSession(this.sessionId).subscribe({
       next: (session) => this.session.set(session),
-      error: (error) => this.error.set(error.error?.detail || 'Sesiju neizdevās ielādēt.'),
+      error: (error) => this.error.set(error.error?.detail || this.copy('Sesiju neizdevās ielādēt.', 'Could not load the session.')),
     });
   }
 
@@ -92,7 +96,7 @@ export class HostPage implements OnInit {
       },
       error: (error) => {
         this.busy.set(false);
-        this.error.set(error.error?.detail || 'Darbību neizdevās izpildīt.');
+        this.error.set(error.error?.detail || this.copy('Darbību neizdevās izpildīt.', 'Could not complete the action.'));
         if (error.status === 409) this.reload();
       },
     });

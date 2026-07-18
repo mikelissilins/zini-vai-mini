@@ -1,6 +1,5 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
-.projector-shell { background: radial-gradient(circle at 8% 4%, rgb(255 200 87 / 20%), transparent 18rem), radial-gradient(circle at 94% 62%, rgb(85 184 204 / 24%), transparent 28rem), var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
-.projector-shell::before { background-image: radial-gradient(rgb(255 250 240 / 14%) 1px, transparent 1px); background-size: 1.4rem 1.4rem; content: ''; inset: 0; opacity: 0.32; pointer-events: none; position: fixed; }
+.projector-shell { background: var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
 .projector-header, .question-topline, .question-points, .projector-teams, .current-turn, .projector-score { align-items: center; display: flex; }
 .projector-header { justify-content: space-between; margin: 0 auto clamp(1.2rem, 3vh, 2.5rem); max-width: 1640px; position: relative; }
 .projector-title > span, .projector-progress span { color: var(--sun); font-size: clamp(0.6rem, 1.1vw, 0.8rem); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
@@ -9,7 +8,7 @@
 .projector-progress strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 3rem); line-height: 1; }
 .projector-board { display: grid; gap: clamp(0.45rem, 1vw, 1rem); grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); margin: 0 auto; max-width: 1640px; position: relative; }
 .projector-column { display: grid; gap: clamp(0.45rem, 0.8vw, 0.8rem); }
-.projector-column h2 { align-items: end; background: linear-gradient(135deg, rgb(22 50 63 / 30%), rgb(22 50 63 / 68%)), var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: clamp(4rem, 10vh, 7rem); overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
+.projector-column h2 { align-items: end; background: var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: clamp(4rem, 10vh, 7rem); overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
 .projector-column h2::before { border-left: 0.45rem solid var(--sun); content: ''; height: 58%; left: 0.65rem; position: absolute; top: 0.65rem; }
 .projector-column h2 span { position: relative; }
 .projector-column > div { align-items: center; background: var(--foam); color: var(--deep-sea); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
@@ -18,7 +17,6 @@
 .projector-column > div.is-used span { font-size: 0.72em; opacity: 0.72; }
 .projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); margin: 0 auto; max-width: 1640px; min-height: min(69vh, 900px); position: relative; }
 .question-stage-inner { display: grid; min-height: inherit; padding: clamp(1.5rem, 4vw, 5rem); position: relative; }
-.question-stage-inner::after { background: repeating-linear-gradient(135deg, transparent 0 1.1rem, rgb(14 117 140 / 5%) 1.1rem 1.2rem); content: ''; inset: 0; pointer-events: none; position: absolute; }
 .question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint { position: relative; z-index: 1; }
 .question-topline { color: var(--ink); justify-content: space-between; }
 .question-topline > span { color: var(--category-color); font-size: clamp(0.75rem, 1.3vw, 1rem); font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
@@ -32,18 +30,18 @@
 .projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 clamp(2.6rem, 4vw, 3.5rem); font-family: var(--font-display); height: clamp(2.6rem, 4vw, 3.5rem); justify-content: center; }
 .projector-options div.is-correct { background: #dff4e6; border-color: #28805c; color: #135138; }
 .projector-options div.is-wrong { background: #fff0eb; border-color: #c84630; color: #7d2d20; }
-.projector-answer, .projector-hint { align-self: end; background: linear-gradient(120deg, #fff7e3, var(--sand)); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
+.projector-answer, .projector-hint { align-self: end; background: var(--sand); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
 .projector-hint { background: var(--sky); border-color: var(--sea); }
 .projector-answer span, .projector-hint span { color: var(--deep-sea); display: block; font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
 .projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3.5rem); line-height: 1.12; margin-top: 0.3rem; overflow-wrap: anywhere; }
 .projector-answer p, .projector-hint p { color: var(--ink); font-size: clamp(1rem, 1.55vw, 1.55rem); line-height: 1.45; margin: 0.65rem 0 0; overflow-wrap: anywhere; }
 .projector-teams { backdrop-filter: blur(0.6rem); background: rgb(14 117 140 / 90%); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; gap: 0.55rem; left: 0; padding: 0.75rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
 .current-turn, .projector-score { box-sizing: border-box; min-height: 4.25rem; padding: 0.7rem 1rem; }
-.current-turn { background: linear-gradient(rgb(22 50 63 / 34%), rgb(22 50 63 / 34%)), var(--team-color); display: grid; min-width: clamp(11rem, 18vw, 18rem); }
+.current-turn { background: var(--team-color); display: grid; min-width: clamp(11rem, 18vw, 18rem); }
 .current-turn span { color: var(--sun); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
 .current-turn strong { color: white; font-family: var(--font-display); overflow-wrap: anywhere; }
 .projector-score { background: color-mix(in srgb, var(--team-color) 14%, var(--foam)); border-bottom: 0.28rem solid var(--team-color); color: var(--ink); flex: 1; justify-content: space-between; }
-.projector-score.is-active { background: linear-gradient(rgb(22 50 63 / 45%), rgb(22 50 63 / 45%)), var(--team-color); color: white; transform: translateY(-0.2rem); }
+.projector-score.is-active { background: var(--team-color); color: white; transform: translateY(-0.2rem); }
 .projector-score span { min-width: 0; overflow-wrap: anywhere; }
 .projector-score strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 2.4rem); }
 .projector-score.is-active strong { color: var(--sun); }
@@ -52,7 +50,7 @@
 .final-stage > h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); letter-spacing: -0.06em; line-height: 0.86; margin: 0.7rem 0; }
 .final-caption { color: #d9f5f9; font-size: clamp(1rem, 1.8vw, 1.5rem); margin: 0; }
 .podium { align-items: end; display: grid; gap: clamp(0.6rem, 1.5vw, 1.5rem); grid-template-columns: repeat(3, minmax(0, 1fr)); margin: clamp(2rem, 7vh, 6rem) auto 2rem; max-width: 1100px; }
-.podium article { background: linear-gradient(rgb(22 50 63 / 45%), rgb(22 50 63 / 45%)), var(--team-color); border-top: 0.5rem solid var(--sun); display: grid; min-height: 11rem; overflow-wrap: anywhere; padding: clamp(1rem, 2vw, 2rem); text-align: left; }
+.podium article { background: var(--team-color); border-top: 0.5rem solid var(--sun); display: grid; min-height: 11rem; overflow-wrap: anywhere; padding: clamp(1rem, 2vw, 2rem); text-align: left; }
 .podium article.place-1 { min-height: 18rem; order: 2; }
 .podium article.place-2 { min-height: 14rem; order: 1; }
 .podium article.place-3 { min-height: 12rem; order: 3; }

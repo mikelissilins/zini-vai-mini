@@ -243,9 +243,10 @@ public class SessionService {
     }
 
     private SelectedQuestionView selectedView(SessionQuestion question, boolean hideAnswer) {
+        boolean hideHint = hideAnswer && !question.isHintUsed();
         return new SelectedQuestionView(question.getId(), question.getCategoryName(), question.getCategoryColor(),
                 question.getPoints(), question.getQuestionType(), question.getPrompt(), hideAnswer ? null : question.getAnswer(),
-                hideAnswer ? null : question.getExplanation(),
+                hideHint ? null : question.getExplanation(),
                 question.getMediaAsset() == null ? null : "/api/public/media/" + question.getMediaAsset().getId(),
                 question.isHintUsed(),
                 question.getOptions().stream().map(option -> new OptionView(option.getId(), option.getText(),

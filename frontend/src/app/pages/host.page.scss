@@ -6,8 +6,8 @@ h1, h2 { font-family: var(--font-display); }
 h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.04em; line-height: 1; }
 .host-meta { gap: 0.75rem; }
 .host-meta > span { color: var(--coral); font-family: var(--font-display); font-size: 1.5rem; }
-.presentation-link { background: var(--deep-sea); color: white; text-decoration: none; }
-.presentation-link:hover { background: #095f73; color: white; }
+.presentation-link { background: var(--sun); color: var(--ink); font-weight: 900; text-decoration: none; }
+.presentation-link:hover { background: #ffb928; color: var(--ink); }
 .score-strip { gap: 0.6rem; overflow-x: auto; padding-bottom: 0.5rem; }
 .score-strip article { background: color-mix(in srgb, var(--team-color) 12%, white); border-top: 0.45rem solid var(--team-color); color: var(--ink); display: grid; flex: 1 0 9rem; padding: 0.8rem 1rem; }
 .score-strip article.is-active { background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--team-color); color: white; transform: translateY(-0.25rem); }

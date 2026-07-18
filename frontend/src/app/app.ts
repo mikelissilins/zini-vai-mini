@@ -3,6 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 import { AuthService } from './core/auth.service';
 import { I18nService } from './core/i18n.service';
+import { Locale } from './core/models';
 
 @Component({
   selector: 'app-root',
@@ -19,5 +20,9 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     if (!this.projectorMode) void this.auth.initialize();
+  }
+
+  protected setLocale(event: Event): void {
+    this.i18n.setLocale((event.target as HTMLSelectElement).value as Locale);
   }
 }

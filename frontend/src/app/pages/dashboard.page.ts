@@ -36,27 +36,27 @@ export class DashboardPage implements OnInit {
     if (!this.selectedTemplateId || !this.newGameTitle.trim()) return;
     this.creating.set(true);
     this.error.set('');
-    this.api.createFromTemplate(this.selectedTemplateId, this.newGameTitle.trim(), 'en').subscribe({
+    this.api.createFromTemplate(this.selectedTemplateId, this.newGameTitle.trim(), this.i18n.locale()).subscribe({
       next: (game) => void this.router.navigate(['/games', game.id, 'edit']),
       error: (error) => {
         this.creating.set(false);
-        this.error.set(error.error?.detail || 'Spēli neizdevās izveidot.');
+        this.error.set(error.error?.detail || this.i18n.t('createGameError'));
       },
     });
   }
 
   protected deleteGame(game: GameSummary): void {
-    if (!window.confirm(`Dzēst “${game.title}”?`)) return;
+    if (!window.confirm(this.i18n.t('deleteConfirm').replace('{title}', game.title))) return;
     this.api.deleteGame(game.id).subscribe({
       next: () => this.games.update((items) => items.filter((item) => item.id !== game.id)),
-      error: (error) => this.error.set(error.error?.detail || 'Spēli neizdevās izdzēst.'),
+      error: (error) => this.error.set(error.error?.detail || this.i18n.t('deleteGameError')),
     });
   }
 
   protected selectTemplate(template: GameSummary): void {
     this.selectedTemplateId = template.id;
     if (!this.newGameTitle) {
-      this.newGameTitle = template.templateKey === 'blank' ? 'Mana spēle' : 'Zini vai mini';
+      this.newGameTitle = template.templateKey === 'blank' ? this.i18n.t('defaultGameName') : this.i18n.t('campGameName');
     }
   }
 
@@ -71,7 +71,7 @@ export class DashboardPage implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        this.error.set(error.status === 403 ? 'Šis Clerk konts nav aplikācijas īpašnieks.' : 'Datus neizdevās ielādēt.');
+        this.error.set(error.status === 403 ? this.i18n.t('ownerError') : this.i18n.t('loadGameError'));
         this.loading.set(false);
       },
     });

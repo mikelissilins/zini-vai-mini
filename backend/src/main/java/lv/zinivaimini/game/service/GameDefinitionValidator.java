@@ -16,6 +16,7 @@ import lv.zinivaimini.game.web.dto.GameDtos.QuestionInput;
 @Component
 public class GameDefinitionValidator {
     private static final Set<Integer> REQUIRED_POINTS = Set.of(10, 20, 30, 40, 50, 60, 70);
+    private static final Set<Integer> STANDARD_POINTS = Set.of(10, 20, 30, 40, 50);
 
     public void validateDraft(GameInput input) {
         if (input.categories() == null) return;
@@ -33,7 +34,7 @@ public class GameDefinitionValidator {
         if (input.categories() == null || input.categories().isEmpty()) return false;
         return input.categories().stream().allMatch(category -> {
             List<QuestionInput> questions = category.questions() == null ? List.of() : category.questions();
-            if (!questions.stream().map(QuestionInput::points).collect(Collectors.toSet()).equals(REQUIRED_POINTS)) return false;
+            if (!hasPlayablePointSet(questions.stream().map(QuestionInput::points).collect(Collectors.toSet()))) return false;
             return questions.stream().allMatch(this::isComplete);
         });
     }
@@ -41,7 +42,7 @@ public class GameDefinitionValidator {
     public boolean isPlayable(Game game) {
         if (game.getCategories().isEmpty()) return false;
         return game.getCategories().stream().allMatch(category -> {
-            if (!category.getQuestions().stream().map(Question::getPoints).collect(Collectors.toSet()).equals(REQUIRED_POINTS)) {
+            if (!hasPlayablePointSet(category.getQuestions().stream().map(Question::getPoints).collect(Collectors.toSet()))) {
                 return false;
             }
             return category.getQuestions().stream().allMatch(question -> {
@@ -78,5 +79,9 @@ public class GameDefinitionValidator {
             }
         }
         return true;
+    }
+
+    private boolean hasPlayablePointSet(Set<Integer> points) {
+        return points.equals(STANDARD_POINTS) || points.equals(REQUIRED_POINTS);
     }
 }

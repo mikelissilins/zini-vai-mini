@@ -54,6 +54,8 @@
 .game-settings .field { margin: 0; }
 .title-field { flex: 1.1; }
 .description-field { flex: 1.5; }
+.locale-field { flex: 0 0 9rem; }
+.locale-field .select { min-height: 2.5rem; width: 100%; }
 
 .readiness-banner {
   background: #fff0e9;
