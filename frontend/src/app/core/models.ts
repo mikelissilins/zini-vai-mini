@@ -76,6 +76,8 @@ export interface SessionTeam extends TeamInput {
   position: number;
   score: number;
   rank: number;
+  correctAnswers: number;
+  wrongAnswers: number;
 }
 
 export interface SessionSummary {
@@ -118,6 +120,7 @@ export interface SelectedQuestion {
   answer: string | null;
   explanation: string | null;
   mediaUrl: string | null;
+  hintUsed: boolean;
   options: SessionOption[];
 }
 

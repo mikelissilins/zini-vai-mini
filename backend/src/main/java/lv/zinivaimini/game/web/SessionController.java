@@ -54,6 +54,11 @@ public class SessionController {
         return service.reveal(id, input.version());
     }
 
+    @PostMapping("/sessions/{id}/hint")
+    SessionView hint(@PathVariable UUID id, @RequestBody VersionInput input) {
+        return service.useHint(id, input.version());
+    }
+
     @PostMapping("/sessions/{id}/score")
     SessionView score(@PathVariable UUID id, @RequestBody ScoreInput input) {
         return service.score(id, input.correct(), input.version());

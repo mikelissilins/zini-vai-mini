@@ -33,7 +33,6 @@ export class EditorPage implements OnInit {
   protected readonly form = this.fb.group({
     title: ['', [Validators.required, Validators.maxLength(160)]],
     description: ['', Validators.maxLength(600)],
-    locale: ['lv', Validators.required],
     version: [0, Validators.required],
     categories: this.fb.array<FormGroup>([]),
   });
@@ -155,7 +154,6 @@ export class EditorPage implements OnInit {
     this.form.patchValue({
       title: game.title,
       description: game.description || '',
-      locale: game.locale,
       version: game.version,
     });
     this.categories.clear();
@@ -211,7 +209,7 @@ export class EditorPage implements OnInit {
     return {
       title: value.title!,
       description: value.description || null,
-      locale: value.locale as 'lv' | 'en',
+      locale: 'en',
       version: value.version,
       categories: (value.categories || []).map((category) => ({
         name: category['name'],

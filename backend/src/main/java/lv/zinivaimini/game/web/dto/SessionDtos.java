@@ -47,7 +47,8 @@ public final class SessionDtos {
             Instant updatedAt) {
     }
 
-    public record TeamView(UUID id, String name, String color, int position, int score, int rank) {
+    public record TeamView(UUID id, String name, String color, int position, int score, int rank,
+            int correctAnswers, int wrongAnswers) {
     }
 
     public record OptionView(UUID id, String text, boolean correct) {
@@ -69,6 +70,7 @@ public final class SessionDtos {
             String answer,
             String explanation,
             String mediaUrl,
+            boolean hintUsed,
             List<OptionView> options) {
     }
 

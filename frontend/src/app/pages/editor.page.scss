@@ -54,7 +54,6 @@
 .game-settings .field { margin: 0; }
 .title-field { flex: 1.1; }
 .description-field { flex: 1.5; }
-.locale-field { flex: 0 0 10rem; }
 
 .readiness-banner {
   background: #fff0e9;
@@ -220,6 +219,5 @@
   .editor-topbar,
   .game-settings { align-items: stretch; flex-direction: column; }
   .save-area { flex-wrap: wrap; }
-  .locale-field { flex-basis: auto; }
   .category-header { align-items: stretch; flex-wrap: wrap; }
 }

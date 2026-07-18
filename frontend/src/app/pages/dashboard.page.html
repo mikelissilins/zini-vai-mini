@@ -4,7 +4,7 @@
       <p class="eyebrow">{{ i18n.t('controlRoom') }}</p>
       <h1>{{ i18n.t('yourGames') }}</h1>
     </div>
-    <span class="game-count">{{ games().length }} spēles</span>
+    <span class="game-count">{{ games().length }} games</span>
   </div>
 
   @if (error()) {
@@ -15,8 +15,7 @@
     <div class="create-copy">
       <span class="step-number">01</span>
       <div>
-        <p class="eyebrow">{{ i18n.t('chooseTemplate') }}</p>
-        <h2 id="create-title">No idejas līdz spēles laukumam</h2>
+        <h2 id="create-title">Choose a template or create one</h2>
       </div>
     </div>
 
@@ -40,16 +39,7 @@
         <span class="label">{{ i18n.t('newGameName') }}</span>
         <input class="input" [(ngModel)]="newGameTitle" maxlength="160" placeholder="Zini vai mini 2026">
       </label>
-      <label class="field language-field">
-        <span class="label">{{ i18n.t('language') }}</span>
-        <span class="select is-fullwidth">
-          <select [(ngModel)]="newGameLocale">
-            <option value="lv">Latviešu</option>
-            <option value="en">English</option>
-          </select>
-        </span>
-      </label>
-      <button class="button is-primary is-medium" type="button" [disabled]="creating() || !newGameTitle.trim()" (click)="createGame()">
+      <button class="button is-primary is-medium" type="button" [disabled]="creating() || !selectedTemplateId || !newGameTitle.trim()" (click)="createGame()">
         {{ creating() ? '...' : i18n.t('createGame') }}
       </button>
     </div>

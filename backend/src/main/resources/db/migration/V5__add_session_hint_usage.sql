@@ -1,0 +1,2 @@
+ALTER TABLE session_questions
+    ADD COLUMN hint_used BOOLEAN NOT NULL DEFAULT FALSE;

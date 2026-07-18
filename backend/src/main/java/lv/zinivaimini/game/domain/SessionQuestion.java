@@ -39,6 +39,7 @@ public class SessionQuestion {
     private String answer;
     private String explanation;
     private boolean used;
+    private boolean hintUsed;
 
     @OneToMany(mappedBy = "sessionQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("position ASC")
@@ -72,6 +73,7 @@ public class SessionQuestion {
 
     public void markUsed() { used = true; }
     public void markUnused() { used = false; }
+    public void useHint() { hintUsed = true; }
 
     public UUID getId() { return id; }
     public String getCategoryName() { return categoryName; }
@@ -84,5 +86,6 @@ public class SessionQuestion {
     public String getExplanation() { return explanation; }
     public MediaAsset getMediaAsset() { return mediaAsset; }
     public boolean isUsed() { return used; }
+    public boolean isHintUsed() { return hintUsed; }
     public List<SessionQuestionOption> getOptions() { return List.copyOf(options); }
 }

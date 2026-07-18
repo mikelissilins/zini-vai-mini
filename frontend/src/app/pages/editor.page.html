@@ -35,15 +35,6 @@
           <span class="label">{{ i18n.t('description') }}</span>
           <textarea class="textarea" formControlName="description" rows="2" (input)="markChanged()"></textarea>
         </label>
-        <label class="field locale-field">
-          <span class="label">{{ i18n.t('language') }}</span>
-          <span class="select is-fullwidth">
-            <select formControlName="locale" (change)="markChanged()">
-              <option value="lv">Latviešu</option>
-              <option value="en">English</option>
-            </select>
-          </span>
-        </label>
       </section>
 
       <div class="readiness-banner" [class.is-ready]="playable()">

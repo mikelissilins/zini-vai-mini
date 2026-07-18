@@ -1,12 +1,12 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { Locale } from './models';
 
 const translations: Record<Locale, Record<string, string>> = {
   lv: {
     signIn: 'Ieiet', signUp: 'Izveidot kontu', signOut: 'Iziet', dashboard: 'Spēļu panelis',
-    heroEyebrow: 'Nometnes spēle komandām', heroTitle: 'Jautājumi, punkti un īsts fināla sprādziens.',
-    heroLead: 'Izveido tēmas, saliec jautājumus, vadi komandas un parādi rezultātus uz atsevišķa projektora ekrāna.',
+    heroEyebrow: 'Nometnes viktorīna', heroTitle: 'Izveido spēli. Spēlējiet kopā.',
+    heroLead: 'Izvēlies sadaļas, pievieno jautājumus un skaiti punktus.',
     startBuilding: 'Sākt veidot spēli', openDashboard: 'Atvērt spēļu paneli', wakingUp: 'Spēle mostas…',
     controlRoom: 'Vadītāja telpa', yourGames: 'Tavas spēles', chooseTemplate: 'Izvēlies sākuma template',
     newGameName: 'Jaunās spēles nosaukums', createGame: 'Izveidot spēli', noGames: 'Vēl nav nevienas spēles.',
@@ -24,8 +24,8 @@ const translations: Record<Locale, Record<string, string>> = {
   },
   en: {
     signIn: 'Sign in', signUp: 'Create account', signOut: 'Sign out', dashboard: 'Game dashboard',
-    heroEyebrow: 'A team game for camp', heroTitle: 'Questions, points, and a proper final reveal.',
-    heroLead: 'Create categories, write questions, lead teams, and show results on a separate projector screen.',
+    heroEyebrow: 'Camp team quiz', heroTitle: 'Build a game. Play together.',
+    heroLead: 'Choose categories, add questions, and keep score.',
     startBuilding: 'Build a game', openDashboard: 'Open dashboard', wakingUp: 'Waking up the game…',
     controlRoom: 'Host room', yourGames: 'Your games', chooseTemplate: 'Choose a starting template',
     newGameName: 'New game title', createGame: 'Create game', noGames: 'No games yet.',
@@ -45,8 +45,7 @@ const translations: Record<Locale, Record<string, string>> = {
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
-  readonly locale = signal<Locale>((localStorage.getItem('locale') as Locale) || 'lv');
-  readonly alternateLocale = computed<Locale>(() => this.locale() === 'lv' ? 'en' : 'lv');
+  readonly locale = signal<Locale>('en');
 
   t(key: string): string {
     return translations[this.locale()][key] || translations.lv[key] || key;
@@ -54,11 +53,6 @@ export class I18nService {
 
   setLocale(locale: Locale): void {
     this.locale.set(locale);
-    localStorage.setItem('locale', locale);
     document.documentElement.lang = locale;
-  }
-
-  toggle(): void {
-    this.setLocale(this.alternateLocale());
   }
 }

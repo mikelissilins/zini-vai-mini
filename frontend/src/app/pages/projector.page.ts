@@ -14,9 +14,11 @@ export class ProjectorPage implements OnInit, OnDestroy {
   private readonly api = inject(GameApiService);
   private readonly token = inject(ActivatedRoute).snapshot.paramMap.get('token')!;
   private events?: EventSource;
+  private feedbackTimer?: number;
   protected readonly session = signal<SessionView | null>(null);
   protected readonly connected = signal(false);
   protected readonly error = signal('');
+  protected readonly scoreFeedback = signal<'correct' | 'wrong' | null>(null);
   protected readonly activeTeam = computed(() => {
     const session = this.session();
     return session?.teams.find((team) => team.id === session.activeTeamId) || null;
@@ -31,7 +33,10 @@ export class ProjectorPage implements OnInit, OnDestroy {
     this.connect();
   }
 
-  ngOnDestroy(): void { this.events?.close(); }
+  ngOnDestroy(): void {
+    this.events?.close();
+    window.clearTimeout(this.feedbackTimer);
+  }
 
   protected copy(lv: string, en: string): string {
     return this.session()?.locale === 'en' ? en : lv;
@@ -40,7 +45,7 @@ export class ProjectorPage implements OnInit, OnDestroy {
   private refresh(): void {
     this.api.getPublicSession(this.token).subscribe({
       next: (session) => {
-        this.session.set(session);
+        this.applySnapshot(session);
         this.error.set('');
       },
       error: (error) => this.error.set(error.error?.detail || 'Spēles pārraide nav atrasta.'),
@@ -50,7 +55,7 @@ export class ProjectorPage implements OnInit, OnDestroy {
   private connect(): void {
     this.events = new EventSource(`/api/public/sessions/${this.token}/events`);
     this.events.addEventListener('snapshot', (event) => {
-      this.session.set(JSON.parse((event as MessageEvent).data) as SessionView);
+      this.applySnapshot(JSON.parse((event as MessageEvent).data) as SessionView);
       this.connected.set(true);
       this.error.set('');
     });
@@ -58,5 +63,17 @@ export class ProjectorPage implements OnInit, OnDestroy {
       this.connected.set(false);
       this.refresh();
     };
+  }
+
+  private applySnapshot(next: SessionView): void {
+    const previous = this.session();
+    if (previous && next.usedCount > previous.usedCount) {
+      const previousScore = previous.teams.find((team) => team.id === previous.activeTeamId)?.score || 0;
+      const currentScore = next.teams.find((team) => team.id === previous.activeTeamId)?.score || 0;
+      this.scoreFeedback.set(currentScore > previousScore ? 'correct' : 'wrong');
+      window.clearTimeout(this.feedbackTimer);
+      this.feedbackTimer = window.setTimeout(() => this.scoreFeedback.set(null), 1300);
+    }
+    this.session.set(next);
   }
 }

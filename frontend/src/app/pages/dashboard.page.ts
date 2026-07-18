@@ -5,7 +5,7 @@ import { forkJoin } from 'rxjs';
 
 import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
-import { GameSummary, Locale, SessionSummary } from '../core/models';
+import { GameSummary, SessionSummary } from '../core/models';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -27,7 +27,6 @@ export class DashboardPage implements OnInit {
   protected readonly error = signal('');
   protected selectedTemplateId = '';
   protected newGameTitle = '';
-  protected newGameLocale: Locale = this.i18n.locale();
 
   ngOnInit(): void {
     this.reload();
@@ -37,7 +36,7 @@ export class DashboardPage implements OnInit {
     if (!this.selectedTemplateId || !this.newGameTitle.trim()) return;
     this.creating.set(true);
     this.error.set('');
-    this.api.createFromTemplate(this.selectedTemplateId, this.newGameTitle.trim(), this.newGameLocale).subscribe({
+    this.api.createFromTemplate(this.selectedTemplateId, this.newGameTitle.trim(), 'en').subscribe({
       next: (game) => void this.router.navigate(['/games', game.id, 'edit']),
       error: (error) => {
         this.creating.set(false);

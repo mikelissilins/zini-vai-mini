@@ -99,6 +99,13 @@ h3 { font-size: 1.45rem; }
   color: var(--ink);
 }
 
+.template-card:hover strong,
+.template-card:hover small,
+.template-card.is-selected strong,
+.template-card.is-selected small { color: var(--ink); }
+.template-card:hover span:last-child,
+.template-card.is-selected span:last-child { color: var(--deep-sea); opacity: 1; }
+
 .template-card strong,
 .template-card small { grid-column: 2; }
 .template-card span:last-child { grid-column: 2; font-size: 0.75rem; font-weight: 800; opacity: 0.7; }
@@ -122,7 +129,9 @@ h3 { font-size: 1.45rem; }
 }
 
 .create-form .field { flex: 1; }
-.create-form .language-field { flex: 0 0 11rem; }
+.create-panel .button.is-primary { background: var(--sun); color: var(--ink); }
+.create-panel .button.is-primary:hover:not(:disabled) { background: #ffb928; }
+.create-panel .button.is-primary:disabled { background: #6e8c95; color: #e7f2f3; opacity: 1; }
 
 .games-section { margin-top: 4rem; }
 .sessions-section { margin-top: 4rem; }
@@ -191,8 +200,7 @@ h3 { font-size: 1.45rem; }
   .template-grid,
   .games-grid { grid-template-columns: 1fr; }
   .create-form { align-items: stretch; flex-direction: column; }
-  .create-form .field,
-  .create-form .language-field { width: 100%; }
+  .create-form .field { width: 100%; }
   .session-row { align-items: stretch; grid-template-columns: 1fr; }
   .session-progress { text-align: left; }
 }

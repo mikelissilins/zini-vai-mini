@@ -5,7 +5,7 @@
     <span>Zini vai mini</span>
   </a>
   <nav class="header-actions" aria-label="Lietotāja darbības">
-    <button class="language-toggle" type="button" (click)="i18n.toggle()">{{ i18n.alternateLocale().toUpperCase() }}</button>
+    <span class="language-label">English</span>
     @if (!auth.ready()) {
       <span class="backend-status" role="status">{{ i18n.t('wakingUp') }}</span>
     }
@@ -38,11 +38,11 @@
               {{ auth.ready() ? i18n.t('startBuilding') : i18n.t('wakingUp') }}
             </button>
           }
-          <span class="mini-proof">6 tēmas · 10–50 punkti · TOP 4</span>
+          <span class="mini-proof">6 categories · 10–50 points · TOP 4</span>
         </div>
       </div>
       <div class="score-board" aria-label="Spēles laukuma piemērs">
-        @for (category of ['Bībele', 'Jēzus', 'Jūra']; track category) {
+        @for (category of ['Bible', 'Jesus', 'Camp']; track category) {
           <div class="score-column">
             <strong>{{ category }}</strong>
             @for (points of [10, 20, 30, 40, 50]; track points) {

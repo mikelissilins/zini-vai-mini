@@ -110,6 +110,18 @@ public class SessionService {
     }
 
     @Transactional
+    public SessionView useHint(UUID id, long version) {
+        GameSession session = requireSession(id);
+        session.requireVersion(version);
+        SessionQuestion question = requireQuestion(session, session.getSelectedQuestionId());
+        if (question.getExplanation() == null || question.getExplanation().isBlank()) {
+            throw new InvalidGameException("Šim jautājumam nav pavediena.");
+        }
+        session.useHint(question);
+        return saveAndPublish(session);
+    }
+
+    @Transactional
     public SessionView score(UUID id, boolean correct, long version) {
         GameSession session = requireSession(id);
         session.requireVersion(version);
@@ -165,7 +177,7 @@ public class SessionService {
     private SessionView toView(GameSession session, boolean publicView) {
         List<SessionTeam> sessionTeams = teams.findBySessionIdOrderByPositionAsc(session.getId());
         List<SessionQuestion> sessionQuestions = questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(session.getId());
-        List<TeamView> teamViews = rankedTeams(sessionTeams);
+        List<TeamView> teamViews = rankedTeams(sessionTeams, events.findBySessionAndUndoneFalse(session));
         UUID activeTeamId = sessionTeams.isEmpty() ? null : sessionTeams.get(session.getActiveTeamIndex()).getId();
         SelectedQuestionView selected = session.getSelectedQuestionId() == null ? null
                 : selectedView(requireQuestion(session, session.getSelectedQuestionId()), publicView && !session.isAnswerRevealed());
@@ -176,7 +188,7 @@ public class SessionService {
                 categoryViews(sessionQuestions), selected);
     }
 
-    private List<TeamView> rankedTeams(List<SessionTeam> sessionTeams) {
+    private List<TeamView> rankedTeams(List<SessionTeam> sessionTeams, List<ScoreEvent> scoreEvents) {
         List<SessionTeam> ranked = sessionTeams.stream()
                 .sorted(Comparator.comparingInt(SessionTeam::getScore).reversed().thenComparingInt(SessionTeam::getPosition))
                 .toList();
@@ -188,8 +200,16 @@ public class SessionService {
             ranks.put(ranked.get(index).getId(), rank);
             previousScore = ranked.get(index).getScore();
         }
-        return sessionTeams.stream().map(team -> new TeamView(team.getId(), team.getName(), team.getColor(),
-                team.getPosition(), team.getScore(), ranks.get(team.getId()))).toList();
+        Map<UUID, int[]> answerCounts = new LinkedHashMap<>();
+        scoreEvents.forEach(event -> {
+            int[] counts = answerCounts.computeIfAbsent(event.getTeamId(), ignored -> new int[2]);
+            counts[event.isCorrect() ? 0 : 1]++;
+        });
+        return sessionTeams.stream().map(team -> {
+            int[] counts = answerCounts.getOrDefault(team.getId(), new int[2]);
+            return new TeamView(team.getId(), team.getName(), team.getColor(), team.getPosition(), team.getScore(),
+                    ranks.get(team.getId()), counts[0], counts[1]);
+        }).toList();
     }
 
     private List<BoardCategoryView> categoryViews(List<SessionQuestion> sessionQuestions) {
@@ -206,6 +226,7 @@ public class SessionService {
                 question.getPoints(), question.getQuestionType(), question.getPrompt(), hideAnswer ? null : question.getAnswer(),
                 hideAnswer ? null : question.getExplanation(),
                 question.getMediaAsset() == null ? null : "/api/public/media/" + question.getMediaAsset().getId(),
+                question.isHintUsed(),
                 question.getOptions().stream().map(option -> new OptionView(option.getId(), option.getText(),
                         !hideAnswer && option.isCorrect())).toList());
     }

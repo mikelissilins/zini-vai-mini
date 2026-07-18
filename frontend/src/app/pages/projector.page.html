@@ -4,8 +4,6 @@
   } @else if (session(); as game) {
     <header class="projector-header">
       <div>
-        <span class="live-dot" [class.is-connected]="connected()"></span>
-        <p>{{ copy('Tiešraide', 'Live game') }}</p>
         <h1>{{ game.title }}</h1>
       </div>
       <div class="projector-progress">
@@ -36,7 +34,7 @@
         }
         <div class="full-results">
           @for (team of rankedTeams(); track team.id) {
-            <div><b>{{ team.rank }}.</b><span>{{ team.name }}</span><strong>{{ team.score }}</strong></div>
+            <div><b>{{ team.rank }}.</b><span>{{ team.name }}</span><em>{{ team.correctAnswers }} ✓ · {{ team.wrongAnswers }} ×</em><strong>{{ team.score }}</strong></div>
           }
         </div>
       </section>
@@ -89,6 +87,11 @@
           </div>
         }
       </footer>
+    }
+    @if (scoreFeedback(); as feedback) {
+      <div class="score-feedback" [class.is-correct]="feedback === 'correct'" [class.is-wrong]="feedback === 'wrong'" role="status">
+        {{ feedback === 'correct' ? copy('Pareizi!', 'Correct!') : copy('Nepareizi', 'Not quite') }}
+      </div>
     }
   } @else {
     <section class="broadcast-loading"><span>?</span></section>

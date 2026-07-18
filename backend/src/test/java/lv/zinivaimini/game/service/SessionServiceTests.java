@@ -48,6 +48,7 @@ class SessionServiceTests {
         when(sessions.findById(session.getId())).thenReturn(Optional.of(session));
         when(teams.findBySessionIdOrderByPositionAsc(session.getId())).thenReturn(List.of(first, second, third));
         when(questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(session.getId())).thenReturn(List.of(question));
+        when(events.findBySessionAndUndoneFalse(session)).thenReturn(List.of());
         when(events.existsBySessionAndUndoneFalse(session)).thenReturn(true);
 
         SessionService service = new SessionService(mock(GameRepository.class), sessions, teams, questions, events,
@@ -57,5 +58,9 @@ class SessionServiceTests {
         assertThat(restored.usedCount()).isEqualTo(1);
         assertThat(restored.canUndo()).isTrue();
         assertThat(restored.teams()).extracting(team -> team.rank()).containsExactly(1, 1, 3);
+        assertThat(restored.teams()).allSatisfy(team -> {
+            assertThat(team.correctAnswers()).isZero();
+            assertThat(team.wrongAnswers()).isZero();
+        });
     }
 }

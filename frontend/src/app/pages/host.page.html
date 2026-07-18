@@ -4,12 +4,10 @@
     <header class="host-header">
       <div>
         <a routerLink="/dashboard">← Spēļu panelis</a>
-        <p class="eyebrow">Vadītāja skats</p>
         <h1>{{ game.title }}</h1>
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
-        <a class="button is-warning" target="_blank" [href]="'/live/' + game.publicToken">Projektors ↗</a>
         <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo</button>
         @if (game.status === 'ACTIVE') {
           <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
@@ -31,7 +29,7 @@
         <p class="eyebrow">Spēle pabeigta</p>
         <h2>Rezultāti ir gatavi</h2>
         @for (team of game.teams; track team.id) {
-          <div><strong>{{ team.rank }}.</strong><span>{{ team.name }}</span><b>{{ team.score }}</b></div>
+          <div><strong>{{ team.rank }}.</strong><span>{{ team.name }}</span><em>{{ team.correctAnswers }} ✓ · {{ team.wrongAnswers }} ×</em><b>{{ team.score }}</b></div>
         }
       </section>
     } @else {
@@ -53,10 +51,13 @@
             </div>
           }
           @if (!game.answerRevealed && question.explanation) {
-            <details class="question-hint">
-              <summary>Pavediens vadītājam</summary>
-              <p>{{ question.explanation }}</p>
-            </details>
+            <button class="hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy() || question.hintUsed" (click)="useHint()">
+              <span>{{ question.hintUsed ? 'Pavediens atklāts' : 'Rādīt pavedienu' }}</span>
+              <strong>{{ question.points }} punkti − 5 punkti</strong>
+            </button>
+            @if (question.hintUsed) {
+              <div class="question-hint"><strong>Pavediens</strong><p>{{ question.explanation }}</p></div>
+            }
           }
           @if (game.answerRevealed) {
             <div class="answer-reveal">
@@ -66,7 +67,7 @@
             </div>
             <div class="score-actions">
               <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
-              <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points }}</button>
+              <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points - (question.hintUsed ? 5 : 0) }}</button>
             </div>
           } @else {
             <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">Atklāt atbildi</button>

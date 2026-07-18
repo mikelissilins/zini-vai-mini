@@ -57,6 +57,10 @@ export class GameApiService {
     return this.http.post<SessionView>(`/api/sessions/${id}/reveal`, { version });
   }
 
+  useHint(id: string, version: number) {
+    return this.http.post<SessionView>(`/api/sessions/${id}/hint`, { version });
+  }
+
   scoreAnswer(id: string, correct: boolean, version: number) {
     return this.http.post<SessionView>(`/api/sessions/${id}/score`, { correct, version });
   }

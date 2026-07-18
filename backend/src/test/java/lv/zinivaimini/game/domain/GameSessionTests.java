@@ -43,6 +43,20 @@ class GameSessionTests {
         assertThat(fixture.session.getActiveTeamIndex()).isEqualTo(1);
     }
 
+    @Test
+    void hintReducesTheAwardedScoreByFivePoints() {
+        Fixture fixture = fixture();
+        fixture.session.selectQuestion(fixture.question);
+        fixture.session.useHint(fixture.question);
+        fixture.session.revealAnswer();
+
+        ScoreEvent event = fixture.session.score(fixture.firstTeam, fixture.question, true, 2);
+
+        assertThat(event.getPoints()).isEqualTo(25);
+        assertThat(fixture.firstTeam.getScore()).isEqualTo(25);
+        assertThat(fixture.question.isHintUsed()).isTrue();
+    }
+
     private Fixture fixture() {
         Game game = new Game("Testa spēle", null, "lv");
         Category category = new Category("Bībele", "#0E758C", 0);

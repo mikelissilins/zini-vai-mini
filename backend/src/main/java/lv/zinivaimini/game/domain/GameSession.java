@@ -81,13 +81,21 @@ public class GameSession {
         answerRevealed = true;
     }
 
+    public void useHint(SessionQuestion question) {
+        requireActive();
+        if (!question.getId().equals(selectedQuestionId)) {
+            throw new InvalidGameException("Vispirms izvēlies jautājumu.");
+        }
+        question.useHint();
+    }
+
     public ScoreEvent score(SessionTeam team, SessionQuestion question, boolean correct, int teamCount) {
         requireActive();
         if (!answerRevealed || !question.getId().equals(selectedQuestionId)) {
             throw new InvalidGameException("Pirms vērtēšanas atklāj izvēlētā jautājuma atbildi.");
         }
         int before = activeTeamIndex;
-        int awarded = correct ? question.getPoints() : 0;
+        int awarded = correct ? question.getPoints() - (question.isHintUsed() ? 5 : 0) : 0;
         team.addScore(awarded);
         question.markUsed();
         activeTeamIndex = (activeTeamIndex + 1) % teamCount;
