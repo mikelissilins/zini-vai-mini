@@ -51,17 +51,17 @@
                 <span class="label">{{ i18n.t('categoryName') }}</span>
                 <input class="input is-medium" formControlName="name" (input)="markChanged()">
               </label>
-              <label class="color-field" aria-label="Sadaļas krāsa">
-                <input type="color" formControlName="color" (input)="markChanged()">
-              </label>
-              <div class="points-control">
-                <select #pointToAdd class="select" [disabled]="!availablePoints(category).length">
-                  @for (points of availablePoints(category); track points) {
-                    <option [value]="points">{{ points }}</option>
+              <details class="color-field">
+                <summary [style.--selected-color]="category.controls['color'].value" aria-label="Sadaļas krāsa"></summary>
+                <div class="color-menu">
+                  @for (color of categoryColors; track color) {
+                    <button type="button" [class.is-selected]="category.controls['color'].value === color" [style.--color]="color" [attr.aria-label]="color" (click)="setCategoryColor(category, color)"></button>
                   }
-                </select>
-                <button class="button is-light" type="button" [disabled]="!availablePoints(category).length" (click)="addPoint(category, pointToAdd.value)">
-                  + {{ i18n.t('addPoints') }}
+                </div>
+              </details>
+              <div class="points-control">
+                <button class="button is-light" type="button" [disabled]="nextPoint(category) === null" (click)="addNextPoint(category)">
+                  + {{ nextPoint(category) || '' }}
                 </button>
               </div>
               <button class="button is-ghost has-text-danger" type="button" (click)="removeCategory(categoryIndex)">
@@ -74,7 +74,6 @@
                 <article class="question-card" [formGroupName]="questionIndex">
                   <div class="question-card-header" [style.--category-color]="category.controls['color'].value">
                     <strong>{{ question.controls['points'].value }}</strong>
-                    <label class="time-limit"><span>{{ i18n.t('timeLimit') }}</span><input type="number" min="5" max="300" formControlName="timeLimitSeconds" (input)="markChanged()"><b>s</b></label>
                     <div class="type-toggle">
                       <button type="button" [class.is-active]="question.controls['type'].value === 'FREE_TEXT'" (click)="setQuestionType(question, 'FREE_TEXT')">
                         {{ i18n.t('freeText') }}
@@ -83,13 +82,20 @@
                         A/B/C
                       </button>
                     </div>
-                    <button class="remove-question" type="button" (click)="removeQuestion(category, questionIndex)" [attr.aria-label]="i18n.t('delete')" [attr.title]="i18n.t('delete')">&#128465;</button>
+                    @if (questionIndex === questions(category).length - 1) {
+                      <button class="remove-question" type="button" (click)="removeQuestion(category, questionIndex)" [attr.aria-label]="i18n.t('delete')" [attr.title]="i18n.t('delete')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8l1 2h4v2H3V5h4l1-2Zm-2 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></button>
+                    }
                   </div>
 
                   <div class="question-fields">
                     <label class="field">
                       <span class="label">{{ i18n.t('question') }}</span>
                       <textarea class="textarea" formControlName="prompt" rows="3" (input)="markChanged()"></textarea>
+                    </label>
+
+                    <label class="field time-limit">
+                      <span class="label">{{ i18n.t('timeLimit') }}</span>
+                      <span><input type="number" min="5" max="300" formControlName="timeLimitSeconds" (input)="markChanged()"><b>s</b></span>
                     </label>
 
                     @if (question.controls['type'].value === 'MULTIPLE_CHOICE') {

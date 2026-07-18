@@ -8,7 +8,7 @@ import { GameInput, GameView, QuestionInput, QuestionType } from '../core/models
 
 const STANDARD_POINTS = [10, 20, 30, 40, 50];
 const AVAILABLE_POINTS = [10, 20, 30, 40, 50, 60, 70];
-const CATEGORY_COLORS = ['#0E758C', '#F77F5B', '#55B8CC', '#5CA67A', '#7A6FF0', '#F2A65A'];
+const CATEGORY_COLORS = ['#704A91', '#3F704C', '#9B4660', '#705F43', '#6E587D', '#4C705D', '#8B4B73', '#56633F'];
 
 @Component({
   selector: 'app-editor-page',
@@ -78,22 +78,30 @@ export class EditorPage implements OnInit {
     this.markChanged();
   }
 
-  protected availablePoints(category: FormGroup): number[] {
-    const usedPoints = new Set(this.questions(category).controls.map((question) => question.controls['points'].value));
-    return AVAILABLE_POINTS.filter((points) => !usedPoints.has(points));
+  protected readonly categoryColors = CATEGORY_COLORS;
+
+  protected nextPoint(category: FormGroup): number | null {
+    const lastQuestion = this.questions(category).controls.at(-1);
+    if (!lastQuestion) return AVAILABLE_POINTS[0];
+    const index = AVAILABLE_POINTS.indexOf(lastQuestion.controls['points'].value);
+    return index < 0 ? null : AVAILABLE_POINTS[index + 1] ?? null;
   }
 
-  protected addPoint(category: FormGroup, selectedValue: string): void {
-    const points = Number(selectedValue);
-    if (!AVAILABLE_POINTS.includes(points) || !this.availablePoints(category).includes(points)) return;
-    const questions = this.questions(category);
-    const insertAt = questions.controls.findIndex((question) => question.controls['points'].value > points);
-    questions.insert(insertAt === -1 ? questions.length : insertAt, this.createQuestionGroup(this.emptyQuestion(points)));
+  protected addNextPoint(category: FormGroup): void {
+    const points = this.nextPoint(category);
+    if (points === null) return;
+    this.questions(category).push(this.createQuestionGroup(this.emptyQuestion(points)));
     this.markChanged();
   }
 
   protected removeQuestion(category: FormGroup, questionIndex: number): void {
+    if (questionIndex !== this.questions(category).length - 1) return;
     this.questions(category).removeAt(questionIndex);
+    this.markChanged();
+  }
+
+  protected setCategoryColor(category: FormGroup, color: string): void {
+    category.controls['color'].setValue(color);
     this.markChanged();
   }
 

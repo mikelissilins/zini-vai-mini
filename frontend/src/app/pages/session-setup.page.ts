@@ -6,7 +6,7 @@ import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
 import { GameView, TeamInput } from '../core/models';
 
-const TEAM_COLORS = ['#B33A3A', '#3B6FB6', '#7B4E9D', '#C46B16', '#2F7D64', '#A0475B', '#356859', '#6D5F9E', '#A65A31', '#1F7A8C', '#8C6A22', '#5D4B8A'];
+const TEAM_COLORS = ['#9A3E65', '#476B38', '#77519A', '#795E42', '#A04343', '#4F7765', '#6E596B', '#815747', '#5E6B4C', '#87527B', '#576645', '#684F78'];
 
 @Component({
   selector: 'app-session-setup-page',

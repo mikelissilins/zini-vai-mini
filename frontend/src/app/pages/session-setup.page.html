@@ -15,11 +15,14 @@
     @for (team of teams(); track $index; let index = $index) {
       <article class="team-row" [style.--team-color]="team.color">
         <span class="team-position">{{ (index + 1).toString().padStart(2, '0') }}</span>
-        <div class="team-colors" [attr.aria-label]="i18n.t('teamName') + ' krāsa'">
-          @for (color of teamColors; track color) {
-            <button type="button" [class.is-selected]="team.color === color" [style.--color]="color" [attr.aria-label]="color" (click)="updateTeam(index, 'color', color)"></button>
-          }
-        </div>
+        <details class="team-colors">
+          <summary [style.--color]="team.color" [attr.aria-label]="i18n.t('teamName') + ' krāsa'"></summary>
+          <div class="team-color-menu">
+            @for (color of teamColors; track color) {
+              <button type="button" [class.is-selected]="team.color === color" [style.--color]="color" [attr.aria-label]="color" (click)="updateTeam(index, 'color', color)"></button>
+            }
+          </div>
+        </details>
         <label>
           <span>{{ i18n.t('teamName') }}</span>
           <input class="input is-medium" [ngModel]="team.name" (ngModelChange)="updateTeam(index, 'name', $event)" maxlength="80">
