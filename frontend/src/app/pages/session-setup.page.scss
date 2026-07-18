@@ -24,12 +24,14 @@ h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, 5rem); lett
   border-left: 0.7rem solid var(--team-color);
   display: grid;
   gap: 1rem;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto minmax(13rem, 16rem) 1fr auto auto;
   padding: 1rem;
 }
 
 .team-position { color: var(--muted); font-family: var(--font-display); }
-.team-row input[type='color'] { border: 0; height: 3rem; padding: 0; width: 3rem; }
+.team-colors { display: grid; gap: 0.3rem; grid-template-columns: repeat(4, 1.5rem); }
+.team-colors button { background: var(--color); border: 2px solid transparent; cursor: pointer; height: 1.5rem; padding: 0; width: 1.5rem; }
+.team-colors button.is-selected { border-color: var(--ink); box-shadow: 0 0 0 2px white; }
 .team-row label span { color: var(--muted); display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
 .team-row label,
 .team-row input { min-width: 0; }
@@ -42,8 +44,10 @@ button:disabled { cursor: not-allowed; opacity: 0.35; }
 
 @media (max-width: 640px) {
   .setup-heading { align-items: flex-start; flex-direction: column; gap: 1rem; }
-  .team-row { grid-template-columns: auto auto 1fr; }
-  .order-buttons { grid-column: 2; }
+  .team-row { grid-template-columns: auto 1fr; }
+  .team-colors { grid-column: 2; }
+  .team-row label { grid-column: 1 / -1; }
+  .order-buttons { grid-column: 1; }
   .remove-team { grid-column: 3; justify-self: end; }
   .setup-actions { align-items: stretch; flex-direction: column; gap: 1rem; }
 }

@@ -6,7 +6,7 @@ import { GameApiService } from '../core/game-api.service';
 import { I18nService } from '../core/i18n.service';
 import { GameView, TeamInput } from '../core/models';
 
-const TEAM_COLORS = ['#0E758C', '#F77F5B', '#55B8CC', '#5CA67A', '#FFC857', '#7A6FF0'];
+const TEAM_COLORS = ['#B33A3A', '#3B6FB6', '#7B4E9D', '#C46B16', '#2F7D64', '#A0475B', '#356859', '#6D5F9E', '#A65A31', '#1F7A8C', '#8C6A22', '#5D4B8A'];
 
 @Component({
   selector: 'app-session-setup-page',
@@ -20,6 +20,7 @@ export class SessionSetupPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   protected readonly i18n = inject(I18nService);
+  protected readonly teamColors = TEAM_COLORS;
   protected readonly game = signal<GameView | null>(null);
   protected readonly creating = signal(false);
   protected readonly error = signal('');

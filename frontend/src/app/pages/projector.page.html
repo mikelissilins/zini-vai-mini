@@ -58,8 +58,12 @@
               }
             </div>
           }
-          @if (!game.answerRevealed && question.hintUsed) {
-            <div class="projector-hint"><span>{{ copy('Pavediens', 'Hint') }}</span><p>{{ question.explanation }}</p></div>
+          @if (!game.answerRevealed && question.hasHint) {
+            @if (question.hintUsed) {
+              <div class="projector-hint"><span>{{ copy('Pavediens', 'Hint') }}</span><p>{{ question.explanation }}</p></div>
+            } @else {
+              <div class="projector-hint-available"><span>{{ copy('Pavediens pieejams', 'Hint available') }}</span><strong>−5 {{ copy('punkti', 'points') }}</strong></div>
+            }
           }
           @if (game.answerRevealed && question.type === 'FREE_TEXT') {
             <div class="projector-answer">
@@ -86,16 +90,18 @@
     }
 
     @if (game.status === 'ACTIVE') {
-      <footer class="projector-teams">
-        <div class="current-turn" [style.--team-color]="activeTeam()?.color">
-          <span>{{ copy('Tagad izvēlas', 'Now choosing') }}</span>
-          <strong>{{ activeTeam()?.name }}</strong>
-          <b>{{ activeTeam()?.score }} {{ copy('punkti', 'points') }}</b>
-        </div>
+      <footer class="projector-teams" aria-label="Rezultātu tabula">
+        @for (team of game.teams; track team.id) {
+          <article class="team-score" [class.is-active]="team.id === game.activeTeamId" [style.--team-color]="team.color">
+            <span>{{ team.id === game.activeTeamId ? copy('Tagad izvēlas', 'Now choosing') : team.rank + '.' }}</span>
+            <strong>{{ team.name }}</strong>
+            <b>{{ team.score }}</b>
+          </article>
+        }
       </footer>
     }
     @if (scoreFeedback(); as feedback) {
-      <div class="score-feedback" [class.is-correct]="feedback.correct" [class.is-wrong]="!feedback.correct" role="status">
+      <div class="score-feedback" [class.is-correct]="feedback.correct" [class.is-wrong]="!feedback.correct" [style.--feedback-color]="feedback.color" role="status">
         <strong>{{ feedback.correct ? '✓' : '×' }}</strong>
         <span>{{ feedback.correct ? '+' + feedback.awarded : '0' }} {{ copy('punkti', 'points') }}</span>
       </div>

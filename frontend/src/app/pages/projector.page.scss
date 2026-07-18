@@ -1,17 +1,18 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
 .projector-shell { background: var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
-.projector-header, .question-topline, .question-points, .projector-teams, .current-turn { align-items: center; display: flex; }
+.projector-header, .question-topline, .question-points { align-items: center; display: flex; }
 .projector-header { justify-content: space-between; margin: 0 auto clamp(1.2rem, 3vh, 2.5rem); max-width: 1640px; position: relative; }
 .projector-title > span, .projector-progress span { color: var(--sun); font-size: clamp(0.6rem, 1.1vw, 0.8rem); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .projector-header h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 4.5rem); letter-spacing: -0.05em; line-height: 0.95; margin: 0.3rem 0 0; overflow-wrap: anywhere; }
 .projector-progress { border-left: 1px solid rgb(255 250 240 / 32%); display: grid; padding-left: clamp(0.8rem, 2vw, 1.8rem); text-align: right; }
 .projector-progress strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 3rem); line-height: 1; }
 .projector-board { display: grid; gap: clamp(0.45rem, 1vw, 1rem); grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); margin: 0 auto; max-width: 1640px; position: relative; }
-.projector-column { display: grid; gap: clamp(0.45rem, 0.8vw, 0.8rem); }
-.projector-column h2 { align-items: end; background: var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: clamp(4rem, 10vh, 7rem); overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
+.scene-board .projector-board { height: calc(100vh - clamp(12rem, 22vh, 16rem)); }
+.projector-column { display: grid; gap: clamp(0.45rem, 0.8vw, 0.8rem); grid-auto-rows: minmax(0, 1fr); min-height: 0; }
+.projector-column h2 { align-items: end; background: var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: 0; overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
 .projector-column h2::before { border-left: 0.45rem solid var(--sun); content: ''; height: 58%; left: 0.65rem; position: absolute; top: 0.65rem; }
 .projector-column h2 span { position: relative; }
-.projector-column > div { align-items: center; background: var(--foam); box-shadow: inset 0 -0.28rem 0 var(--active-team-color); color: var(--active-team-color); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
+.projector-column > div { align-items: center; background: var(--foam); box-shadow: inset 0 -0.28rem 0 var(--active-team-color); color: var(--active-team-color); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: 0; position: relative; }
 .projector-column > div::after { border-bottom: 0.24rem solid color-mix(in srgb, var(--category-color) 70%, white); bottom: 0; content: ''; left: 0; position: absolute; right: 0; }
 .projector-column > div.is-used { background: var(--deep-sea); box-shadow: inset 0 -0.28rem 0 var(--result-color); color: var(--result-color); }
 .projector-column > div.is-used::after { border-color: var(--result-color); }
@@ -32,16 +33,20 @@
 .projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 clamp(2.6rem, 4vw, 3.5rem); font-family: var(--font-display); height: clamp(2.6rem, 4vw, 3.5rem); justify-content: center; }
 .projector-options div.is-correct { background: #dff4e6; border-color: #28805c; color: #135138; }
 .projector-options div.is-wrong { background: #fff0eb; border-color: #c84630; color: #7d2d20; }
-.projector-answer, .projector-hint { align-self: end; background: var(--sand); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
+.projector-answer, .projector-hint, .projector-hint-available { align-self: end; background: var(--sand); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
 .projector-hint { background: var(--sky); border-color: var(--sea); }
+.projector-hint-available { background: var(--deep-sea); border-color: var(--sun); color: white; display: flex; gap: 1rem; justify-content: space-between; }
+.projector-hint-available span { font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+.projector-hint-available strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.1rem); }
 .projector-answer span, .projector-hint span { color: var(--deep-sea); display: block; font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
 .projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3.5rem); line-height: 1.12; margin-top: 0.3rem; overflow-wrap: anywhere; }
 .projector-answer p, .projector-hint p { color: var(--ink); font-size: clamp(1rem, 1.55vw, 1.55rem); line-height: 1.45; margin: 0.65rem 0 0; overflow-wrap: anywhere; }
-.projector-teams { background: var(--deep-sea); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; left: 0; padding: 0.8rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
-.current-turn { background: var(--team-color); box-sizing: border-box; display: grid; gap: clamp(0.45rem, 1.5vw, 1.25rem); grid-template-columns: auto minmax(0, 1fr) auto; margin: 0 auto; max-width: 980px; min-height: clamp(4.8rem, 8vw, 6.5rem); padding: 0.85rem clamp(1rem, 2vw, 1.75rem); width: 100%; }
-.current-turn span { color: var(--sun); font-size: clamp(0.62rem, 1vw, 0.8rem); font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
-.current-turn strong { color: white; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 3rem); min-width: 0; overflow-wrap: anywhere; }
-.current-turn b { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.2rem, 2.3vw, 2.35rem); white-space: nowrap; }
+.projector-teams { background: var(--deep-sea); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; display: grid; gap: 0.45rem; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); left: 0; padding: 0.65rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
+.team-score { background: color-mix(in srgb, var(--team-color) 28%, var(--deep-sea)); border-left: 0.35rem solid var(--team-color); display: grid; gap: 0.1rem; min-width: 0; padding: 0.4rem 0.7rem; position: relative; }
+.team-score.is-active { background: var(--team-color); transform: translateY(-0.2rem); }
+.team-score span { color: var(--sun); font-size: clamp(0.55rem, 0.85vw, 0.72rem); font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.team-score strong { color: white; font-family: var(--font-display); font-size: clamp(1rem, 1.7vw, 1.65rem); overflow-wrap: anywhere; }
+.team-score b { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.05rem, 1.8vw, 1.8rem); position: absolute; right: 0.7rem; top: 50%; transform: translateY(-32%); }
 .final-stage { animation: stage-arrive 650ms cubic-bezier(0.22, 1, 0.36, 1) both; margin: clamp(2rem, 7vh, 7rem) auto 0; max-width: 1400px; position: relative; text-align: center; }
 .final-kicker { color: var(--sun); font-size: clamp(0.72rem, 1.2vw, 0.9rem); font-weight: 900; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
 .final-stage > h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); letter-spacing: -0.06em; line-height: 0.86; margin: 0.7rem 0; }
@@ -59,12 +64,12 @@
 .full-results div { border-top: 1px solid rgb(255 255 255 / 20%); display: grid; gap: 1rem; grid-template-columns: 3rem 1fr auto auto; padding: 0.65rem; text-align: left; }
 .full-results em { color: #d9f5f9; font-size: 0.82rem; font-style: normal; }
 .full-results strong { color: var(--sun); }
-.score-feedback { animation: score-flash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both; display: grid; inset: 0; justify-items: center; pointer-events: none; position: fixed; text-align: center; top: 28%; z-index: 5; }
-.score-feedback strong { font-family: var(--font-display); font-size: clamp(5rem, 14vw, 13rem); line-height: 0.8; text-shadow: 0 0.28rem 0 rgb(22 50 63 / 28%); }
+.score-feedback { align-content: center; animation: score-flash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--feedback-color); display: grid; inset: 0; justify-items: center; pointer-events: none; position: fixed; text-align: center; z-index: 5; }
+.score-feedback strong { color: white; font-family: var(--font-display); font-size: clamp(5rem, 14vw, 13rem); line-height: 0.8; text-shadow: 0 0.28rem 0 rgb(22 50 63 / 28%); }
 .score-feedback span { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 4rem); margin-top: 0.7rem; }
-.score-feedback.is-correct { color: #b8f0c9; }
+.score-feedback.is-correct { color: var(--sun); }
 .score-feedback.is-correct::before { animation: confetti-drift 1050ms ease-out both; color: var(--sun); content: '✦  ·  ✦  ·  ✦'; font-size: clamp(1.2rem, 3vw, 2.75rem); letter-spacing: 0.45em; position: absolute; top: -0.35rem; }
-.score-feedback.is-wrong { color: #ffd1c2; }
+.score-feedback.is-wrong { color: white; }
 @keyframes score-flash { 0% { opacity: 0; transform: scale(0.72); } 20% { opacity: 1; transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
 @keyframes confetti-drift { from { opacity: 0; transform: translateY(-1rem); } 25% { opacity: 0.9; } to { opacity: 0; transform: translateY(2.5rem); } }
 @keyframes stage-arrive { from { opacity: 0; transform: translateY(1.8rem) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -74,9 +79,8 @@
 @media (max-width: 700px) {
   .projector-shell { padding-bottom: 1.5rem; }
   .projector-options, .podium { grid-template-columns: 1fr; }
+  .scene-board .projector-board { height: auto; }
   .projector-teams { position: static; }
-  .current-turn { grid-template-columns: 1fr auto; }
-  .current-turn span { grid-column: 1 / -1; }
   .projector-question { min-height: auto; }
   .full-results div { grid-template-columns: 2rem 1fr auto; }
   .full-results em { grid-column: 2; }

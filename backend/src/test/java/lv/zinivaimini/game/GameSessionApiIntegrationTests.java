@@ -96,6 +96,10 @@ class GameSessionApiIntegrationTests {
         String questionId = session.path("categories").get(0).path("questions").get(0).path("id").asText();
 
         session = request(post("/api/sessions/{id}/select", sessionId), Map.of("questionId", questionId, "version", 0));
+        assertThat(session.path("selectedQuestion").path("hasHint").asBoolean()).isTrue();
+        JsonNode projector = json.readTree(mvc.perform(get("/api/public/sessions/{token}", session.path("publicToken").asText()))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+        assertThat(projector.path("selectedQuestion").path("explanation").isNull()).isTrue();
         String correctOptionId = session.path("selectedQuestion").path("options").valueStream()
                 .filter(option -> option.path("correct").asBoolean())
                 .findFirst().orElseThrow().path("id").asText();
@@ -176,6 +180,7 @@ class GameSessionApiIntegrationTests {
                     "type", "MULTIPLE_CHOICE",
                     "prompt", "Jautājums par " + points,
                     "answer", "Atbilde " + points,
+                    "explanation", "Pavediens par " + points,
                     "options", List.of(
                             Map.of("text", "Atbilde " + points, "correct", true),
                             Map.of("text", "Cita atbilde", "correct", false),
@@ -187,6 +192,7 @@ class GameSessionApiIntegrationTests {
                 "type", "FREE_TEXT",
                 "prompt", "Jautājums par " + points,
                 "answer", "Atbilde " + points,
+                "explanation", "Pavediens par " + points,
                 "options", List.of());
     }
 }

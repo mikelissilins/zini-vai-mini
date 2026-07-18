@@ -122,6 +122,7 @@ export interface SelectedQuestion {
   answer: string | null;
   explanation: string | null;
   mediaUrl: string | null;
+  hasHint: boolean;
   hintUsed: boolean;
   options: SessionOption[];
 }

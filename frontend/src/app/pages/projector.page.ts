@@ -18,7 +18,7 @@ export class ProjectorPage implements OnInit, OnDestroy {
   protected readonly session = signal<SessionView | null>(null);
   protected readonly connected = signal(false);
   protected readonly error = signal('');
-  protected readonly scoreFeedback = signal<{ awarded: number; correct: boolean } | null>(null);
+  protected readonly scoreFeedback = signal<{ awarded: number; correct: boolean; color: string } | null>(null);
   protected readonly activeTeam = computed(() => {
     const session = this.session();
     return session?.teams.find((team) => team.id === session.activeTeamId) || null;
@@ -78,7 +78,11 @@ export class ProjectorPage implements OnInit, OnDestroy {
       const result = next.categories.flatMap((category) => category.questions)
         .find((question) => question.used && !previous.categories.flatMap((category) => category.questions)
           .find((previousQuestion) => previousQuestion.id === question.id)?.used);
-      this.scoreFeedback.set({ awarded: Math.max(0, currentScore - previousScore), correct: result?.correct === true });
+      this.scoreFeedback.set({
+        awarded: Math.max(0, currentScore - previousScore),
+        correct: result?.correct === true,
+        color: previous.teams.find((team) => team.id === previous.activeTeamId)?.color || 'var(--deep-sea)',
+      });
       window.clearTimeout(this.feedbackTimer);
       this.feedbackTimer = window.setTimeout(() => this.scoreFeedback.set(null), 1300);
     }

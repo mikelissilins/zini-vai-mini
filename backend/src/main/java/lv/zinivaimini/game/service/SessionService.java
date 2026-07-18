@@ -264,6 +264,7 @@ public class SessionService {
                 question.getPoints(), question.getQuestionType(), question.getPrompt(), hideAnswer ? null : question.getAnswer(),
                 hideHint ? null : question.getExplanation(),
                 question.getMediaAsset() == null ? null : "/api/public/media/" + question.getMediaAsset().getId(),
+                question.getExplanation() != null && !question.getExplanation().isBlank(),
                 question.isHintUsed(),
                 question.getOptions().stream().map(option -> new OptionView(option.getId(), option.getText(),
                         !hideAnswer && option.isCorrect())).toList());

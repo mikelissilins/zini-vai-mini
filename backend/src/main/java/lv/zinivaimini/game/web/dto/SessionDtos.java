@@ -73,6 +73,7 @@ public final class SessionDtos {
             String answer,
             String explanation,
             String mediaUrl,
+            boolean hasHint,
             boolean hintUsed,
             List<OptionView> options) {
     }
