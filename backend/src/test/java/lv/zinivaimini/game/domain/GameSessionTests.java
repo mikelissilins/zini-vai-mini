@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class GameSessionTests {
 
     @Test
-    void correctAnswerScoresRotatesAndUndoRestoresTurn() {
+    void correctAnswerScoresRotatesAndUndoRestoresTheRevealedQuestion() {
         Fixture fixture = fixture();
 
         fixture.session.selectQuestion(fixture.question);
@@ -27,7 +27,7 @@ class GameSessionTests {
         assertThat(fixture.question.isUsed()).isFalse();
         assertThat(fixture.session.getActiveTeamIndex()).isZero();
         assertThat(fixture.session.getSelectedQuestionId()).isEqualTo(fixture.question.getId());
-        assertThat(fixture.session.isAnswerRevealed()).isFalse();
+        assertThat(fixture.session.isAnswerRevealed()).isTrue();
         assertThat(event.isUndone()).isTrue();
     }
 
@@ -58,6 +58,10 @@ class GameSessionTests {
         assertThat(fixture.session.isAnswerRevealed()).isFalse();
         assertThat(fixture.question.isUsed()).isFalse();
         assertThat(fixture.session.getActiveTeamIndex()).isZero();
+
+        fixture.session.clearSelectedQuestion();
+
+        assertThat(fixture.session.getSelectedQuestionId()).isNull();
     }
 
     @Test

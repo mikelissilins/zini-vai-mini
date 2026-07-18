@@ -81,7 +81,7 @@ class GameSessionApiIntegrationTests {
     }
 
     @Test
-    void scoresPersistsRotatesAndUndoRestoresSession() throws Exception {
+    void backReversesOneSessionInteractionAtATime() throws Exception {
         JsonNode game = request(post("/api/games"), completeGame()).path("id");
         JsonNode session = request(post("/api/sessions"), Map.of(
                 "gameId", game.asText(),
@@ -104,12 +104,18 @@ class GameSessionApiIntegrationTests {
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
         assertThat(restored.path("teams").get(0).path("score").asInt()).isEqualTo(10);
 
-        JsonNode undone = request(post("/api/sessions/{id}/undo", sessionId), Map.of("version", restored.path("version").asLong()));
+        JsonNode undone = request(post("/api/sessions/{id}/back", sessionId), Map.of("version", restored.path("version").asLong()));
         assertThat(undone.path("teams").get(0).path("score").asInt()).isZero();
         assertThat(undone.path("activeTeamIndex").asInt()).isZero();
         assertThat(undone.path("usedCount").asInt()).isZero();
         assertThat(undone.path("selectedQuestion").path("id").asText()).isEqualTo(questionId);
-        assertThat(undone.path("answerRevealed").asBoolean()).isFalse();
+        assertThat(undone.path("answerRevealed").asBoolean()).isTrue();
+
+        JsonNode hidden = request(post("/api/sessions/{id}/back", sessionId), Map.of("version", undone.path("version").asLong()));
+        assertThat(hidden.path("answerRevealed").asBoolean()).isFalse();
+
+        JsonNode board = request(post("/api/sessions/{id}/back", sessionId), Map.of("version", hidden.path("version").asLong()));
+        assertThat(board.path("selectedQuestion").isNull()).isTrue();
     }
 
     private JsonNode request(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,

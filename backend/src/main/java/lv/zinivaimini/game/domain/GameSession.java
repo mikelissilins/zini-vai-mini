@@ -93,6 +93,15 @@ public class GameSession {
         answerRevealed = false;
     }
 
+    public void clearSelectedQuestion() {
+        requireActive();
+        if (selectedQuestionId == null || answerRevealed) {
+            throw new InvalidGameException("Nav jautājuma, pie kura atgriezties.");
+        }
+        selectedQuestionId = null;
+        selectedOptionId = null;
+    }
+
     public void useHint(SessionQuestion question) {
         requireActive();
         if (!question.getId().equals(selectedQuestionId)) {
@@ -123,7 +132,7 @@ public class GameSession {
         activeTeamIndex = event.getActiveTeamBefore();
         selectedQuestionId = question.getId();
         selectedOptionId = null;
-        answerRevealed = false;
+        answerRevealed = true;
         status = SessionStatus.ACTIVE;
         event.markUndone();
     }

@@ -8,7 +8,7 @@
       </div>
       <div class="host-meta">
         <span>{{ game.usedCount }}/{{ game.totalQuestions }}</span>
-        <button class="button is-light" type="button" [disabled]="busy() || !game.canUndo" (click)="undo()">↶ Atcelt pēdējo rezultātu</button>
+        <button class="button is-light" type="button" [disabled]="busy() || !canStepBack()" (click)="stepBack()">↶ Atcelt pēdējo klikšķi</button>
         @if (game.status === 'ACTIVE') {
           <button class="button is-dark" type="button" [disabled]="busy()" (click)="finish()">Pabeigt</button>
         }
@@ -70,7 +70,6 @@
           }
           @if (game.answerRevealed) {
             <div class="score-actions">
-              <button class="button is-light is-large" type="button" [disabled]="busy()" (click)="hideAnswer()">← Atpakaļ pie jautājuma</button>
               <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
               <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points - (question.hintUsed ? 5 : 0) }}</button>
             </div>

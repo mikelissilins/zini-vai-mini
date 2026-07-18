@@ -57,10 +57,6 @@ export class GameApiService {
     return this.http.post<SessionView>(`/api/sessions/${id}/reveal`, { optionId, version });
   }
 
-  hideAnswer(id: string, version: number) {
-    return this.http.post<SessionView>(`/api/sessions/${id}/hide-answer`, { version });
-  }
-
   useHint(id: string, version: number) {
     return this.http.post<SessionView>(`/api/sessions/${id}/hint`, { version });
   }
@@ -69,8 +65,8 @@ export class GameApiService {
     return this.http.post<SessionView>(`/api/sessions/${id}/score`, { correct, version });
   }
 
-  undoScore(id: string, version: number) {
-    return this.http.post<SessionView>(`/api/sessions/${id}/undo`, { version });
+  stepBack(id: string, version: number) {
+    return this.http.post<SessionView>(`/api/sessions/${id}/back`, { version });
   }
 
   finishSession(id: string, version: number) {

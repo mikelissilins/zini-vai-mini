@@ -22,6 +22,10 @@ export class HostPage implements OnInit {
     const session = this.session();
     return session?.teams.find((team) => team.id === session.activeTeamId) || null;
   });
+  protected readonly canStepBack = computed(() => {
+    const session = this.session();
+    return !!session && (session.selectedQuestion !== null || session.canUndo);
+  });
 
   ngOnInit(): void { this.reload(); }
 
@@ -43,22 +47,16 @@ export class HostPage implements OnInit {
     this.run(this.api.useHint(session.id, session.version));
   }
 
-  protected hideAnswer(): void {
+  protected stepBack(): void {
     const session = this.session();
     if (!session) return;
-    this.run(this.api.hideAnswer(session.id, session.version));
+    this.run(this.api.stepBack(session.id, session.version));
   }
 
   protected score(correct: boolean): void {
     const session = this.session();
     if (!session) return;
     this.run(this.api.scoreAnswer(session.id, correct, session.version));
-  }
-
-  protected undo(): void {
-    const session = this.session();
-    if (!session) return;
-    this.run(this.api.undoScore(session.id, session.version));
   }
 
   protected finish(): void {

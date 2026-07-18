@@ -114,10 +114,21 @@ public class SessionService {
     }
 
     @Transactional
-    public SessionView hideAnswer(UUID id, long version) {
+    public SessionView stepBack(UUID id, long version) {
         GameSession session = requireSession(id);
         session.requireVersion(version);
-        session.hideAnswer();
+        if (session.isAnswerRevealed()) {
+            session.hideAnswer();
+        } else if (session.getSelectedQuestionId() != null) {
+            session.clearSelectedQuestion();
+        } else {
+            ScoreEvent event = events.findFirstBySessionAndUndoneFalseOrderByCreatedAtDesc(session)
+                    .orElseThrow(() -> new InvalidGameException("Nav darbības, ko atcelt."));
+            SessionTeam team = teams.findById(event.getTeamId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Komanda nav atrasta."));
+            SessionQuestion question = requireQuestion(session, event.getQuestionId());
+            session.undo(event, team, question);
+        }
         return saveAndPublish(session);
     }
 
@@ -145,19 +156,6 @@ public class SessionService {
         events.save(event);
         List<SessionQuestion> sessionQuestions = questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(id);
         if (sessionQuestions.stream().allMatch(SessionQuestion::isUsed)) session.finish();
-        return saveAndPublish(session);
-    }
-
-    @Transactional
-    public SessionView undo(UUID id, long version) {
-        GameSession session = requireSession(id);
-        session.requireVersion(version);
-        ScoreEvent event = events.findFirstBySessionAndUndoneFalseOrderByCreatedAtDesc(session)
-                .orElseThrow(() -> new InvalidGameException("Nav rezultāta, ko atcelt."));
-        SessionTeam team = teams.findById(event.getTeamId())
-                .orElseThrow(() -> new ResourceNotFoundException("Komanda nav atrasta."));
-        SessionQuestion question = requireQuestion(session, event.getQuestionId());
-        session.undo(event, team, question);
         return saveAndPublish(session);
     }
 

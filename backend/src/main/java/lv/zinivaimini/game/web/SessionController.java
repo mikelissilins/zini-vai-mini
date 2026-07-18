@@ -55,9 +55,9 @@ public class SessionController {
         return service.reveal(id, input.optionId(), input.version());
     }
 
-    @PostMapping("/sessions/{id}/hide-answer")
-    SessionView hideAnswer(@PathVariable UUID id, @RequestBody VersionInput input) {
-        return service.hideAnswer(id, input.version());
+    @PostMapping("/sessions/{id}/back")
+    SessionView back(@PathVariable UUID id, @RequestBody VersionInput input) {
+        return service.stepBack(id, input.version());
     }
 
     @PostMapping("/sessions/{id}/hint")
@@ -68,11 +68,6 @@ public class SessionController {
     @PostMapping("/sessions/{id}/score")
     SessionView score(@PathVariable UUID id, @RequestBody ScoreInput input) {
         return service.score(id, input.correct(), input.version());
-    }
-
-    @PostMapping("/sessions/{id}/undo")
-    SessionView undo(@PathVariable UUID id, @RequestBody VersionInput input) {
-        return service.undo(id, input.version());
     }
 
     @PostMapping("/sessions/{id}/finish")
