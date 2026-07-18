@@ -14,6 +14,7 @@ export interface QuestionInput {
   answer: string;
   explanation: string | null;
   mediaAssetId: string | null;
+  timeLimitSeconds: number;
   mediaUrl?: string | null;
   options: OptionInput[];
 }
@@ -122,6 +123,7 @@ export interface SelectedQuestion {
   answer: string | null;
   explanation: string | null;
   mediaUrl: string | null;
+  timeLimitSeconds: number;
   hasHint: boolean;
   hintUsed: boolean;
   options: SessionOption[];

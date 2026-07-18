@@ -204,6 +204,7 @@ export class EditorPage implements OnInit {
       explanation: [question.explanation || '', Validators.maxLength(1600)],
       mediaAssetId: [question.mediaAssetId || null],
       mediaUrl: [question.mediaUrl || null],
+      timeLimitSeconds: [question.timeLimitSeconds || 40, [Validators.min(5), Validators.max(300)]],
       options: this.fb.array((question.options || []).map((option) => this.createOptionGroup(option.text, option.correct))),
     });
   }
@@ -223,6 +224,7 @@ export class EditorPage implements OnInit {
       answer: '',
       explanation: null,
       mediaAssetId: null,
+      timeLimitSeconds: 40,
       options: [],
     };
   }
@@ -244,6 +246,7 @@ export class EditorPage implements OnInit {
           answer: question['answer'],
           explanation: question['explanation'] || null,
           mediaAssetId: question['mediaAssetId'] || null,
+          timeLimitSeconds: question['timeLimitSeconds'],
           options: question['type'] === 'MULTIPLE_CHOICE' ? question['options'] : [],
         })),
       })),

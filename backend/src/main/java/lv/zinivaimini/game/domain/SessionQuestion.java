@@ -38,6 +38,7 @@ public class SessionQuestion {
     private String prompt;
     private String answer;
     private String explanation;
+    private int timeLimitSeconds;
     private boolean used;
     private boolean hintUsed;
 
@@ -61,6 +62,7 @@ public class SessionQuestion {
         this.prompt = question.getPrompt();
         this.answer = question.getAnswer();
         this.explanation = question.getExplanation();
+        this.timeLimitSeconds = question.getTimeLimitSeconds();
         question.getOptions().forEach(option -> addOption(new SessionQuestionOption(
                 option.getText(), option.getPosition(), option.isCorrect())));
     }
@@ -84,6 +86,7 @@ public class SessionQuestion {
     public String getPrompt() { return prompt; }
     public String getAnswer() { return answer; }
     public String getExplanation() { return explanation; }
+    public int getTimeLimitSeconds() { return timeLimitSeconds; }
     public MediaAsset getMediaAsset() { return mediaAsset; }
     public boolean isUsed() { return used; }
     public boolean isHintUsed() { return hintUsed; }

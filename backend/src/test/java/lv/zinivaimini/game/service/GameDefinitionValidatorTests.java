@@ -52,7 +52,7 @@ class GameDefinitionValidatorTests {
 
     @Test
     void multipleChoiceRequiresExactlyOneCorrectOption() {
-        QuestionInput choice = new QuestionInput(10, QuestionType.MULTIPLE_CHOICE, "J?", "A", null, null,
+        QuestionInput choice = new QuestionInput(10, QuestionType.MULTIPLE_CHOICE, "J?", "A", null, null, 40,
                 List.of(new OptionInput("A", false), new OptionInput("B", false)));
 
         assertThatThrownBy(() -> validator.validateDraft(gameWith(List.of(choice))))
@@ -65,6 +65,6 @@ class GameDefinitionValidatorTests {
     }
 
     private QuestionInput question(int points, String prompt, String answer) {
-        return new QuestionInput(points, QuestionType.FREE_TEXT, prompt, answer, null, null, List.of());
+        return new QuestionInput(points, QuestionType.FREE_TEXT, prompt, answer, null, null, 40, List.of());
     }
 }

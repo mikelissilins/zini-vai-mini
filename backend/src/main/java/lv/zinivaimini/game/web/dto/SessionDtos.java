@@ -68,6 +68,7 @@ public final class SessionDtos {
             String categoryName,
             String categoryColor,
             int points,
+            int timeLimitSeconds,
             QuestionType type,
             String prompt,
             String answer,

@@ -121,7 +121,8 @@ public class GameService {
                 input.prompt() == null ? "" : input.prompt(),
                 input.answer() == null ? "" : input.answer(),
                 input.explanation(),
-                media);
+                media,
+                input.timeLimitSeconds() == null ? 40 : input.timeLimitSeconds());
         if (input.options() != null) {
             for (int index = 0; index < input.options().size(); index++) {
                 var option = input.options().get(index);
@@ -136,7 +137,7 @@ public class GameService {
         source.getQuestions().forEach(question -> {
             Question questionCopy = new Question(
                     question.getPoints(), question.getQuestionType(), question.getPrompt(), question.getAnswer(),
-                    question.getExplanation(), question.getMediaAsset());
+                    question.getExplanation(), question.getMediaAsset(), question.getTimeLimitSeconds());
             question.getOptions().forEach(option -> questionCopy.addOption(
                     new QuestionOption(option.getText(), option.getPosition(), option.isCorrect())));
             copy.addQuestion(questionCopy);
@@ -163,6 +164,7 @@ public class GameService {
                                 question.getAnswer(), question.getExplanation(),
                                 question.getMediaAsset() == null ? null : question.getMediaAsset().getId(),
                                 question.getMediaAsset() == null ? null : "/api/public/media/" + question.getMediaAsset().getId(),
+                                question.getTimeLimitSeconds(),
                                 question.getOptions().stream().map(option -> new OptionView(
                                         option.getId(), option.getText(), option.isCorrect())).toList())).toList())).toList());
     }

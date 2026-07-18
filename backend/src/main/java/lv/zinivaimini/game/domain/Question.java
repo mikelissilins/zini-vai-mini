@@ -34,6 +34,7 @@ public class Question {
     private String prompt;
     private String answer;
     private String explanation;
+    private int timeLimitSeconds;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("position ASC")
@@ -43,6 +44,11 @@ public class Question {
     }
 
     public Question(int points, QuestionType questionType, String prompt, String answer, String explanation, MediaAsset mediaAsset) {
+        this(points, questionType, prompt, answer, explanation, mediaAsset, 40);
+    }
+
+    public Question(int points, QuestionType questionType, String prompt, String answer, String explanation,
+            MediaAsset mediaAsset, int timeLimitSeconds) {
         this.id = UUID.randomUUID();
         this.points = points;
         this.questionType = questionType;
@@ -50,6 +56,7 @@ public class Question {
         this.answer = answer;
         this.explanation = explanation;
         this.mediaAsset = mediaAsset;
+        this.timeLimitSeconds = timeLimitSeconds;
     }
 
     void attachTo(Category category) {
@@ -68,6 +75,7 @@ public class Question {
     public String getPrompt() { return prompt; }
     public String getAnswer() { return answer; }
     public String getExplanation() { return explanation; }
+    public int getTimeLimitSeconds() { return timeLimitSeconds; }
     public MediaAsset getMediaAsset() { return mediaAsset; }
     public List<QuestionOption> getOptions() { return List.copyOf(options); }
 }

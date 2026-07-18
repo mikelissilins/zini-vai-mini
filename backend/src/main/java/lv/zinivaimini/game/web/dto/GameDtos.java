@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lv.zinivaimini.game.domain.QuestionType;
@@ -26,6 +28,7 @@ public final class GameDtos {
             @Size(max = 1200) String answer,
             @Size(max = 1600) String explanation,
             UUID mediaAssetId,
+            @Min(5) @Max(300) Integer timeLimitSeconds,
             List<@Valid OptionInput> options) {
     }
 
@@ -60,6 +63,7 @@ public final class GameDtos {
             String explanation,
             UUID mediaAssetId,
             String mediaUrl,
+            int timeLimitSeconds,
             List<OptionView> options) {
     }
 

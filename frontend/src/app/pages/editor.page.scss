@@ -140,6 +140,11 @@
   font-size: 1.7rem;
 }
 
+.time-limit { align-items: center; display: flex; gap: 0.25rem; }
+.time-limit span { font-size: 0.58rem; font-weight: 900; text-transform: uppercase; }
+.time-limit input { background: white; border: 0; color: var(--ink); min-height: 1.8rem; padding: 0.2rem; text-align: center; width: 3rem; }
+.time-limit b { color: var(--sun); font-size: 0.7rem; }
+
 .type-toggle {
   background: rgb(0 0 0 / 12%);
   display: flex;

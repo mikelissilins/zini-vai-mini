@@ -27,6 +27,9 @@
 
 <main>
   <router-outlet />
+  <button class="sound-toggle" type="button" (click)="sound.toggle()" [attr.aria-pressed]="!sound.muted()">
+    {{ sound.muted() ? 'Skaņa: off' : 'Mute' }}
+  </button>
   @if (location.pathname === '/') {
     <section class="hero-shell">
       <div class="hero-copy">

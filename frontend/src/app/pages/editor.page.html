@@ -74,6 +74,7 @@
                 <article class="question-card" [formGroupName]="questionIndex">
                   <div class="question-card-header" [style.--category-color]="category.controls['color'].value">
                     <strong>{{ question.controls['points'].value }}</strong>
+                    <label class="time-limit"><span>{{ i18n.t('timeLimit') }}</span><input type="number" min="5" max="300" formControlName="timeLimitSeconds" (input)="markChanged()"><b>s</b></label>
                     <div class="type-toggle">
                       <button type="button" [class.is-active]="question.controls['type'].value === 'FREE_TEXT'" (click)="setQuestionType(question, 'FREE_TEXT')">
                         {{ i18n.t('freeText') }}

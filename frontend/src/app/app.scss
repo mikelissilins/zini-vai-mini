@@ -3,6 +3,22 @@
   min-height: 100vh;
 }
 
+.sound-toggle {
+  background: var(--deep-sea);
+  border: 0;
+  bottom: 1rem;
+  color: white;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0.7rem 0.85rem;
+  position: fixed;
+  right: 1rem;
+  z-index: 20;
+}
+
+.sound-toggle[aria-pressed='true'] { background: var(--coral); }
+
 .site-header {
   align-items: center;
   display: flex;

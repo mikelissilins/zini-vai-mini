@@ -18,34 +18,27 @@
         <p class="final-kicker">{{ copy('Spēle noslēgusies', 'Game complete') }}</p>
         <h2>{{ copy('Uzvarētāji', 'Winners') }}</h2>
         <p class="final-caption">{{ game.title }}</p>
-        <div class="podium">
-          @for (team of podiumTeams(); track team.id) {
-            <article [class]="'place-' + team.rank" [style.--team-color]="team.color">
-              <span>{{ team.rank }}.</span>
-              <strong>{{ team.name }}</strong>
-              <b>{{ team.score }}</b>
-            </article>
-          }
-        </div>
-        @if (fourthTeams().length) {
-          <div class="fourth-place">
-            @for (team of fourthTeams(); track team.id) {
-              <span><b>4.</b> {{ team.name }} <strong>{{ team.score }}</strong></span>
+        @if (!showResultDetails()) {
+          <div class="final-ranking">
+            @for (team of rankedTeams(); track team.id) {
+              <article [style.--team-color]="team.color"><span>{{ team.rank }}.</span><strong>{{ team.name }}</strong><b>{{ team.score }}</b></article>
+            }
+          </div>
+          <p class="final-next">{{ copy('Tūlīt - atbilžu pārskats', 'Next - answer review') }}</p>
+        } @else {
+          <div class="full-results">
+            @for (team of rankedTeams(); track team.id) {
+              <div [style.--team-color]="team.color"><b>{{ team.rank }}.</b><span>{{ team.name }}</span><em>{{ team.correctAnswers }} ✓ · {{ team.wrongAnswers }} ×</em><strong>{{ team.score }}</strong></div>
             }
           </div>
         }
-        <div class="full-results">
-          @for (team of rankedTeams(); track team.id) {
-            <div><b>{{ team.rank }}.</b><span>{{ team.name }}</span><em>{{ team.correctAnswers }} ✓ · {{ team.wrongAnswers }} ×</em><strong>{{ team.score }}</strong></div>
-          }
-        </div>
       </section>
     } @else if (game.selectedQuestion; as question) {
       <section class="projector-question" [style.--category-color]="question.categoryColor">
         <div class="question-stage-inner" [class.is-revealed]="game.answerRevealed">
           <div class="question-topline">
             <span>{{ question.categoryName }}</span>
-            <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
+            <div class="question-topline-right"><div class="question-timer" [class.is-low]="timeLeft() <= 10"><span>{{ copy('Laiks', 'Time') }}</span><strong>{{ timeLeft() }}</strong></div><div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div></div>
           </div>
           <h2>{{ question.prompt }}</h2>
           @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt=""> }
