@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { GameApiService } from '../core/game-api.service';
@@ -17,7 +17,6 @@ export class ProjectorPage implements OnInit, OnDestroy {
   private readonly token = inject(ActivatedRoute).snapshot.paramMap.get('token')!;
   private events?: EventSource;
   private feedbackTimer?: number;
-  private detailTimer?: number;
   private timer?: number;
   private timedQuestionId?: string;
   protected readonly session = signal<SessionView | null>(null);
@@ -46,12 +45,24 @@ export class ProjectorPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.events?.close();
     window.clearTimeout(this.feedbackTimer);
-    window.clearTimeout(this.detailTimer);
     window.clearInterval(this.timer);
   }
 
   protected copy(lv: string, en: string): string {
     return this.session()?.locale === 'en' ? en : lv;
+  }
+
+  protected toggleResultDetails(): void {
+    if (this.session()?.status === 'FINISHED') this.showResultDetails.update((showing) => !showing);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  protected handleKeydown(event: KeyboardEvent): void {
+    if (this.session()?.status !== 'FINISHED') return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleResultDetails();
+    }
   }
 
   private refresh(): void {
@@ -85,8 +96,6 @@ export class ProjectorPage implements OnInit, OnDestroy {
     if (!previous || nextScene !== previousScene) this.sound.setScene(nextScene);
     if (next.status === 'FINISHED' && previous?.status !== 'FINISHED') {
       this.showResultDetails.set(false);
-      window.clearTimeout(this.detailTimer);
-      this.detailTimer = window.setTimeout(() => this.showResultDetails.set(true), 8000);
     }
     if (previous && next.usedCount > previous.usedCount) {
       const previousScore = previous.teams.find((team) => team.id === previous.activeTeamId)?.score || 0;

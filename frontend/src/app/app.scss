@@ -6,17 +6,19 @@
 .sound-toggle {
   background: var(--deep-sea);
   border: 0;
-  bottom: 1rem;
   color: white;
   cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 900;
-  padding: 0.7rem 0.85rem;
+  display: grid;
+  height: 2.5rem;
+  padding: 0;
   position: fixed;
   right: 1rem;
+  top: 1rem;
+  width: 2.5rem;
   z-index: 20;
 }
 
+.sound-toggle svg { fill: currentColor; height: 1.2rem; justify-self: center; width: 1.2rem; }
 .sound-toggle[aria-pressed='true'] { background: var(--coral); }
 
 .site-header {

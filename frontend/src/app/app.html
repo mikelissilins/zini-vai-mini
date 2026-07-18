@@ -27,8 +27,12 @@
 
 <main>
   <router-outlet />
-  <button class="sound-toggle" type="button" (click)="sound.toggle()" [attr.aria-pressed]="!sound.muted()">
-    {{ sound.muted() ? 'Skaņa: off' : 'Mute' }}
+  <button class="sound-toggle" type="button" (click)="sound.toggle()" [attr.aria-pressed]="!sound.muted()" [attr.aria-label]="sound.muted() ? 'Ieslēgt skaņu' : 'Izslēgt skaņu'" [attr.title]="sound.muted() ? 'Ieslēgt skaņu' : 'Izslēgt skaņu'">
+    @if (sound.muted()) {
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-1.2-3.05l1.45-1.45a6.5 6.5 0 0 1 0 9L15.3 15.05A4.5 4.5 0 0 0 16.5 12Zm3.3 0a7.8 7.8 0 0 0-1.75-5L19.5 5.55a9.9 9.9 0 0 1 0 12.9L18.05 17A7.8 7.8 0 0 0 19.8 12Z"/></svg>
+    } @else {
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18-1.4 1.4-3.2-3.2-3.2 2.55V5.2l-5 4H4v5.6l-2.4-2.4L3 11V3Zm13.5 9a4.5 4.5 0 0 0-1.2-3.05l1.45-1.45a6.5 6.5 0 0 1 1.1 7.35l-1.5-1.5c.1-.4.15-.8.15-1.2Z"/></svg>
+    }
   </button>
   @if (location.pathname === '/') {
     <section class="hero-shell">

@@ -1,6 +1,6 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
-.projector-shell { background: var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
-.projector-header, .question-topline, .question-points, .question-topline-right, .question-timer { align-items: center; display: flex; }
+.projector-shell { background: var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; overflow: hidden; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
+.projector-header, .question-topline, .question-points, .question-timer { align-items: center; display: flex; }
 .projector-header { justify-content: space-between; margin: 0 auto clamp(1.2rem, 3vh, 2.5rem); max-width: 1640px; position: relative; }
 .projector-title > span, .projector-progress span { color: var(--sun); font-size: clamp(0.6rem, 1.1vw, 0.8rem); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .projector-header h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 4.5rem); letter-spacing: -0.05em; line-height: 0.95; margin: 0.3rem 0 0; overflow-wrap: anywhere; }
@@ -18,31 +18,31 @@
 .projector-column > div.is-used::after { border-color: var(--result-color); }
 .projector-column > div.is-used span { font-size: 0.72em; opacity: 1; }
 .projector-column > div.is-wrong span { font-size: 0.9em; }
-.projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); margin: 0 auto; max-width: 1640px; min-height: min(69vh, 900px); position: relative; }
-.question-stage-inner { display: grid; min-height: inherit; padding: clamp(1.5rem, 4vw, 5rem); position: relative; }
-.question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint { position: relative; z-index: 1; }
-.question-topline { color: var(--ink); justify-content: space-between; }
-.question-topline > span { color: var(--category-color); font-size: clamp(0.75rem, 1.3vw, 1rem); font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+.projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); height: calc(100vh - clamp(12rem, 22vh, 16rem)); margin: 0 auto; max-width: 1640px; min-height: 0; position: relative; }
+.question-stage-inner { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; min-height: 0; overflow: hidden; padding: clamp(1.2rem, 3vw, 3.5rem); position: relative; }
+.question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint, .projector-hint-available { position: relative; z-index: 1; }
+.question-topline { color: var(--ink); display: grid; grid-template-columns: minmax(6rem, 1fr) auto minmax(6rem, 1fr); }
+.question-topline > span { color: var(--category-color); font-size: clamp(0.75rem, 1.3vw, 1rem); font-weight: 900; letter-spacing: 0.16em; text-align: center; text-transform: uppercase; }
 .question-topline strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.8; }
-.question-points { position: relative; }
-.question-topline-right { gap: clamp(1rem, 2vw, 2rem); }
-.question-timer { background: var(--deep-sea); color: white; gap: 0.45rem; padding: 0.4rem 0.65rem; }
-.question-timer span { color: var(--sun); font-size: 0.62rem; font-weight: 900; letter-spacing: 0.09em; text-transform: uppercase; }
-.question-timer strong { color: white; font-family: var(--font-display); font-size: clamp(1.4rem, 2.3vw, 2.2rem); }
-.question-timer.is-low { background: var(--coral); animation: timer-pulse 800ms ease-in-out infinite; }
+.question-timer { gap: 0.45rem; justify-self: start; }
+.question-timer span { color: var(--category-color); font-size: clamp(0.62rem, 1vw, 0.8rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+.question-timer strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.8; }
+.question-timer.is-low strong { color: var(--coral); animation: timer-pulse 800ms ease-in-out infinite; }
+.question-points { justify-self: end; position: relative; }
 .question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.2rem); font-style: normal; position: absolute; right: clamp(-2rem, -1vw, -1rem); top: clamp(-1.4rem, -1vw, -0.75rem); }
-.projector-question h2 { align-self: center; font-family: var(--font-display); font-size: clamp(2.4rem, 5.2vw, 6.2rem); line-height: 1.04; margin: clamp(1.2rem, 3vw, 3rem) 0; max-width: 20ch; overflow-wrap: anywhere; }
+.projector-question h2 { align-self: center; font-family: var(--font-display); font-size: clamp(2.1rem, 4.7vw, 5.5rem); line-height: 1.04; margin: clamp(0.8rem, 2vw, 1.8rem) 0; max-width: 20ch; overflow-wrap: anywhere; }
 .projector-question img { justify-self: center; max-height: 31vh; max-width: min(100%, 58rem); object-fit: contain; width: 100%; }
 .projector-options { align-self: center; display: grid; gap: clamp(0.7rem, 1.2vw, 1.2rem); grid-template-columns: repeat(2, 1fr); }
 .projector-options div { align-items: center; background: var(--sky); border: 0.22rem solid transparent; box-sizing: border-box; display: flex; font-size: clamp(1.2rem, 2.1vw, 2.1rem); gap: 1rem; min-width: 0; overflow-wrap: anywhere; padding: clamp(0.8rem, 1.6vw, 1.4rem); }
 .projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 clamp(2.6rem, 4vw, 3.5rem); font-family: var(--font-display); height: clamp(2.6rem, 4vw, 3.5rem); justify-content: center; }
 .projector-options div.is-correct { background: #dff4e6; border-color: #28805c; color: #135138; }
 .projector-options div.is-wrong { background: #fff0eb; border-color: #c84630; color: #7d2d20; }
-.projector-answer, .projector-hint, .projector-hint-available { align-self: end; background: var(--sand); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; max-width: 66rem; padding: clamp(1rem, 2vw, 2rem); }
+.projector-answer, .projector-hint, .projector-hint-available { align-self: end; background: var(--sand); border-left: 0.65rem solid var(--coral); color: var(--ink); margin-top: 1rem; max-width: 66rem; padding: clamp(0.8rem, 1.5vw, 1.5rem); }
 .projector-hint { background: var(--sky); border-color: var(--sea); }
-.projector-hint-available { background: var(--deep-sea); border-color: var(--sun); color: white; display: flex; gap: 1rem; justify-content: space-between; }
-.projector-hint-available span { font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
-.projector-hint-available strong { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.1rem); }
+.projector-hint-available { align-items: center; background: color-mix(in srgb, var(--sky) 56%, white); border-color: var(--category-color); display: inline-flex; gap: 0.65rem; justify-self: start; }
+.projector-hint-available span { font-size: clamp(0.65rem, 1vw, 0.82rem); font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.projector-hint-available b { align-items: center; background: var(--category-color); border-radius: 50%; color: white; display: inline-flex; font-family: var(--font-display); height: 1.4rem; justify-content: center; width: 1.4rem; }
+.projector-hint-available strong { color: var(--ink); font-family: var(--font-display); font-size: clamp(1rem, 1.65vw, 1.5rem); }
 .projector-answer span, .projector-hint span { color: var(--deep-sea); display: block; font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
 .projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3.5rem); line-height: 1.12; margin-top: 0.3rem; overflow-wrap: anywhere; }
 .projector-answer p, .projector-hint p { color: var(--ink); font-size: clamp(1rem, 1.55vw, 1.55rem); line-height: 1.45; margin: 0.65rem 0 0; overflow-wrap: anywhere; }
@@ -52,7 +52,8 @@
 .team-score span { color: var(--sun); font-size: clamp(0.55rem, 0.85vw, 0.72rem); font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
 .team-score strong { color: white; font-family: var(--font-display); font-size: clamp(1rem, 1.7vw, 1.65rem); overflow-wrap: anywhere; }
 .team-score b { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.05rem, 1.8vw, 1.8rem); position: absolute; right: 0.7rem; top: 50%; transform: translateY(-32%); }
-.final-stage { animation: stage-arrive 650ms cubic-bezier(0.22, 1, 0.36, 1) both; margin: clamp(2rem, 7vh, 7rem) auto 0; max-width: 1400px; position: relative; text-align: center; }
+.final-stage { animation: stage-arrive 650ms cubic-bezier(0.22, 1, 0.36, 1) both; cursor: pointer; margin: clamp(2rem, 7vh, 7rem) auto 0; max-width: 1400px; outline: none; position: relative; text-align: center; }
+.final-stage:focus-visible { outline: 0.25rem solid var(--sun); outline-offset: 0.5rem; }
 .final-kicker { color: var(--sun); font-size: clamp(0.72rem, 1.2vw, 0.9rem); font-weight: 900; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
 .final-stage > h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); letter-spacing: -0.06em; line-height: 0.86; margin: 0.7rem 0; }
 .final-caption { color: #d9f5f9; font-size: clamp(1rem, 1.8vw, 1.5rem); margin: 0; }
@@ -84,6 +85,8 @@
   .scene-board .projector-board { height: auto; }
   .projector-teams { position: static; }
   .projector-question { min-height: auto; }
+  .question-topline { grid-template-columns: 1fr auto; }
+  .question-topline > span { display: none; }
   .full-results div { grid-template-columns: 2rem 1fr auto; }
   .full-results em { grid-column: 2; }
 }

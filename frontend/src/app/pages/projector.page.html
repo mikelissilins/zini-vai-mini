@@ -14,7 +14,7 @@
     </header>
 
     @if (game.status === 'FINISHED') {
-      <section class="final-stage">
+      <section class="final-stage" (click)="toggleResultDetails()" tabindex="0">
         <p class="final-kicker">{{ copy('Spēle noslēgusies', 'Game complete') }}</p>
         <h2>{{ copy('Uzvarētāji', 'Winners') }}</h2>
         <p class="final-caption">{{ game.title }}</p>
@@ -24,7 +24,7 @@
               <article [style.--team-color]="team.color"><span>{{ team.rank }}.</span><strong>{{ team.name }}</strong><b>{{ team.score }}</b></article>
             }
           </div>
-          <p class="final-next">{{ copy('Tūlīt - atbilžu pārskats', 'Next - answer review') }}</p>
+          <p class="final-next">{{ copy('Nospied, lai redzētu atbilžu pārskatu', 'Press to view answer review') }}</p>
         } @else {
           <div class="full-results">
             @for (team of rankedTeams(); track team.id) {
@@ -37,8 +37,9 @@
       <section class="projector-question" [style.--category-color]="question.categoryColor">
         <div class="question-stage-inner" [class.is-revealed]="game.answerRevealed">
           <div class="question-topline">
+            <div class="question-timer" [class.is-low]="timeLeft() <= 10"><span>{{ copy('Laiks', 'Time') }}</span><strong>{{ timeLeft() }}</strong></div>
             <span>{{ question.categoryName }}</span>
-            <div class="question-topline-right"><div class="question-timer" [class.is-low]="timeLeft() <= 10"><span>{{ copy('Laiks', 'Time') }}</span><strong>{{ timeLeft() }}</strong></div><div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div></div>
+            <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
           </div>
           <h2>{{ question.prompt }}</h2>
           @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt=""> }
@@ -55,7 +56,7 @@
             @if (question.hintUsed) {
               <div class="projector-hint"><span>{{ copy('Pavediens', 'Hint') }}</span><p>{{ question.explanation }}</p></div>
             } @else {
-              <div class="projector-hint-available"><span>{{ copy('Pavediens pieejams', 'Hint available') }}</span><strong>−5 {{ copy('punkti', 'points') }}</strong></div>
+              <div class="projector-hint-available"><span>{{ copy('Vēlies pavedienu?', 'Want a hint?') }}</span><b>?</b><strong>−5 {{ copy('punkti', 'points') }}</strong></div>
             }
           }
           @if (game.answerRevealed && question.type === 'FREE_TEXT') {
