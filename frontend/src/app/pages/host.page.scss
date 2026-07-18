@@ -1,5 +1,5 @@
 .host-shell { margin: 0 auto; max-width: 1600px; padding: 1.5rem clamp(1rem, 3vw, 3rem) 6rem; }
-.host-header, .host-meta, .score-strip, .turn-banner, .question-label, .question-points, .score-actions, .hint-control { align-items: center; display: flex; }
+.host-header, .host-meta, .score-strip, .turn-banner, .question-label, .question-points, .score-actions { align-items: center; display: flex; }
 .host-header { justify-content: space-between; margin-bottom: 1.5rem; }
 .host-header a { color: var(--deep-sea); font-weight: 800; }
 h1, h2 { font-family: var(--font-display); }
@@ -39,10 +39,8 @@ h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.04em; line-height: 1;
 .answer-reveal span { color: var(--deep-sea); display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 .answer-reveal strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: 1.6rem; line-height: 1.2; overflow-wrap: anywhere; }
 .answer-reveal p { color: var(--ink); margin: 0.75rem 0 0; overflow-wrap: anywhere; }
-.hint-control { gap: 0.55rem; margin-top: 1.5rem; }
-.hint-action { background: var(--deep-sea); border: 0; color: white; font-weight: 800; }
+.hint-action { background: var(--deep-sea); border: 0; color: white; font-weight: 800; margin-top: 1.5rem; }
 .hint-action.is-used { background: var(--sea); }
-.hint-cost { color: #b73535; font-family: var(--font-display); font-size: 1.4rem; }
 .question-hint { background: var(--sky); border-left: 0.35rem solid var(--sea); color: var(--ink); margin: 0; padding: 0.85rem 1rem; }
 .question-hint strong { color: var(--deep-sea); font-size: 0.75rem; text-transform: uppercase; }
 .question-hint p { color: var(--ink); margin: 0.5rem 0 0; }

@@ -54,10 +54,7 @@
             </div>
           }
           @if (!game.answerRevealed && question.explanation) {
-            <div class="hint-control">
-              <button class="button hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()">{{ question.hintUsed ? 'Paslēpt pavedienu' : 'Rādīt pavedienu' }}</button>
-              <span class="hint-cost">−5</span>
-            </div>
+            <button class="button hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()">{{ question.hintUsed ? 'Paslēpt pavedienu' : 'Rādīt pavedienu' }} −5</button>
             @if (question.hintUsed) {
               <div class="question-hint"><strong>Pavediens</strong><p>{{ question.explanation }}</p></div>
             }
