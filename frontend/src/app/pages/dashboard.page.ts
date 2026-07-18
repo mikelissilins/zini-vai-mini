@@ -53,6 +53,14 @@ export class DashboardPage implements OnInit {
     });
   }
 
+  protected deleteSession(session: SessionSummary): void {
+    if (!window.confirm(this.i18n.t('deleteSessionConfirm').replace('{title}', session.title))) return;
+    this.api.deleteSession(session.id).subscribe({
+      next: () => this.sessions.update((items) => items.filter((item) => item.id !== session.id)),
+      error: (error) => this.error.set(error.error?.detail || this.i18n.t('deleteSessionError')),
+    });
+  }
+
   protected selectTemplate(template: GameSummary): void {
     this.selectedTemplateId = template.id;
     if (!this.newGameTitle) {

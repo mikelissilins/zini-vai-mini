@@ -7,6 +7,7 @@ import java.util.UUID;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,12 @@ public class SessionController {
 
     @GetMapping("/sessions/{id}")
     SessionView session(@PathVariable UUID id) { return service.get(id); }
+
+    @DeleteMapping("/sessions/{id}")
+    ResponseEntity<Void> delete(@PathVariable UUID id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping("/sessions/{id}/select")
     SessionView select(@PathVariable UUID id, @Valid @RequestBody SelectQuestionInput input) {

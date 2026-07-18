@@ -87,6 +87,11 @@ public class SessionService {
         return toView(requireSession(id), false);
     }
 
+    @Transactional
+    public void delete(UUID id) {
+        sessions.delete(requireSession(id));
+    }
+
     @Transactional(readOnly = true)
     public SessionView getPublic(String token) {
         return toView(sessions.findByPublicToken(token)

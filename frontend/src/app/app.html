@@ -5,13 +5,10 @@
     <span>Zini vai mini</span>
   </a>
   <nav class="header-actions" aria-label="Lietotāja darbības">
-    <label class="language-label">
-      <span class="is-sr-only">Valoda</span>
-      <select [value]="i18n.locale()" (change)="setLocale($event)">
-        <option value="lv">Latviešu</option>
-        <option value="en">English</option>
-      </select>
-    </label>
+    <div class="language-switch" aria-label="Valoda">
+      <button type="button" [class.is-active]="i18n.locale() === 'lv'" (click)="i18n.setLocale('lv')">LV</button>
+      <button type="button" [class.is-active]="i18n.locale() === 'en'" (click)="i18n.setLocale('en')">EN</button>
+    </div>
     @if (!auth.ready()) {
       <span class="backend-status" role="status">{{ i18n.t('wakingUp') }}</span>
     }

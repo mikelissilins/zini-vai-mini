@@ -22,7 +22,7 @@ h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.04em; line-height: 1;
 .board-column h2 { align-items: center; background: linear-gradient(rgb(22 50 63 / 42%), rgb(22 50 63 / 42%)), var(--category-color); color: white; display: flex; font-size: 1rem; justify-content: center; min-height: 4.5rem; overflow-wrap: anywhere; padding: 0.5rem; text-align: center; }
 .board-column button { background: var(--deep-sea); border: 0; color: var(--sun); cursor: pointer; font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.25rem); min-height: 5.2rem; }
 .board-column button:hover:not(:disabled) { background: var(--coral); color: white; transform: translateY(-0.15rem); }
-.board-column button.is-used { background: #dbe7e9; color: var(--deep-sea); }
+.board-column button.is-used { background: var(--deep-sea); box-shadow: inset 0 -0.28rem 0 var(--coral); color: var(--sun); opacity: 1; }
 .question-stage { animation: tide-in 350ms cubic-bezier(0.22, 1, 0.36, 1) both; background: white; border-top: 0.7rem solid var(--category-color); margin: 1.5rem auto; max-width: 1050px; padding: clamp(1.25rem, 4vw, 3rem); }
 .question-label { color: var(--ink); justify-content: space-between; }
 .question-label span { font-weight: 900; text-transform: uppercase; }

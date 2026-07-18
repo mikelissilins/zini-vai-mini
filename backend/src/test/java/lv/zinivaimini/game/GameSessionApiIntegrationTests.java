@@ -2,6 +2,7 @@ package lv.zinivaimini.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -123,6 +124,22 @@ class GameSessionApiIntegrationTests {
 
         JsonNode board = request(post("/api/sessions/{id}/back", sessionId), Map.of("version", hidden.path("version").asLong()));
         assertThat(board.path("selectedQuestion").isNull()).isTrue();
+    }
+
+    @Test
+    void startedSessionCanBeDeleted() throws Exception {
+        JsonNode game = request(post("/api/games"), completeGame()).path("id");
+        JsonNode session = request(post("/api/sessions"), Map.of(
+                "gameId", game.asText(),
+                "teams", List.of(
+                        Map.of("name", "Viļņi", "color", "#0E758C"),
+                        Map.of("name", "Bākas", "color", "#F77F5B"))));
+        String sessionId = session.path("id").asText();
+
+        mvc.perform(delete("/api/sessions/{id}", sessionId).with(owner()))
+                .andExpect(status().isNoContent());
+        mvc.perform(get("/api/sessions/{id}", sessionId).with(owner()))
+                .andExpect(status().isNotFound());
     }
 
     private JsonNode request(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,

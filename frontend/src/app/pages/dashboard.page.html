@@ -107,6 +107,7 @@
               <span>{{ session.teamCount }} {{ i18n.t('teams').toLowerCase() }}</span>
             </div>
             <a class="button is-primary" [routerLink]="['/sessions', session.id, 'host']">{{ i18n.t('resume') }}</a>
+            <button class="button is-ghost has-text-danger" type="button" (click)="deleteSession(session)">{{ i18n.t('delete') }}</button>
           </article>
         }
       </div>

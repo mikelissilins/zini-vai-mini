@@ -1,6 +1,6 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
 .projector-shell { background: var(--deep-sea); box-sizing: border-box; color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1rem, 3vw, 3.5rem) 9rem; position: relative; }
-.projector-header, .question-topline, .question-points, .projector-teams, .current-turn, .projector-score { align-items: center; display: flex; }
+.projector-header, .question-topline, .question-points, .projector-teams, .current-turn { align-items: center; display: flex; }
 .projector-header { justify-content: space-between; margin: 0 auto clamp(1.2rem, 3vh, 2.5rem); max-width: 1640px; position: relative; }
 .projector-title > span, .projector-progress span { color: var(--sun); font-size: clamp(0.6rem, 1.1vw, 0.8rem); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .projector-header h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 4.5rem); letter-spacing: -0.05em; line-height: 0.95; margin: 0.3rem 0 0; overflow-wrap: anywhere; }
@@ -13,8 +13,9 @@
 .projector-column h2 span { position: relative; }
 .projector-column > div { align-items: center; background: var(--foam); color: var(--deep-sea); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
 .projector-column > div::after { border-bottom: 0.24rem solid color-mix(in srgb, var(--category-color) 70%, white); bottom: 0; content: ''; left: 0; position: absolute; right: 0; }
-.projector-column > div.is-used { background: color-mix(in srgb, var(--foam) 80%, var(--sea)); color: var(--deep-sea); }
-.projector-column > div.is-used span { font-size: 0.72em; opacity: 0.72; }
+.projector-column > div.is-used { background: var(--deep-sea); color: var(--sun); }
+.projector-column > div.is-used::after { border-color: var(--coral); }
+.projector-column > div.is-used span { font-size: 0.72em; opacity: 1; }
 .projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); margin: 0 auto; max-width: 1640px; min-height: min(69vh, 900px); position: relative; }
 .question-stage-inner { display: grid; min-height: inherit; padding: clamp(1.5rem, 4vw, 5rem); position: relative; }
 .question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint { position: relative; z-index: 1; }
@@ -35,16 +36,11 @@
 .projector-answer span, .projector-hint span { color: var(--deep-sea); display: block; font-size: clamp(0.7rem, 1.1vw, 0.9rem); font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
 .projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3.5rem); line-height: 1.12; margin-top: 0.3rem; overflow-wrap: anywhere; }
 .projector-answer p, .projector-hint p { color: var(--ink); font-size: clamp(1rem, 1.55vw, 1.55rem); line-height: 1.45; margin: 0.65rem 0 0; overflow-wrap: anywhere; }
-.projector-teams { backdrop-filter: blur(0.6rem); background: rgb(14 117 140 / 90%); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; gap: 0.55rem; left: 0; padding: 0.75rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
-.current-turn, .projector-score { box-sizing: border-box; min-height: 4.25rem; padding: 0.7rem 1rem; }
-.current-turn { background: var(--team-color); display: grid; min-width: clamp(11rem, 18vw, 18rem); }
-.current-turn span { color: var(--sun); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
-.current-turn strong { color: white; font-family: var(--font-display); overflow-wrap: anywhere; }
-.projector-score { background: color-mix(in srgb, var(--team-color) 14%, var(--foam)); border-bottom: 0.28rem solid var(--team-color); color: var(--ink); flex: 1; justify-content: space-between; }
-.projector-score.is-active { background: var(--team-color); color: white; transform: translateY(-0.2rem); }
-.projector-score span { min-width: 0; overflow-wrap: anywhere; }
-.projector-score strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 2.4rem); }
-.projector-score.is-active strong { color: var(--sun); }
+.projector-teams { background: var(--deep-sea); border-top: 1px solid rgb(255 250 240 / 22%); bottom: 0; box-sizing: border-box; left: 0; padding: 0.8rem clamp(1rem, 3vw, 3.5rem); position: fixed; right: 0; z-index: 3; }
+.current-turn { background: var(--team-color); box-sizing: border-box; display: grid; gap: clamp(0.45rem, 1.5vw, 1.25rem); grid-template-columns: auto minmax(0, 1fr) auto; margin: 0 auto; max-width: 980px; min-height: clamp(4.8rem, 8vw, 6.5rem); padding: 0.85rem clamp(1rem, 2vw, 1.75rem); width: 100%; }
+.current-turn span { color: var(--sun); font-size: clamp(0.62rem, 1vw, 0.8rem); font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.current-turn strong { color: white; font-family: var(--font-display); font-size: clamp(1.45rem, 3vw, 3rem); min-width: 0; overflow-wrap: anywhere; }
+.current-turn b { color: var(--sun); font-family: var(--font-display); font-size: clamp(1.2rem, 2.3vw, 2.35rem); white-space: nowrap; }
 .final-stage { animation: stage-arrive 650ms cubic-bezier(0.22, 1, 0.36, 1) both; margin: clamp(2rem, 7vh, 7rem) auto 0; max-width: 1400px; position: relative; text-align: center; }
 .final-kicker { color: var(--sun); font-size: clamp(0.72rem, 1.2vw, 0.9rem); font-weight: 900; letter-spacing: 0.2em; margin: 0; text-transform: uppercase; }
 .final-stage > h2 { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 10rem); letter-spacing: -0.06em; line-height: 0.86; margin: 0.7rem 0; }
@@ -73,9 +69,9 @@
 @media (max-width: 700px) {
   .projector-shell { padding-bottom: 1.5rem; }
   .projector-options, .podium { grid-template-columns: 1fr; }
-  .projector-teams { flex-wrap: wrap; position: static; }
-  .current-turn { width: 100%; }
-  .projector-score { flex: 1 0 8rem; }
+  .projector-teams { position: static; }
+  .current-turn { grid-template-columns: 1fr auto; }
+  .current-turn span { grid-column: 1 / -1; }
   .projector-question { min-height: auto; }
   .full-results div { grid-template-columns: 2rem 1fr auto; }
   .full-results em { grid-column: 2; }

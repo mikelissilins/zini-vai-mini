@@ -88,13 +88,10 @@
     @if (game.status === 'ACTIVE') {
       <footer class="projector-teams">
         <div class="current-turn" [style.--team-color]="activeTeam()?.color">
-          <span>{{ copy('Tagad izvēlas', 'Now choosing') }}</span><strong>{{ activeTeam()?.name }}</strong>
+          <span>{{ copy('Tagad izvēlas', 'Now choosing') }}</span>
+          <strong>{{ activeTeam()?.name }}</strong>
+          <b>{{ activeTeam()?.score }} {{ copy('punkti', 'points') }}</b>
         </div>
-        @for (team of game.teams; track team.id) {
-          <div class="projector-score" [class.is-active]="team.id === game.activeTeamId" [style.--team-color]="team.color">
-            <span>{{ team.name }}</span><strong>{{ team.score }}</strong>
-          </div>
-        }
       </footer>
     }
     @if (scoreFeedback(); as feedback) {

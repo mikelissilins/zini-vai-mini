@@ -41,6 +41,10 @@ export class GameApiService {
     return this.http.get<SessionSummary[]>('/api/sessions');
   }
 
+  deleteSession(id: string) {
+    return this.http.delete<void>(`/api/sessions/${id}`);
+  }
+
   createSession(gameId: string, teams: TeamInput[]) {
     return this.http.post<SessionView>('/api/sessions', { gameId, teams });
   }
