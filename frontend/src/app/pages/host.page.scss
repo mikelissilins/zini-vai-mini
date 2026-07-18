@@ -1,5 +1,5 @@
 .host-shell { margin: 0 auto; max-width: 1600px; padding: 1.5rem clamp(1rem, 3vw, 3rem) 6rem; }
-.host-header, .host-meta, .score-strip, .turn-banner, .question-label, .score-actions { align-items: center; display: flex; }
+.host-header, .host-meta, .score-strip, .turn-banner, .question-label, .question-points, .score-actions { align-items: center; display: flex; }
 .host-header { justify-content: space-between; margin-bottom: 1.5rem; }
 .host-header a { color: var(--deep-sea); font-weight: 800; }
 h1, h2 { font-family: var(--font-display); }
@@ -24,22 +24,24 @@ h1 { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.04em; line-height: 1;
 .question-stage { animation: tide-in 350ms cubic-bezier(0.22, 1, 0.36, 1) both; background: white; border-top: 0.7rem solid var(--category-color); margin: 1.5rem auto; max-width: 1050px; padding: clamp(1.25rem, 4vw, 3rem); }
 .question-label { color: var(--ink); justify-content: space-between; }
 .question-label span { font-weight: 900; text-transform: uppercase; }
+.question-points { gap: 0.45rem; }
 .question-label strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 3.5rem); }
+.question-points em { color: #b73535; font-family: var(--font-display); font-size: 1.25rem; font-style: normal; }
 .question-stage h2 { font-size: clamp(1.8rem, 4vw, 3.6rem); line-height: 1.15; margin: 1.5rem 0; overflow-wrap: anywhere; }
 .question-stage > img { max-height: 22rem; object-fit: contain; width: 100%; }
 .answer-options { display: grid; gap: 0.65rem; grid-template-columns: repeat(2, 1fr); margin: 1.5rem 0; }
-.answer-options div { align-items: center; background: var(--sky); display: flex; gap: 0.8rem; min-width: 0; overflow-wrap: anywhere; padding: 0.9rem; }
+.answer-options button { align-items: center; background: var(--sky); border: 0.2rem solid transparent; color: var(--ink); cursor: pointer; display: flex; gap: 0.8rem; min-width: 0; overflow-wrap: anywhere; padding: 0.9rem; text-align: left; }
+.answer-options button:disabled { cursor: default; opacity: 1; }
 .answer-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; height: 2rem; justify-content: center; width: 2rem; }
-.answer-options div.is-correct { background: #dff4e6; outline: 2px solid #28805c; }
+.answer-options button.is-correct { background: #dff4e6; border-color: #28805c; }
+.answer-options button.is-wrong { background: #fff0eb; border-color: #c84630; }
 .answer-reveal { background: linear-gradient(135deg, #fff7e3, var(--sand)); border-left: 0.4rem solid var(--coral); color: var(--ink); margin: 1.5rem 0; padding: 1.25rem; }
 .answer-reveal span { color: var(--deep-sea); display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 .answer-reveal strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: 1.6rem; line-height: 1.2; overflow-wrap: anywhere; }
 .answer-reveal p { color: var(--ink); margin: 0.75rem 0 0; overflow-wrap: anywhere; }
-.hint-action { align-items: center; background: var(--sky); border: 0; color: var(--deep-sea); cursor: pointer; display: flex; justify-content: space-between; margin: 1rem 0 0; padding: 0.9rem 1rem; text-align: left; width: 100%; }
-.hint-action span { font-weight: 900; }
-.hint-action strong { color: var(--deep-sea); font-family: var(--font-display); }
-.hint-action:not(:disabled):hover { background: color-mix(in srgb, var(--sky) 80%, var(--sea)); }
-.hint-action:disabled { cursor: default; opacity: 1; }
+.question-stage { position: relative; }
+.hint-action { background: #b73535; border: 0; color: white; cursor: pointer; font-family: var(--font-display); font-size: 1rem; min-height: 2.25rem; min-width: 2.75rem; padding: 0.35rem 0.55rem; position: absolute; right: 1rem; top: 1rem; }
+.hint-action.is-used { background: var(--deep-sea); }
 .question-hint { background: var(--sky); border-left: 0.35rem solid var(--sea); color: var(--ink); margin: 0; padding: 0.85rem 1rem; }
 .question-hint strong { color: var(--deep-sea); font-size: 0.75rem; text-transform: uppercase; }
 .question-hint p { color: var(--ink); margin: 0.5rem 0 0; }

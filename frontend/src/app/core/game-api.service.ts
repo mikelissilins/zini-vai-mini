@@ -53,8 +53,8 @@ export class GameApiService {
     return this.http.post<SessionView>(`/api/sessions/${id}/select`, { questionId, version });
   }
 
-  revealAnswer(id: string, version: number) {
-    return this.http.post<SessionView>(`/api/sessions/${id}/reveal`, { version });
+  revealAnswer(id: string, version: number, optionId: string | null = null) {
+    return this.http.post<SessionView>(`/api/sessions/${id}/reveal`, { optionId, version });
   }
 
   useHint(id: string, version: number) {

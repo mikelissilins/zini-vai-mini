@@ -1,6 +1,6 @@
 :host { background: var(--deep-sea); display: block; min-height: 100vh; }
 .projector-shell { background: radial-gradient(circle at 90% 5%, rgb(255 200 87 / 20%), transparent 22rem), var(--deep-sea); color: var(--foam); min-height: 100vh; padding: clamp(1rem, 2.5vw, 2.5rem); }
-.projector-header, .question-topline, .projector-teams, .current-turn, .projector-score { align-items: center; display: flex; }
+.projector-header, .question-topline, .question-points, .projector-teams, .current-turn, .projector-score { align-items: center; display: flex; }
 .projector-header { justify-content: space-between; margin-bottom: clamp(1rem, 2vw, 2rem); }
 .projector-header h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 4rem); letter-spacing: -0.04em; line-height: 1; margin: 0; }
 .projector-progress { display: grid; text-align: right; }
@@ -15,12 +15,15 @@
 .question-topline { color: var(--ink); justify-content: space-between; }
 .question-topline span { font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
 .question-topline strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); }
+.question-points { gap: 0.6rem; }
+.question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.3rem, 2vw, 2rem); font-style: normal; }
 .projector-question h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 5rem); line-height: 1.08; margin: 1rem 0 2rem; overflow-wrap: anywhere; }
 .projector-question > img { max-height: 35vh; object-fit: contain; width: 100%; }
 .projector-options { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
 .projector-options div { align-items: center; background: var(--sky); display: flex; font-size: clamp(1rem, 2vw, 1.6rem); gap: 1rem; min-width: 0; overflow-wrap: anywhere; padding: 1rem; }
 .projector-options b { align-items: center; background: var(--deep-sea); color: white; display: flex; flex: 0 0 2.8rem; height: 2.8rem; justify-content: center; }
 .projector-options div.is-correct { background: #dff4e6; outline: 0.25rem solid #28805c; }
+.projector-options div.is-wrong { background: #fff0eb; outline: 0.25rem solid #c84630; }
 .projector-answer { background: linear-gradient(135deg, #fff7e3, var(--sand)); border-left: 0.5rem solid var(--coral); color: var(--ink); margin-top: 1.5rem; padding: 1.25rem; }
 .projector-answer span { color: var(--deep-sea); display: block; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
 .projector-answer strong { color: var(--ink); display: block; font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 3rem); line-height: 1.2; overflow-wrap: anywhere; }

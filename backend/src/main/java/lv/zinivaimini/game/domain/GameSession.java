@@ -33,6 +33,7 @@ public class GameSession {
     private SessionStatus status;
     private int activeTeamIndex;
     private UUID selectedQuestionId;
+    private UUID selectedOptionId;
     private boolean answerRevealed;
     @Version
     private long version;
@@ -72,13 +73,15 @@ public class GameSession {
         requireActive();
         if (question.isUsed()) throw new InvalidGameException("Šis jautājums jau ir izmantots.");
         selectedQuestionId = question.getId();
+        selectedOptionId = null;
         answerRevealed = false;
     }
 
-    public void revealAnswer() {
+    public void revealAnswer(UUID optionId) {
         requireActive();
         if (selectedQuestionId == null) throw new InvalidGameException("Vispirms izvēlies jautājumu.");
         answerRevealed = true;
+        selectedOptionId = optionId;
     }
 
     public void useHint(SessionQuestion question) {
@@ -86,7 +89,7 @@ public class GameSession {
         if (!question.getId().equals(selectedQuestionId)) {
             throw new InvalidGameException("Vispirms izvēlies jautājumu.");
         }
-        question.useHint();
+        question.toggleHint();
     }
 
     public ScoreEvent score(SessionTeam team, SessionQuestion question, boolean correct, int teamCount) {
@@ -100,6 +103,7 @@ public class GameSession {
         question.markUsed();
         activeTeamIndex = (activeTeamIndex + 1) % teamCount;
         selectedQuestionId = null;
+        selectedOptionId = null;
         answerRevealed = false;
         return new ScoreEvent(this, team, question, awarded, correct, before, activeTeamIndex);
     }
@@ -109,7 +113,8 @@ public class GameSession {
         question.markUnused();
         activeTeamIndex = event.getActiveTeamBefore();
         selectedQuestionId = question.getId();
-        answerRevealed = true;
+        selectedOptionId = null;
+        answerRevealed = false;
         status = SessionStatus.ACTIVE;
         event.markUndone();
     }
@@ -117,6 +122,7 @@ public class GameSession {
     public void finish() {
         status = SessionStatus.FINISHED;
         selectedQuestionId = null;
+        selectedOptionId = null;
         answerRevealed = false;
     }
 
@@ -132,6 +138,7 @@ public class GameSession {
     public SessionStatus getStatus() { return status; }
     public int getActiveTeamIndex() { return activeTeamIndex; }
     public UUID getSelectedQuestionId() { return selectedQuestionId; }
+    public UUID getSelectedOptionId() { return selectedOptionId; }
     public boolean isAnswerRevealed() { return answerRevealed; }
     public long getVersion() { return version; }
     public Instant getCreatedAt() { return createdAt; }

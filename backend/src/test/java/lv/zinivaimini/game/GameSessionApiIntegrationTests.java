@@ -108,7 +108,8 @@ class GameSessionApiIntegrationTests {
         assertThat(undone.path("teams").get(0).path("score").asInt()).isZero();
         assertThat(undone.path("activeTeamIndex").asInt()).isZero();
         assertThat(undone.path("usedCount").asInt()).isZero();
-        assertThat(undone.path("answerRevealed").asBoolean()).isTrue();
+        assertThat(undone.path("selectedQuestion").path("id").asText()).isEqualTo(questionId);
+        assertThat(undone.path("answerRevealed").asBoolean()).isFalse();
     }
 
     private JsonNode request(org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder request,

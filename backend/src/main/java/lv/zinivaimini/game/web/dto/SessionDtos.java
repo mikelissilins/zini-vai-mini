@@ -30,6 +30,9 @@ public final class SessionDtos {
     public record VersionInput(@PositiveOrZero long version) {
     }
 
+    public record RevealInput(UUID optionId, @PositiveOrZero long version) {
+    }
+
     public record SelectQuestionInput(@NotNull UUID questionId, @PositiveOrZero long version) {
     }
 
@@ -84,6 +87,7 @@ public final class SessionDtos {
             long version,
             int activeTeamIndex,
             UUID activeTeamId,
+            UUID selectedOptionId,
             int usedCount,
             int totalQuestions,
             boolean answerRevealed,

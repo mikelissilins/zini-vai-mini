@@ -42,25 +42,27 @@
       <section class="projector-question" [style.--category-color]="question.categoryColor">
         <div class="question-topline">
           <span>{{ question.categoryName }}</span>
-          <strong>{{ question.points }}</strong>
+          <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
         </div>
         <h2>{{ question.prompt }}</h2>
         @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt=""> }
         @if (question.options.length) {
           <div class="projector-options">
             @for (option of question.options; track option.id; let index = $index) {
-              <div [class.is-correct]="game.answerRevealed && option.correct">
+              <div [class.is-correct]="game.answerRevealed && game.selectedOptionId === option.id && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct">
                 <b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span>
               </div>
             }
           </div>
         }
-        @if (game.answerRevealed) {
+        @if (game.answerRevealed && question.type === 'FREE_TEXT') {
           <div class="projector-answer">
             <span>{{ copy('Pareizā atbilde', 'Correct answer') }}</span>
             <strong>{{ question.answer }}</strong>
             @if (question.explanation) { <p>{{ question.explanation }}</p> }
           </div>
+        } @else if (game.answerRevealed && question.explanation) {
+          <div class="projector-answer projector-note"><span>{{ copy('Papildu piezīme', 'Extra note') }}</span><p>{{ question.explanation }}</p></div>
         }
       </section>
     } @else {

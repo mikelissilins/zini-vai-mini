@@ -31,10 +31,10 @@ export class HostPage implements OnInit {
     this.run(this.api.selectQuestion(session.id, questionId, session.version));
   }
 
-  protected reveal(): void {
+  protected reveal(optionId: string | null = null): void {
     const session = this.session();
     if (!session) return;
-    this.run(this.api.revealAnswer(session.id, session.version));
+    this.run(this.api.revealAnswer(session.id, session.version, optionId));
   }
 
   protected useHint(): void {

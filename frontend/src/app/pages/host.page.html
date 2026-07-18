@@ -40,36 +40,40 @@
 
       @if (game.selectedQuestion; as question) {
         <section class="question-stage" [style.--category-color]="question.categoryColor">
-          <div class="question-label"><span>{{ question.categoryName }}</span><strong>{{ question.points }}</strong></div>
+          <div class="question-label">
+            <span>{{ question.categoryName }}</span>
+            <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
+          </div>
           <h2>{{ question.prompt }}</h2>
           @if (question.mediaUrl) { <img [src]="question.mediaUrl" alt="Jautājuma attēls"> }
           @if (question.options.length) {
             <div class="answer-options">
               @for (option of question.options; track option.id; let index = $index) {
-                <div [class.is-correct]="game.answerRevealed && option.correct"><b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span></div>
+                <button type="button" [class.is-correct]="game.answerRevealed && game.selectedOptionId === option.id && option.correct" [class.is-wrong]="game.answerRevealed && game.selectedOptionId === option.id && !option.correct" [disabled]="busy() || game.answerRevealed" (click)="reveal(option.id)"><b>{{ 'ABCD'[index] }}</b><span>{{ option.text }}</span></button>
               }
             </div>
           }
           @if (!game.answerRevealed && question.explanation) {
-            <button class="hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy() || question.hintUsed" (click)="useHint()">
-              <span>{{ question.hintUsed ? 'Pavediens atklāts' : 'Rādīt pavedienu' }}</span>
-              <strong>{{ question.points }} punkti − 5 punkti</strong>
-            </button>
+            <button class="hint-action" [class.is-used]="question.hintUsed" type="button" [disabled]="busy()" (click)="useHint()" [attr.aria-label]="question.hintUsed ? 'Noņemt pavedienu' : 'Rādīt pavedienu par mīnus pieciem punktiem'">−5</button>
             @if (question.hintUsed) {
               <div class="question-hint"><strong>Pavediens</strong><p>{{ question.explanation }}</p></div>
             }
           }
-          @if (game.answerRevealed) {
+          @if (game.answerRevealed && question.type === 'FREE_TEXT') {
             <div class="answer-reveal">
               <span>Pareizā atbilde</span>
               <strong>{{ question.answer }}</strong>
               @if (question.explanation) { <p>{{ question.explanation }}</p> }
             </div>
+          } @else if (game.answerRevealed && question.explanation) {
+            <div class="answer-reveal answer-note"><span>Papildu piezīme</span><p>{{ question.explanation }}</p></div>
+          }
+          @if (game.answerRevealed) {
             <div class="score-actions">
               <button class="button is-danger is-large" type="button" [disabled]="busy()" (click)="score(false)">Nepareizi · 0</button>
               <button class="button is-success is-large" type="button" [disabled]="busy()" (click)="score(true)">Pareizi · +{{ question.points - (question.hintUsed ? 5 : 0) }}</button>
             </div>
-          } @else {
+          } @else if (question.type === 'FREE_TEXT') {
             <button class="button reveal-button is-large" type="button" [disabled]="busy()" (click)="reveal()">Atklāt atbildi</button>
           }
         </section>

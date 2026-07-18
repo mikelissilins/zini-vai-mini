@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lv.zinivaimini.game.service.SessionService;
 import lv.zinivaimini.game.web.dto.SessionDtos.CreateSessionInput;
 import lv.zinivaimini.game.web.dto.SessionDtos.ScoreInput;
+import lv.zinivaimini.game.web.dto.SessionDtos.RevealInput;
 import lv.zinivaimini.game.web.dto.SessionDtos.SelectQuestionInput;
 import lv.zinivaimini.game.web.dto.SessionDtos.SessionSummary;
 import lv.zinivaimini.game.web.dto.SessionDtos.SessionView;
@@ -50,8 +51,8 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/{id}/reveal")
-    SessionView reveal(@PathVariable UUID id, @RequestBody VersionInput input) {
-        return service.reveal(id, input.version());
+    SessionView reveal(@PathVariable UUID id, @RequestBody RevealInput input) {
+        return service.reveal(id, input.optionId(), input.version());
     }
 
     @PostMapping("/sessions/{id}/hint")

@@ -11,7 +11,7 @@ class GameSessionTests {
         Fixture fixture = fixture();
 
         fixture.session.selectQuestion(fixture.question);
-        fixture.session.revealAnswer();
+        fixture.session.revealAnswer(null);
         ScoreEvent event = fixture.session.score(fixture.firstTeam, fixture.question, true, 2);
 
         assertThat(fixture.firstTeam.getScore()).isEqualTo(30);
@@ -25,7 +25,7 @@ class GameSessionTests {
         assertThat(fixture.question.isUsed()).isFalse();
         assertThat(fixture.session.getActiveTeamIndex()).isZero();
         assertThat(fixture.session.getSelectedQuestionId()).isEqualTo(fixture.question.getId());
-        assertThat(fixture.session.isAnswerRevealed()).isTrue();
+        assertThat(fixture.session.isAnswerRevealed()).isFalse();
         assertThat(event.isUndone()).isTrue();
     }
 
@@ -33,7 +33,7 @@ class GameSessionTests {
     void incorrectAnswerScoresZeroAndStillRotates() {
         Fixture fixture = fixture();
         fixture.session.selectQuestion(fixture.question);
-        fixture.session.revealAnswer();
+        fixture.session.revealAnswer(null);
 
         ScoreEvent event = fixture.session.score(fixture.firstTeam, fixture.question, false, 2);
 
@@ -48,13 +48,20 @@ class GameSessionTests {
         Fixture fixture = fixture();
         fixture.session.selectQuestion(fixture.question);
         fixture.session.useHint(fixture.question);
-        fixture.session.revealAnswer();
+        fixture.session.revealAnswer(null);
 
         ScoreEvent event = fixture.session.score(fixture.firstTeam, fixture.question, true, 2);
 
         assertThat(event.getPoints()).isEqualTo(25);
         assertThat(fixture.firstTeam.getScore()).isEqualTo(25);
         assertThat(fixture.question.isHintUsed()).isTrue();
+
+        fixture.session.undo(event, fixture.firstTeam, fixture.question);
+        fixture.session.useHint(fixture.question);
+        fixture.session.revealAnswer(null);
+        ScoreEvent restored = fixture.session.score(fixture.firstTeam, fixture.question, true, 2);
+
+        assertThat(restored.getPoints()).isEqualTo(30);
     }
 
     private Fixture fixture() {

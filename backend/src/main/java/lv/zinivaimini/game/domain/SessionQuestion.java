@@ -73,7 +73,7 @@ public class SessionQuestion {
 
     public void markUsed() { used = true; }
     public void markUnused() { used = false; }
-    public void useHint() { hintUsed = true; }
+    public void toggleHint() { hintUsed = !hintUsed; }
 
     public UUID getId() { return id; }
     public String getCategoryName() { return categoryName; }

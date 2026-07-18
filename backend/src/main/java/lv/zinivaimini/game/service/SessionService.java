@@ -102,10 +102,14 @@ public class SessionService {
     }
 
     @Transactional
-    public SessionView reveal(UUID id, long version) {
+    public SessionView reveal(UUID id, UUID optionId, long version) {
         GameSession session = requireSession(id);
         session.requireVersion(version);
-        session.revealAnswer();
+        SessionQuestion question = requireQuestion(session, session.getSelectedQuestionId());
+        if (optionId != null && question.getOptions().stream().noneMatch(option -> option.getId().equals(optionId))) {
+            throw new InvalidGameException("Izvēlētā atbilde nepieder šim jautājumam.");
+        }
+        session.revealAnswer(optionId);
         return saveAndPublish(session);
     }
 
@@ -183,6 +187,7 @@ public class SessionService {
                 : selectedView(requireQuestion(session, session.getSelectedQuestionId()), publicView && !session.isAnswerRevealed());
         return new SessionView(session.getId(), session.getGameId(), session.getPublicToken(), session.getTitle(),
                 session.getLocale(), session.getStatus(), session.getVersion(), session.getActiveTeamIndex(), activeTeamId,
+                session.getSelectedOptionId(),
                 usedCount(sessionQuestions), sessionQuestions.size(), session.isAnswerRevealed(),
                 events.existsBySessionAndUndoneFalse(session), session.getCreatedAt(), session.getUpdatedAt(), teamViews,
                 categoryViews(sessionQuestions), selected);

@@ -134,6 +134,7 @@ export interface SessionView {
   version: number;
   activeTeamIndex: number;
   activeTeamId: string;
+  selectedOptionId: string | null;
   usedCount: number;
   totalQuestions: number;
   answerRevealed: boolean;
