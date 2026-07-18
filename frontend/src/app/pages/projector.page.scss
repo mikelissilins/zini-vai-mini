@@ -11,19 +11,20 @@
 .projector-column h2 { align-items: end; background: var(--category-color); box-sizing: border-box; color: white; display: flex; font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.75rem); justify-content: center; min-height: clamp(4rem, 10vh, 7rem); overflow-wrap: anywhere; padding: 0.75rem; position: relative; text-align: center; }
 .projector-column h2::before { border-left: 0.45rem solid var(--sun); content: ''; height: 58%; left: 0.65rem; position: absolute; top: 0.65rem; }
 .projector-column h2 span { position: relative; }
-.projector-column > div { align-items: center; background: var(--foam); color: var(--deep-sea); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
+.projector-column > div { align-items: center; background: var(--foam); box-shadow: inset 0 -0.28rem 0 var(--active-team-color); color: var(--active-team-color); display: flex; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.6rem); justify-content: center; min-height: clamp(4.5rem, 12vh, 9rem); position: relative; }
 .projector-column > div::after { border-bottom: 0.24rem solid color-mix(in srgb, var(--category-color) 70%, white); bottom: 0; content: ''; left: 0; position: absolute; right: 0; }
-.projector-column > div.is-used { background: var(--deep-sea); color: var(--sun); }
-.projector-column > div.is-used::after { border-color: var(--coral); }
+.projector-column > div.is-used { background: var(--deep-sea); box-shadow: inset 0 -0.28rem 0 var(--result-color); color: var(--result-color); }
+.projector-column > div.is-used::after { border-color: var(--result-color); }
 .projector-column > div.is-used span { font-size: 0.72em; opacity: 1; }
+.projector-column > div.is-wrong span { font-size: 0.9em; }
 .projector-question { animation: stage-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both; background: var(--foam); border: clamp(0.4rem, 1vw, 0.8rem) solid var(--category-color); box-sizing: border-box; color: var(--ink); margin: 0 auto; max-width: 1640px; min-height: min(69vh, 900px); position: relative; }
 .question-stage-inner { display: grid; min-height: inherit; padding: clamp(1.5rem, 4vw, 5rem); position: relative; }
 .question-topline, .projector-question h2, .projector-question img, .projector-options, .projector-answer, .projector-hint { position: relative; z-index: 1; }
 .question-topline { color: var(--ink); justify-content: space-between; }
 .question-topline > span { color: var(--category-color); font-size: clamp(0.75rem, 1.3vw, 1rem); font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
 .question-topline strong { color: var(--deep-sea); font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.8; }
-.question-points { gap: 0.5rem; }
-.question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.2rem); font-style: normal; }
+.question-points { position: relative; }
+.question-points em { color: #b73535; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 2.2rem); font-style: normal; position: absolute; right: clamp(-2rem, -1vw, -1rem); top: clamp(-1.4rem, -1vw, -0.75rem); }
 .projector-question h2 { align-self: center; font-family: var(--font-display); font-size: clamp(2.4rem, 5.2vw, 6.2rem); line-height: 1.04; margin: clamp(1.2rem, 3vw, 3rem) 0; max-width: 20ch; overflow-wrap: anywhere; }
 .projector-question img { justify-self: center; max-height: 31vh; max-width: min(100%, 58rem); object-fit: contain; width: 100%; }
 .projector-options { align-self: center; display: grid; gap: clamp(0.7rem, 1.2vw, 1.2rem); grid-template-columns: repeat(2, 1fr); }
@@ -58,10 +59,14 @@
 .full-results div { border-top: 1px solid rgb(255 255 255 / 20%); display: grid; gap: 1rem; grid-template-columns: 3rem 1fr auto auto; padding: 0.65rem; text-align: left; }
 .full-results em { color: #d9f5f9; font-size: 0.82rem; font-style: normal; }
 .full-results strong { color: var(--sun); }
-.score-feedback { animation: score-flash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both; color: white; font-family: var(--font-display); font-size: clamp(4rem, 12vw, 12rem); inset: 0; pointer-events: none; position: fixed; text-align: center; text-shadow: 0 0.28rem 0 rgb(22 50 63 / 36%); top: 31%; z-index: 5; }
+.score-feedback { animation: score-flash 1200ms cubic-bezier(0.22, 1, 0.36, 1) both; display: grid; inset: 0; justify-items: center; pointer-events: none; position: fixed; text-align: center; top: 28%; z-index: 5; }
+.score-feedback strong { font-family: var(--font-display); font-size: clamp(5rem, 14vw, 13rem); line-height: 0.8; text-shadow: 0 0.28rem 0 rgb(22 50 63 / 28%); }
+.score-feedback span { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 4rem); margin-top: 0.7rem; }
 .score-feedback.is-correct { color: #b8f0c9; }
+.score-feedback.is-correct::before { animation: confetti-drift 1050ms ease-out both; color: var(--sun); content: '✦  ·  ✦  ·  ✦'; font-size: clamp(1.2rem, 3vw, 2.75rem); letter-spacing: 0.45em; position: absolute; top: -0.35rem; }
 .score-feedback.is-wrong { color: #ffd1c2; }
 @keyframes score-flash { 0% { opacity: 0; transform: scale(0.72); } 20% { opacity: 1; transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+@keyframes confetti-drift { from { opacity: 0; transform: translateY(-1rem); } 25% { opacity: 0.9; } to { opacity: 0; transform: translateY(2.5rem); } }
 @keyframes stage-arrive { from { opacity: 0; transform: translateY(1.8rem) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .broadcast-error, .broadcast-loading { align-items: center; display: flex; font-family: var(--font-display); font-size: 2rem; justify-content: center; min-height: 90vh; position: relative; }
 .broadcast-error strong { color: var(--coral); font-size: 5rem; margin-right: 1rem; }

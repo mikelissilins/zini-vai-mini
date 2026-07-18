@@ -95,6 +95,8 @@ export interface BoardQuestion {
   id: string;
   points: number;
   used: boolean;
+  correct: boolean | null;
+  teamColor: string | null;
 }
 
 export interface BoardCategory {

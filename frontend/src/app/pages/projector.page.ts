@@ -18,7 +18,7 @@ export class ProjectorPage implements OnInit, OnDestroy {
   protected readonly session = signal<SessionView | null>(null);
   protected readonly connected = signal(false);
   protected readonly error = signal('');
-  protected readonly scoreFeedback = signal<{ awarded: number } | null>(null);
+  protected readonly scoreFeedback = signal<{ awarded: number; correct: boolean } | null>(null);
   protected readonly activeTeam = computed(() => {
     const session = this.session();
     return session?.teams.find((team) => team.id === session.activeTeamId) || null;
@@ -75,7 +75,10 @@ export class ProjectorPage implements OnInit, OnDestroy {
     if (previous && next.usedCount > previous.usedCount) {
       const previousScore = previous.teams.find((team) => team.id === previous.activeTeamId)?.score || 0;
       const currentScore = next.teams.find((team) => team.id === previous.activeTeamId)?.score || 0;
-      this.scoreFeedback.set({ awarded: Math.max(0, currentScore - previousScore) });
+      const result = next.categories.flatMap((category) => category.questions)
+        .find((question) => question.used && !previous.categories.flatMap((category) => category.questions)
+          .find((previousQuestion) => previousQuestion.id === question.id)?.used);
+      this.scoreFeedback.set({ awarded: Math.max(0, currentScore - previousScore), correct: result?.correct === true });
       window.clearTimeout(this.feedbackTimer);
       this.feedbackTimer = window.setTimeout(() => this.scoreFeedback.set(null), 1300);
     }

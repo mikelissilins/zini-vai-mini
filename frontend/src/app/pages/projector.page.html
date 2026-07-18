@@ -73,12 +73,12 @@
         </div>
       </section>
     } @else {
-      <section class="projector-board">
+      <section class="projector-board" [style.--active-team-color]="activeTeam()?.color">
         @for (category of game.categories; track category.position) {
           <div class="projector-column" [style.--category-color]="category.color">
             <h2><span>{{ category.name }}</span></h2>
             @for (question of category.questions; track question.id) {
-              <div [class.is-used]="question.used"><span>{{ question.used ? '✓' : question.points }}</span></div>
+              <div [class.is-used]="question.used" [class.is-correct]="question.correct === true" [class.is-wrong]="question.correct === false" [style.--result-color]="question.teamColor"><span>{{ question.used ? (question.correct ? '✓' : '×') : question.points }}</span></div>
             }
           </div>
         }
@@ -95,8 +95,9 @@
       </footer>
     }
     @if (scoreFeedback(); as feedback) {
-      <div class="score-feedback" [class.is-correct]="feedback.awarded > 0" [class.is-wrong]="feedback.awarded === 0" role="status">
-        {{ feedback.awarded > 0 ? '+' + feedback.awarded : '0' }} {{ copy('punkti', 'points') }}
+      <div class="score-feedback" [class.is-correct]="feedback.correct" [class.is-wrong]="!feedback.correct" role="status">
+        <strong>{{ feedback.correct ? '✓' : '×' }}</strong>
+        <span>{{ feedback.correct ? '+' + feedback.awarded : '0' }} {{ copy('punkti', 'points') }}</span>
       </div>
     }
   } @else {

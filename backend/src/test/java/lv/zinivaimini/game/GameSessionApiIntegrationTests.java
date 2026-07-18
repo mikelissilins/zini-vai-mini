@@ -107,6 +107,9 @@ class GameSessionApiIntegrationTests {
         assertThat(session.path("teams").get(0).path("score").asInt()).isEqualTo(10);
         assertThat(session.path("activeTeamIndex").asInt()).isEqualTo(1);
         assertThat(session.path("usedCount").asInt()).isEqualTo(1);
+        JsonNode scoredBoardQuestion = session.path("categories").get(0).path("questions").get(0);
+        assertThat(scoredBoardQuestion.path("correct").asBoolean()).isTrue();
+        assertThat(scoredBoardQuestion.path("teamColor").asText()).isEqualTo("#0E758C");
 
         JsonNode restored = json.readTree(mvc.perform(get("/api/sessions/{id}", sessionId).with(owner()))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
@@ -118,6 +121,7 @@ class GameSessionApiIntegrationTests {
         assertThat(undone.path("usedCount").asInt()).isZero();
         assertThat(undone.path("selectedQuestion").path("id").asText()).isEqualTo(questionId);
         assertThat(undone.path("answerRevealed").asBoolean()).isTrue();
+        assertThat(undone.path("categories").get(0).path("questions").get(0).path("correct").isNull()).isTrue();
 
         JsonNode hidden = request(post("/api/sessions/{id}/back", sessionId), Map.of("version", undone.path("version").asLong()));
         assertThat(hidden.path("answerRevealed").asBoolean()).isFalse();

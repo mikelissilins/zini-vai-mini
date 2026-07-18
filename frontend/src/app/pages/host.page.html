@@ -41,7 +41,7 @@
 
       @if (game.selectedQuestion; as question) {
         <section class="question-stage" [style.--category-color]="question.categoryColor">
-          <div class="question-label">
+            <div class="question-label">
             <span>{{ question.categoryName }}</span>
             <div class="question-points"><strong>{{ question.points }}</strong>@if (question.hintUsed) { <em>−5</em> }</div>
           </div>
@@ -85,13 +85,13 @@
           }
         </section>
       } @else {
-        <section class="game-board">
+        <section class="game-board" [style.--active-team-color]="activeTeam()?.color">
           @for (category of game.categories; track category.position) {
             <div class="board-column" [style.--category-color]="category.color">
               <h2>{{ category.name }}</h2>
               @for (question of category.questions; track question.id) {
-                <button type="button" [class.is-used]="question.used" [disabled]="busy() || question.used" (click)="select(question.id)">
-                  {{ question.used ? '✓' : question.points }}
+                <button type="button" [class.is-used]="question.used" [class.is-correct]="question.correct === true" [class.is-wrong]="question.correct === false" [style.--result-color]="question.teamColor" [disabled]="busy() || question.used" (click)="select(question.id)">
+                  {{ question.used ? (question.correct ? '✓' : '×') : question.points }}
                 </button>
               }
             </div>

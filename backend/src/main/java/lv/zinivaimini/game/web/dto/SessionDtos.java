@@ -57,7 +57,7 @@ public final class SessionDtos {
     public record OptionView(UUID id, String text, boolean correct) {
     }
 
-    public record BoardQuestionView(UUID id, int points, boolean used) {
+    public record BoardQuestionView(UUID id, int points, boolean used, Boolean correct, String teamColor) {
     }
 
     public record BoardCategoryView(String name, String color, int position, List<BoardQuestionView> questions) {

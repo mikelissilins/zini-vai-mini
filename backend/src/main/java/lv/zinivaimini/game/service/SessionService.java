@@ -202,7 +202,8 @@ public class SessionService {
     private SessionView toView(GameSession session, boolean publicView) {
         List<SessionTeam> sessionTeams = teams.findBySessionIdOrderByPositionAsc(session.getId());
         List<SessionQuestion> sessionQuestions = questions.findBySessionIdOrderByCategoryPositionAscPointsAsc(session.getId());
-        List<TeamView> teamViews = rankedTeams(sessionTeams, events.findBySessionAndUndoneFalse(session));
+        List<ScoreEvent> scoreEvents = events.findBySessionAndUndoneFalse(session);
+        List<TeamView> teamViews = rankedTeams(sessionTeams, scoreEvents);
         UUID activeTeamId = sessionTeams.isEmpty() ? null : sessionTeams.get(session.getActiveTeamIndex()).getId();
         SelectedQuestionView selected = session.getSelectedQuestionId() == null ? null
                 : selectedView(requireQuestion(session, session.getSelectedQuestionId()), publicView && !session.isAnswerRevealed());
@@ -211,7 +212,7 @@ public class SessionService {
                 session.getSelectedOptionId(),
                 usedCount(sessionQuestions), sessionQuestions.size(), session.isAnswerRevealed(),
                 events.existsBySessionAndUndoneFalse(session), session.getCreatedAt(), session.getUpdatedAt(), teamViews,
-                categoryViews(sessionQuestions), selected);
+                categoryViews(sessionQuestions, sessionTeams, scoreEvents), selected);
     }
 
     private List<TeamView> rankedTeams(List<SessionTeam> sessionTeams, List<ScoreEvent> scoreEvents) {
@@ -238,12 +239,22 @@ public class SessionService {
         }).toList();
     }
 
-    private List<BoardCategoryView> categoryViews(List<SessionQuestion> sessionQuestions) {
+    private List<BoardCategoryView> categoryViews(List<SessionQuestion> sessionQuestions, List<SessionTeam> sessionTeams,
+            List<ScoreEvent> scoreEvents) {
+        Map<UUID, ScoreEvent> eventsByQuestion = new LinkedHashMap<>();
+        scoreEvents.forEach(event -> eventsByQuestion.put(event.getQuestionId(), event));
+        Map<UUID, String> teamColors = new LinkedHashMap<>();
+        sessionTeams.forEach(team -> teamColors.put(team.getId(), team.getColor()));
         Map<Integer, List<SessionQuestion>> grouped = new LinkedHashMap<>();
         sessionQuestions.forEach(question -> grouped.computeIfAbsent(question.getCategoryPosition(), ignored -> new ArrayList<>()).add(question));
         return grouped.values().stream().map(group -> new BoardCategoryView(group.getFirst().getCategoryName(),
                 group.getFirst().getCategoryColor(), group.getFirst().getCategoryPosition(), group.stream()
-                        .map(question -> new BoardQuestionView(question.getId(), question.getPoints(), question.isUsed())).toList()))
+                        .map(question -> {
+                            ScoreEvent event = eventsByQuestion.get(question.getId());
+                            return new BoardQuestionView(question.getId(), question.getPoints(), question.isUsed(),
+                                    event == null ? null : event.isCorrect(),
+                                    event == null ? null : teamColors.get(event.getTeamId()));
+                        }).toList()))
                 .toList();
     }
 
