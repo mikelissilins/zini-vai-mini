@@ -4,7 +4,6 @@
       <p class="eyebrow">{{ i18n.t('controlRoom') }}</p>
       <h1>{{ i18n.t('yourGames') }}</h1>
     </div>
-    <span class="game-count">{{ games().length }} {{ i18n.t('gameCount') }}</span>
   </div>
 
   @if (error()) {
@@ -77,7 +76,9 @@
               @if (game.playable) {
                 <a class="button is-warning" [routerLink]="['/games', game.id, 'start']">{{ i18n.t('startGame') }}</a>
               }
-              <button class="button is-ghost has-text-danger" type="button" (click)="deleteGame(game)">{{ i18n.t('delete') }}</button>
+              <button class="delete-button" type="button" (click)="deleteGame(game)" [attr.aria-label]="i18n.t('delete')" [attr.title]="i18n.t('delete')">
+                <span aria-hidden="true">&#128465;</span>
+              </button>
             </div>
           </article>
         }
@@ -107,10 +108,26 @@
               <span>{{ session.teamCount }} {{ i18n.t('teams').toLowerCase() }}</span>
             </div>
             <a class="button is-primary" [routerLink]="['/sessions', session.id, 'host']">{{ i18n.t('resume') }}</a>
-            <button class="button is-ghost has-text-danger" type="button" (click)="deleteSession(session)">{{ i18n.t('delete') }}</button>
+            <button class="delete-button" type="button" (click)="deleteSession(session)" [attr.aria-label]="i18n.t('delete')" [attr.title]="i18n.t('delete')">
+              <span aria-hidden="true">&#128465;</span>
+            </button>
           </article>
         }
       </div>
     }
   </section>
+
+  @if (pendingDelete(); as pending) {
+    <div class="delete-modal" (click)="cancelDelete()">
+      <section class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" (click)="$event.stopPropagation()">
+        <p class="eyebrow">{{ i18n.t('delete') }}</p>
+        <h2 id="delete-title">{{ pending.title }}</h2>
+        <p>{{ (pending.type === 'game' ? i18n.t('deleteConfirm') : i18n.t('deleteSessionConfirm')).replace('{title}', pending.title) }}</p>
+        <div class="delete-actions">
+          <button class="button is-light" type="button" (click)="cancelDelete()">{{ i18n.t('cancel') }}</button>
+          <button class="button delete-confirm" type="button" (click)="confirmDelete()">{{ i18n.t('delete') }}</button>
+        </div>
+      </section>
+    </div>
+  }
 </section>

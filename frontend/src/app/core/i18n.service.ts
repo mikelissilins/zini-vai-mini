@@ -4,7 +4,7 @@ import { Locale } from './models';
 
 const translations: Record<Locale, Record<string, string>> = {
   lv: {
-    signIn: 'Ieiet', signUp: 'Izveidot kontu', signOut: 'Iziet', dashboard: 'Spēļu panelis',
+    signIn: 'Ieiet', signUp: 'Izveidot kontu', signOut: 'Iziet', dashboard: 'Spēļu panelis', cancel: 'Atcelt',
     heroEyebrow: 'Nometnes viktorīna', heroTitle: 'Izveido spēli. Spēlējiet kopā.',
     heroLead: 'Izvēlies sadaļas, pievieno jautājumus un skaiti punktus.',
     startBuilding: 'Sākt veidot spēli', openDashboard: 'Atvērt spēļu paneli', wakingUp: 'Spēle mostas…',
@@ -18,7 +18,7 @@ const translations: Record<Locale, Record<string, string>> = {
     addOption: 'Pievienot variantu', correct: 'Pareizā', image: 'Jautājuma attēls', uploadImage: 'Augšupielādēt attēlu',
     playableHint: 'Visas punktu vietas ir aizpildītas. Spēli var sākt.',
     draftHint: 'Lai sāktu spēli, katrā sadaļā aizpildi 10 līdz 70 punktu jautājumus un atbildes.',
-    addExtendedPoints: 'Pievienot 60 un 70', removeExtendedPoints: 'Noņemt 60 un 70',
+    addPoints: 'Pievienot',
     gameCount: 'spēles', chooseTemplateTitle: 'Izvēlies template vai izveido spēli',
     emptyGamesHint: 'Izvēlies template augstāk un izveido pirmo spēli.', noDescription: 'Bez apraksta',
     defaultGameName: 'Mana spēle', campGameName: 'Zini vai mini', deleteConfirm: 'Dzēst “{title}”?',
@@ -30,7 +30,7 @@ const translations: Record<Locale, Record<string, string>> = {
     resume: 'Turpināt', finished: 'Pabeigta', progress: 'Progress', noSessions: 'Vēl nav sāktu spēļu.',
   },
   en: {
-    signIn: 'Sign in', signUp: 'Create account', signOut: 'Sign out', dashboard: 'Game dashboard',
+    signIn: 'Sign in', signUp: 'Create account', signOut: 'Sign out', dashboard: 'Game dashboard', cancel: 'Cancel',
     heroEyebrow: 'Camp team quiz', heroTitle: 'Build a game. Play together.',
     heroLead: 'Choose categories, add questions, and keep score.',
     startBuilding: 'Build a game', openDashboard: 'Open dashboard', wakingUp: 'Waking up the game…',
@@ -44,7 +44,7 @@ const translations: Record<Locale, Record<string, string>> = {
     addOption: 'Add option', correct: 'Correct', image: 'Question image', uploadImage: 'Upload image',
     playableHint: 'Every point slot is complete. This game can be started.',
     draftHint: 'To start, fill every 10 to 70 point question and answer in each category.',
-    addExtendedPoints: 'Add 60 and 70', removeExtendedPoints: 'Remove 60 and 70',
+    addPoints: 'Points',
     gameCount: 'games', chooseTemplateTitle: 'Choose a template or create a game',
     emptyGamesHint: 'Choose a template above and create your first game.', noDescription: 'No description',
     defaultGameName: 'My game', campGameName: 'Zini vai mini', deleteConfirm: 'Delete “{title}”?',

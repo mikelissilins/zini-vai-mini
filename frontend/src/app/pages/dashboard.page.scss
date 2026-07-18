@@ -35,7 +35,6 @@ h1 {
 h2 { font-size: clamp(1.6rem, 3vw, 2.6rem); }
 h3 { font-size: 1.45rem; }
 
-.game-count,
 .status,
 .locale {
   font-size: 0.72rem;
@@ -172,6 +171,21 @@ h3 { font-size: 1.45rem; }
 
 .card-actions { justify-content: space-between; margin-top: 1.25rem; }
 
+.delete-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--coral);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.25rem;
+  justify-content: center;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+}
+
+.delete-button:hover { background: #fff0e9; }
+
 .empty-state {
   background: var(--sand);
   display: grid;
@@ -193,7 +207,39 @@ h3 { font-size: 1.45rem; }
 
 .session-row h3 { margin: 0.25rem 0 0; }
 .session-progress { display: grid; text-align: right; }
-.session-progress span { color: var(--muted); font-size: 0.8rem; }
+.session-progress strong {
+  color: var(--deep-sea);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.session-progress span { color: var(--ink); font-size: 0.9rem; font-weight: 700; margin-top: 0.35rem; }
+
+.delete-modal {
+  align-items: center;
+  background: rgb(22 50 63 / 72%);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1.5rem;
+  position: fixed;
+  z-index: 20;
+}
+
+.delete-dialog {
+  background: var(--deep-sea);
+  border-top: 0.5rem solid var(--coral);
+  color: white;
+  max-width: 30rem;
+  padding: 2rem;
+  width: 100%;
+}
+
+.delete-dialog h2 { color: var(--sun); margin: 0.4rem 0 0.75rem; overflow-wrap: anywhere; }
+.delete-dialog p:not(.eyebrow) { color: var(--foam); }
+.delete-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.75rem; }
+.delete-confirm { background: var(--coral); color: white; }
+.delete-confirm:hover { background: #df6241; color: white; }
 
 @media (max-width: 900px) {
   .games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -25,6 +25,7 @@ export class DashboardPage implements OnInit {
   protected readonly loading = signal(true);
   protected readonly creating = signal(false);
   protected readonly error = signal('');
+  protected readonly pendingDelete = signal<{ type: 'game' | 'session'; id: string; title: string } | null>(null);
   protected selectedTemplateId = '';
   protected newGameTitle = '';
 
@@ -46,17 +47,30 @@ export class DashboardPage implements OnInit {
   }
 
   protected deleteGame(game: GameSummary): void {
-    if (!window.confirm(this.i18n.t('deleteConfirm').replace('{title}', game.title))) return;
-    this.api.deleteGame(game.id).subscribe({
-      next: () => this.games.update((items) => items.filter((item) => item.id !== game.id)),
-      error: (error) => this.error.set(error.error?.detail || this.i18n.t('deleteGameError')),
-    });
+    this.pendingDelete.set({ type: 'game', id: game.id, title: game.title });
   }
 
   protected deleteSession(session: SessionSummary): void {
-    if (!window.confirm(this.i18n.t('deleteSessionConfirm').replace('{title}', session.title))) return;
-    this.api.deleteSession(session.id).subscribe({
-      next: () => this.sessions.update((items) => items.filter((item) => item.id !== session.id)),
+    this.pendingDelete.set({ type: 'session', id: session.id, title: session.title });
+  }
+
+  protected cancelDelete(): void {
+    this.pendingDelete.set(null);
+  }
+
+  protected confirmDelete(): void {
+    const pending = this.pendingDelete();
+    if (!pending) return;
+    this.pendingDelete.set(null);
+    if (pending.type === 'game') {
+      this.api.deleteGame(pending.id).subscribe({
+        next: () => this.games.update((items) => items.filter((item) => item.id !== pending.id)),
+        error: (error) => this.error.set(error.error?.detail || this.i18n.t('deleteGameError')),
+      });
+      return;
+    }
+    this.api.deleteSession(pending.id).subscribe({
+      next: () => this.sessions.update((items) => items.filter((item) => item.id !== pending.id)),
       error: (error) => this.error.set(error.error?.detail || this.i18n.t('deleteSessionError')),
     });
   }

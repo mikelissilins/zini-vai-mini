@@ -7,7 +7,7 @@ import { I18nService } from '../core/i18n.service';
 import { GameInput, GameView, QuestionInput, QuestionType } from '../core/models';
 
 const STANDARD_POINTS = [10, 20, 30, 40, 50];
-const EXTENDED_POINTS = [60, 70];
+const AVAILABLE_POINTS = [10, 20, 30, 40, 50, 60, 70];
 const CATEGORY_COLORS = ['#0E758C', '#F77F5B', '#55B8CC', '#5CA67A', '#7A6FF0', '#F2A65A'];
 
 @Component({
@@ -78,25 +78,22 @@ export class EditorPage implements OnInit {
     this.markChanged();
   }
 
-  protected hasExtendedPoints(category: FormGroup): boolean {
-    return this.questions(category).controls.some((question) => EXTENDED_POINTS.includes(question.controls['points'].value));
+  protected availablePoints(category: FormGroup): number[] {
+    const usedPoints = new Set(this.questions(category).controls.map((question) => question.controls['points'].value));
+    return AVAILABLE_POINTS.filter((points) => !usedPoints.has(points));
   }
 
-  protected addExtendedPoints(category: FormGroup): void {
+  protected addPoint(category: FormGroup, selectedValue: string): void {
+    const points = Number(selectedValue);
+    if (!AVAILABLE_POINTS.includes(points) || !this.availablePoints(category).includes(points)) return;
     const questions = this.questions(category);
-    EXTENDED_POINTS.forEach((points) => {
-      if (!questions.controls.some((question) => question.controls['points'].value === points)) {
-        questions.push(this.createQuestionGroup(this.emptyQuestion(points)));
-      }
-    });
+    const insertAt = questions.controls.findIndex((question) => question.controls['points'].value > points);
+    questions.insert(insertAt === -1 ? questions.length : insertAt, this.createQuestionGroup(this.emptyQuestion(points)));
     this.markChanged();
   }
 
-  protected removeExtendedPoints(category: FormGroup): void {
-    const questions = this.questions(category);
-    for (let index = questions.length - 1; index >= 0; index--) {
-      if (EXTENDED_POINTS.includes(questions.at(index).controls['points'].value)) questions.removeAt(index);
-    }
+  protected removeQuestion(category: FormGroup, questionIndex: number): void {
+    this.questions(category).removeAt(questionIndex);
     this.markChanged();
   }
 

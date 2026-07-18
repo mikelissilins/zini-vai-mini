@@ -42,9 +42,12 @@ textarea {
 
 .input,
 .textarea,
+.select,
 .select select {
   background: #fffdf7;
   border-color: #b9cfd3;
+  border-radius: 0;
+  box-shadow: none;
   color: var(--ink);
 }
 
